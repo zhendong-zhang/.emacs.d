@@ -12,6 +12,7 @@ transient
 rime-config/build
 rime-config/*userdb*
 rime-config/user.yaml
+rime-config/installation.yaml
 eln-cache
 eshell
 url
