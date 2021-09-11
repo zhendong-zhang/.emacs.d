@@ -1,0 +1,7 @@
+# -*- mode: snippet; -*-
+# name: file header
+# key: header-short
+# --
+$2
+
+(provide '${1:`(file-name-base (buffer-file-name))`})
