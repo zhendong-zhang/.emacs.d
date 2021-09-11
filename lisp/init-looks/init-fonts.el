@@ -12,7 +12,7 @@
            when (font-installed-p font)
            return (set-face-attribute 'default nil
                                       :font font
-                                      :height 100))
+                                      :height 110))
 
   ;; Specify font for Chinese characters
   (cl-loop for font in '("Sarasa Mono SC Nerd" "Sarasa Mono SC" "WenQuanYi Micro Hei Mono")
