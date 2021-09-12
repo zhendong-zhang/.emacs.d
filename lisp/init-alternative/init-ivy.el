@@ -55,13 +55,14 @@
   (([remap execute-extended-command] . counsel-M-x)
    ("M-g l" . counsel-locate)
    ("M-g M" . counsel-bookmark)
-   ("M-g m" . counsel-mark-ring)))
+   ("M-g m" . counsel-mark-ring)
+   ("M-s a" . counsel-ag)
+   ("M-s r" . counsel-rg)
+   ("M-g o" . counsel-rg)))
 
 (use-package counsel-projectile
+  :after (counsel projectile)
   :bind
-  (("M-s a" . counsel-ag)
-   ("M-s r" . counsel-rg)
-   ("M-s g" . counsel-projectile-grep)
-   ("M-g o" . counsel-rg)))
+  ("M-s g" . counsel-projectile-grep))
 
 (provide 'init-ivy)

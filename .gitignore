@@ -17,3 +17,4 @@ eln-cache
 eshell
 url
 org-clock-save.el
+*.html

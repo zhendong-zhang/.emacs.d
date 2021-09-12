@@ -1,0 +1,43 @@
+#+TITLE: My Private Emacs Config
+以下记录windows wslg下的安装过程，linux下跳过前面的步骤
+* [[https://insider.windows.com/register][加入windows预览体验计划]],并升级到[[https://www.microsoft.com/software-download/windowsinsiderpreviewiso?rfs=1][预览版]]
+* 升级或安装wslg
+#+begin_src bat
+  wsl --update
+  wsl --list --online
+  wsl --install -d Debian
+#+end_src
+由于国内Power Shell下下载过慢，可以考虑用Windows Store里的来安装
+* apt换源
+#+begin_src text
+  deb http://ftp.cn.debian.org/debian bullseye main contrib non-free
+  deb http://ftp.cn.debian.org/debian bullseye-updates main contrib non-free
+  deb http://ftp.cn.debian.org/debian-security/ bullseye-security/updates main contrib non-free
+  deb http://ftp.cn.debian.org/debian bullseye-backports main contrib non-free
+#+end_src
+* 安装emacs及依赖软件
+安装外部依赖工具
+#+begin_src shell
+  apt-get update
+  apt-get install build-essential && apt-get install fonts-wqy-microhei
+  apt-get install librime-dev locate ripgrep git clangd universal-ctags
+#+end_src
+编译native-comp emacs
+  #+begin_src shell
+  apt-get install libxpm-dev libgif-dev libjpeg-dev libtiff-dev libx11-dev libgtk2.0-dev libgccjit-10-dev gnutls-dev libjansson-dev libncurses-dev libxml2-dev libgtk-3-dev libwebkit2gtk-4.0-dev
+  apt-get install automake autoconf texinfo
+  git clone git://git.savannah.gnu.org/emacs.git
+  cd emacs
+  ./autogen.sh
+  ./configure --with-native-compilation --with-mailutils --with-xwidgets
+  make NATIVE_FULL_AOT=1 -j$(nproc)
+  make install
+  #+end_src
+* checkout emacs配置
+git clone git@github.com:zhendong-zhang/.emacs.d.git ~/.emacs.d
+* 创建快捷方式
+修改已有快捷方式属性，目标换成emacs：
+#+begin_src text
+  C:\Windows\System32\wslg.exe ~ -d Debian /usr/local/bin/emacs
+#+end_src
+类似的可以增加emacsclient和使用“emacs --daemon”做参数的快捷方式，做到开机启动daemon（C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup）

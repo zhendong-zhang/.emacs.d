@@ -38,7 +38,7 @@
 | M-g i       | imenu                                   | global                |                  |
 | M-g o       | counsel-rg                              | global                |                  |
 | M-g m       | counsel-mark-ring                       | global                |                  |
-| M-g c      | jump-to-char                            | global                | goto-char        |
+| M-g c       | jump-to-char                            | global                | goto-char        |
 |-------------+-----------------------------------------+-----------------------+------------------|
 | M-s d       | youdao-dictionary-search                | global                |                  |
 | M-s v       | youdao-dictionary-play-voice-from-input | global                |                  |
