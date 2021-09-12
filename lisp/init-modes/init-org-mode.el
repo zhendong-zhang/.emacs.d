@@ -27,7 +27,8 @@
                              (?C . success))
         org-babel-load-languages '((emacs-lisp . t)
                                    (shell . t))
-        org-confirm-babel-evaluate nil)
+        org-confirm-babel-evaluate nil
+        org-adapt-indentation nil)
   :config
   (use-package org-clock :ensure nil
     :init
