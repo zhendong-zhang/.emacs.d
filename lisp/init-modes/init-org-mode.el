@@ -26,7 +26,8 @@
                              (?B . warning)
                              (?C . success))
         org-babel-load-languages '((emacs-lisp . t)
-                                   (shell . t)))
+                                   (shell . t))
+        org-confirm-babel-evaluate nil)
   :config
   (use-package org-clock :ensure nil
     :init
@@ -68,9 +69,14 @@
     :bind
     (:map org-agenda-mode-map
           ("P" . org-pomodoro)))
+
+  (use-package org-preview-html :diminish)
   )
 
 (use-package valign
+  :diminish
+  :init
+  (setq valign-max-table-size 10000)
   :hook
   (org-mode . valign-mode))
 

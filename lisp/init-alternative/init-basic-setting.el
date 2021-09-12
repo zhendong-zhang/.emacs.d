@@ -135,7 +135,8 @@
 
 (use-package avy
   :init
-  (setq avy-all-windows nil)
+  (setq avy-all-windows nil
+        avy-case-fold-search nil)
   :bind
   (("M-g ;" . avy-goto-word-1)
    ("M-g :" . avy-goto-subword-1)
@@ -170,12 +171,18 @@
   (add-to-list 'hungry-delete-except-modes 'minibuffer-mode)
   (global-hungry-delete-mode t))
 
+(use-package repeat
+  :ensure nil
+  :hook (after-init . repeat-mode)
+  :custom
+  (repeat-exit-key (kbd "RET")))
+
+(use-package wgrep)
+
 (global-set-key (kbd "C-h C-f") 'find-function)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-h C-k") 'find-function-on-key)
 (global-set-key (kbd "M-g i") 'imenu)
-(global-set-key (kbd "M-r") 'repeat)
-(global-set-key (kbd "M-R") 'move-to-window-line-top-bottom)
 (global-set-key (kbd "C-<tab>") 'previous-buffer)
 
 (provide 'init-basic-setting)

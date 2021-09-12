@@ -8,7 +8,7 @@
   (use-package eshell-prompt-extras
     :defines (eshell-highlight-prompt eshell-prompt-function)
     :init
-    (setq eshell-highlight-prompt nil
+    (setq eshell-highlight-prompt t
           eshell-prompt-function 'epe-theme-dakrone)))
 
 (provide 'init-eshell)

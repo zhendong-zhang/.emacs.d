@@ -28,6 +28,14 @@
   :config
   (use-package company-statistics :config (company-statistics-mode t))
   (use-package abbrev :ensure nil :diminish)
+
+  (use-package company-org-block
+    :hook (org-mode . (lambda ()
+            (add-to-list (make-local-variable 'company-backends)
+                         'company-org-block)))
+    :init
+    (setq company-org-block-edit-style 'auto))
+
   (global-company-mode))
 
 (defun my-company-complete ()

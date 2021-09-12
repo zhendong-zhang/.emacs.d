@@ -18,6 +18,7 @@
   (emacs-lisp-mode . smartparens-strict-mode)
   :config
   (require 'smartparens-config)
+  (push 'org-mode sp-ignore-modes-list)
   (smartparens-global-mode 1))
 
 (provide 'init-smartparens)
