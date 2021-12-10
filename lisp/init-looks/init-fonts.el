@@ -4,7 +4,7 @@
 
 (when (eq system-type 'gnu/linux)
   (unless (file-exists-p "~/.local/share/fonts")
-    (make-directory "~/.local/share/")
+    (make-directory "~/.local/share/" t)
     (shell-command (concat "ln -sf " user-emacs-directory "fonts/ ~/.local/share/fonts"))))
 
 (when (display-graphic-p)
@@ -12,7 +12,7 @@
            when (font-installed-p font)
            return (set-face-attribute 'default nil
                                       :font font
-                                      :height 110))
+                                      :height 130))
 
   ;; Specify font for Chinese characters
   (cl-loop for font in '("Sarasa Mono SC Nerd" "Sarasa Mono SC" "WenQuanYi Micro Hei Mono")
