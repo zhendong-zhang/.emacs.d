@@ -12,6 +12,8 @@
   (push "*Org Select*" popwin:special-display-config)
   (push " *Agenda Commands*" popwin:special-display-config)
   (push '("\\*Org Agenda.*\\*" :regexp t) popwin:special-display-config)
+  (push '("CAPTURE-.*\\.org" :regexp t) popwin:special-display-config)
+  (push "*Org todo*" popwin:special-display-config)
 
   ;; FIXME 临时修复org相关buffer配置无效
   ;; (advice-add 'popwin-mode :after
