@@ -13,16 +13,7 @@
   (push " *Agenda Commands*" popwin:special-display-config)
   (push '("\\*Org Agenda.*\\*" :regexp t) popwin:special-display-config)
   (push '("CAPTURE-.*\\.org" :regexp t) popwin:special-display-config)
-  (push "*Org todo*" popwin:special-display-config)
 
-  ;; FIXME 临时修复org相关buffer配置无效
-  ;; (advice-add 'popwin-mode :after
-  ;;             (lambda (&optional ARG)
-  ;;               (with-no-warnings
-  ;;                 (unless (or (null display-buffer-function)
-  ;;                             (eq display-buffer-function 'popwin:display-buffer))
-  ;;                   (warn "Overwriting display-buffer-function variable to enable/disable popwin-mode"))
-  ;;                 (setq display-buffer-function (if popwin-mode 'popwin:display-buffer nil)))))
   (popwin-mode 1)
   )
 

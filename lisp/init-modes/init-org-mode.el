@@ -15,6 +15,7 @@
         org-catch-invisible-edits 'smart
         org-tags-column -80
         org-fast-tag-selection-single-key 'expert
+        org-use-fast-todo-selection 'expert
         org-link-file-path-type 'relative
         org-support-shift-select t
         org-directory my-org-directory
