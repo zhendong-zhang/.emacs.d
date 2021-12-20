@@ -20,7 +20,9 @@
                 company-tooltip-align-annotations t
                 company-show-quick-access t
                 company-selection-wrap-around t
-                company-dabbrev-char-regexp "[\\0-9a-z-_/]"
+                company-dabbrev-char-regexp "[\\0-9a-zA-Z-_/]"
+                company-dabbrev-ignore-case nil
+                company-dabbrev-downcase nil
                 company-idle-delay 0.5)
   (setq company-backends '(company-capf
                            company-yasnippet
@@ -39,7 +41,8 @@
   (global-company-mode))
 
 (defun my-company-complete ()
-  "Complete with `company-manual-begin', and try with `company-other-backend' when no completions found."
+  "Complete with `company-manual-begin', and try with
+`company-other-backend' when no completions found."
   (interactive)
   (company-manual-begin)
   (unless company-candidates
