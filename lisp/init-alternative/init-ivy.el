@@ -74,4 +74,8 @@
   :bind
   ("M-s g" . counsel-projectile-grep))
 
+(use-package counsel-tramp
+  :bind
+  ("M-g t" . counsel-tramp))
+
 (provide 'init-ivy)
