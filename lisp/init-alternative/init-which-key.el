@@ -1,4 +1,5 @@
 (use-package which-key
+  :demand
   :diminish
   :init
   (setq which-key-sort-order 'which-key-key-order-alpha)
