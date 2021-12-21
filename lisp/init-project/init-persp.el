@@ -2,6 +2,7 @@
   :demand
   :diminish
   :defines (recentf-exclude ivy-ignore-buffers)
+  :functions (recentf-include-p)
   :commands (get-current-persp persp-contain-buffer-p)
   :hook ((emacs-startup . persp-mode))
   :init (setq persp-keymap-prefix (kbd "C-x p")
@@ -29,7 +30,13 @@
 
   ;; Don't save persp configs in `recentf'
   (with-eval-after-load 'recentf
-    (push persp-save-dir recentf-exclude))
+    (push persp-save-dir recentf-exclude)
+    (add-hook 'persp-filter-save-buffers-functions
+            (lambda (b)
+              "Ignore buffers exclude by recentf."
+              (let ((fname (buffer-file-name b)))
+                (or (not fname)
+                    (not (recentf-include-p fname)))))))
 
   ;; Eshell integration
   (persp-def-buffer-save/load
