@@ -7,6 +7,7 @@
               :font "WenQuanYi Micro Hei Mono-14"
               :internal-border-width 10)
         default-input-method "rime"
-        rime-show-candidate 'posframe))
+        rime-show-candidate 'posframe
+        rime-title "CH "))
 
 (provide 'init-input-method)

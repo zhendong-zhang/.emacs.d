@@ -30,9 +30,10 @@
 (use-package time
   :ensure nil
   :init
-  (setq display-time-24hr-format t)
-  (setq display-time-day-and-date t)
-  (setq display-time-format "%a %m.%d %R")
+  (setq display-time-24hr-format t
+        display-time-day-and-date t
+        display-time-format "%a %m.%d %R"
+        display-time-default-load-average nil)
   :config
   (display-time-mode t))
 
