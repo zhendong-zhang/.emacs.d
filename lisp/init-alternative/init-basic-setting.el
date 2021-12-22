@@ -21,7 +21,8 @@
               visible-bell nil
               view-read-only t
               tab-width 4
-              next-line-add-newlines nil)
+              next-line-add-newlines nil
+              warning-suppress-types '((comp)))
 
 (fset 'yes-or-no-p 'y-or-n-p)
 

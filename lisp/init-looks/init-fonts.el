@@ -7,16 +7,18 @@
     (make-directory "~/.local/share/" t)
     (shell-command (concat "ln -sf " user-emacs-directory "fonts/ ~/.local/share/fonts"))))
 
-(when (display-graphic-p)
-  (cl-loop for font in '("Sarasa Mono SC Nerd" "Sarasa Mono SC" "DejaVu Sans Mono")
-           when (font-installed-p font)
-           return (set-face-attribute 'default nil
-                                      :font font
-                                      :height 130))
-
-  ;; Specify font for Chinese characters
-  (cl-loop for font in '("Sarasa Mono SC Nerd" "Sarasa Mono SC" "WenQuanYi Micro Hei Mono")
-           when (font-installed-p font)
-           return (set-fontset-font t '(#x4e00 . #x9fff) font)))
+(use-package cnfonts
+  :demand
+  :init
+  (setq cnfonts-personal-fontnames '(
+                                     nil
+                                     ("Sarasa Mono SC Nerd")
+                                     nil
+                                     nil
+                                     nil))
+  :bind
+  ("C-+" . cnfonts-increase-fontsize)
+  :config
+  (cnfonts-mode 1))
 
 (provide 'init-fonts)

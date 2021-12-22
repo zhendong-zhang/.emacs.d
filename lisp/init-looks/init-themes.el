@@ -31,6 +31,6 @@
   (interactive)
   (load-theme 'zenburn t))
 
-(add-hook 'emacs-startup-hook 'zenburn-setup)
+(add-hook 'after-init-hook 'zenburn-setup)
 
 (provide 'init-themes)

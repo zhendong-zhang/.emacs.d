@@ -47,9 +47,7 @@
     (setq org-agenda-files `(,my-org-directory)
           org-agenda-compact-blocks t
           org-agenda-sticky t
-          org-agenda-start-on-weekday nil
-          org-agenda-span 'day
-          org-agenda-window-setup 'current-window))
+          org-agenda-window-setup 'other-window))
 
   (use-package org-capture :ensure nil
     :config
@@ -74,12 +72,5 @@
 
   (use-package org-preview-html :diminish)
   )
-
-(use-package valign
-  :diminish
-  :init
-  (setq valign-max-table-size 10000)
-  :hook
-  (org-mode . valign-mode))
 
 (provide 'init-org-mode)
