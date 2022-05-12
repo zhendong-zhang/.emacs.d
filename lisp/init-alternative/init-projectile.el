@@ -5,7 +5,8 @@
   (setq projectile-use-git-grep t)
   (setq projectile-indexing-method 'hybrid)
   :bind
-  ("M-g f" . projectile-find-file)
+  (("M-g f" . projectile-find-file)
+   ("M-g P" . projectile-switch-open-project))
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode))

@@ -134,6 +134,10 @@
   (("C-<" . mc/mark-previous-like-this)
    ("C->" . mc/mark-next-like-this)))
 
+(use-package iedit
+  :bind
+  ("C-'" . iedit-mode))
+
 (use-package avy
   :init
   (setq avy-all-windows nil
