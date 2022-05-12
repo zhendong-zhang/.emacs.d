@@ -1,6 +1,6 @@
 # -*- mode: snippet; -*-
-# name: file header
-# key: header-short
+# name: provide
+# key: pro
 # --
 $2
 
