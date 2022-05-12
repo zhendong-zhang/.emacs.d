@@ -1,6 +1,7 @@
 elpa
 \.*
 !.gitignore
+!.gitmodules
 history
 places
 recentf
@@ -18,3 +19,4 @@ eshell
 url
 org-clock-save.el
 *.html
+tramp

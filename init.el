@@ -24,6 +24,7 @@
                                 (add-to-list 'my-lisp-load-path (expand-file-name dir))))
   )
 (add-directory-to-path (expand-file-name "lisp" user-emacs-directory))
+(add-directory-to-path (expand-file-name "elisp" user-emacs-directory))
 (setq load-path (nconc load-path my-lisp-load-path))
 
 ;; 以目录为单位加载包
