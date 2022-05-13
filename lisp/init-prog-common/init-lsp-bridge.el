@@ -33,11 +33,17 @@
 
 (use-package lsp-bridge
   :ensure nil
+  :bind
+  (:map lsp-bridge-mode-map
+        ([remap xref-find-definitions] . lsp-bridge-find-define)
+        ([remap xref-pop-marker-stack] . lsp-bridge-return-from-def)
+        ([remap xref-find-references] . lsp-bridge-find-references))
   :config
   (require 'lsp-bridge-orderless)   ;; make lsp-bridge support fuzzy match, optional
   ;(require 'lsp-bridge-icon)        ;; show icon for completion items, optional
 
   (defun start-lsp-bridge ()
+    (setq-local corfu-auto nil)  ;; let lsp-bridge control when popup completion frame
     (lsp-bridge-mode 1))
 
   :hook
