@@ -1,9 +1,10 @@
 (use-package projectile
   :demand
-  :init
-  (setq projectile-require-project-root nil)
-  (setq projectile-use-git-grep t)
-  (setq projectile-indexing-method 'hybrid)
+  :custom
+  (projectile-mode-line-prefix " P")
+  (projectile-require-project-root nil)
+  (projectile-use-git-grep t)
+  (projectile-indexing-method 'hybrid)
   :bind
   (("M-g f" . projectile-find-file)
    ("M-g P" . projectile-switch-open-project))
