@@ -1,6 +1,4 @@
-(use-package eldoc :diminish
-  :init
-  (setq eldoc-documentation-function 'eldoc-documentation-compose))
+(use-package eldoc :diminish)
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -24,7 +22,14 @@
   (setq ff-always-try-to-create nil)
   :bind ("C-x C-o" . ff-find-other-file))
 
-(use-package flymake :diminish)
+(use-package flycheck
+  :diminish
+  :init
+  (setq next-error-verbose nil)
+  (setq flycheck-emacs-lisp-load-path 'inherit)
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+  :hook
+  (after-init . global-flycheck-mode))
 
 (defun create-dot-editorconfig ()
   (interactive)
