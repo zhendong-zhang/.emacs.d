@@ -1,8 +1,12 @@
-(use-package youdao-dictionary
+(use-package fanyi
   :bind
-  (("M-s d" . youdao-dictionary-search-at-point)
-   ("M-s v" . youdao-dictionary-play-voice-from-input))
-  :config
-  (setq url-automatic-caching t))
+  ("M-s d" . fanyi-dwim))
+
+(use-package corfu-english-helper
+  :load-path "site-lisp/corfu-english-helper"
+  :init
+  (require 'corfu-english-helper)
+  :bind
+  ("M-s t" . toggle-corfu-english-helper))
 
 (provide 'init-dictionary)
