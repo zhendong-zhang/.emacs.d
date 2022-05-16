@@ -23,46 +23,40 @@
     (write-file (concat (projectile-project-root) ".clang-format"))
     ))
 
-(use-package all-the-icons)
-
 (use-package lsp-bridge
-  :ensure nil
-  :bind
-  (:map lsp-bridge-mode-map
-        ([remap xref-find-definitions] . lsp-bridge-find-define)
-        ([remap xref-pop-marker-stack] . lsp-bridge-return-from-def)
-        ([remap xref-find-references] . lsp-bridge-find-references))
+  :load-path "site-lisp/lsp-bridge"
+  :commands (lsp-bridge-find-def lsp-bridge-find-references lsp-bridge-mode)
+  :init
+  (require 'lsp-bridge)
   :config
-  (require 'lsp-bridge-orderless)   ;; make lsp-bridge support fuzzy match, optional
-  ;(require 'lsp-bridge-icon)        ;; show icon for completion items, optional
+  (require 'lsp-bridge-orderless)
 
-  (defun start-lsp-bridge ()
-    (setq-local corfu-auto nil)  ;; let lsp-bridge control when popup completion frame
-    (lsp-bridge-mode 1))
+  ;; xref集成
+  (defun lsp-bridge-xref-backend ()
+    "lsp-bridge backend for Xref."
+    (when lsp-bridge-mode
+      'lsp-bridge))
 
-  :hook
-  ((c-mode
-    c++-mode
-    java-mode
-    python-mode
-    ruby-mode
-    rust-mode
-    elixir-mode
-    go-mode
-    haskell-mode
-    haskell-literate-mode
-    dart-mode
-    scala-mode
-    typescript-mode
-    js2-mode
-    js-mode
-    tuareg-mode
-    latex-mode
-    Tex-latex-mode
-    texmode
-    context-mode
-    texinfo-mode
-    bibtex-mode) . start-lsp-bridge)
+  (cl-defmethod xref-backend-identifier-at-point ((_backend (eql lsp-bridge)))
+    (let ((current-symbol (symbol-at-point)))
+      (when current-symbol
+        (symbol-name current-symbol))))
+
+  (cl-defmethod xref-backend-definitions ((_backend (eql lsp-bridge)) symbol)
+    (lsp-bridge-find-def))
+
+  (cl-defmethod xref-backend-references ((_backend (eql lsp-bridge)) symbol)
+    (lsp-bridge-find-references))
+
+  (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql lsp-bridge)))
+    nil)
+
+  (dolist (hook lsp-bridge-default-mode-hooks)
+    (add-hook hook (lambda ()
+                     (setq-local corfu-auto nil) ;; let lsp-bridge control when popup completion frame
+                     (add-to-list 'xref-backend-functions 'lsp-bridge-xref-backend) ;; xref
+                     (lsp-bridge-mode 1)
+                     )))
   )
 
 (provide 'init-lsp-bridge)
