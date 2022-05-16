@@ -21,6 +21,7 @@
   apt-get update
   apt-get install build-essential && apt-get install fonts-wqy-microhei
   apt-get install librime-dev locate ripgrep git clangd universal-ctags
+  pip install epc
 #+end_src
 编译native-comp emacs
 #+begin_src shell
@@ -35,7 +36,7 @@
 #+end_src
 * checkout emacs配置
 #+begin_src shell
-  git clone git@github.com:zhendong-zhang/.emacs.d.git ~/.emacs.d
+  git clone git@github.com:zhendong-zhang/.emacs.d.git ~/.emacs.d --recurse-submodules
 #+end_src
 * 创建快捷方式
 修改已有快捷方式属性，目标换成emacs：
