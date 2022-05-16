@@ -129,11 +129,6 @@
   :bind
   ("C-=" . er/expand-region))
 
-(use-package multiple-cursors
-  :bind
-  (("C-<" . mc/mark-previous-like-this)
-   ("C->" . mc/mark-next-like-this)))
-
 (use-package iedit
   :bind
   ("C-'" . iedit-mode))
@@ -186,6 +181,10 @@
   (repeat-exit-key (kbd "RET")))
 
 (use-package wgrep)
+
+(use-package abbrev
+  :diminish
+  :ensure nil)
 
 (global-set-key (kbd "C-h C-f") 'find-function)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)

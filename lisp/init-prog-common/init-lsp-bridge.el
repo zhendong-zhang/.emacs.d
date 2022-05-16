@@ -25,12 +25,6 @@
 
 (use-package all-the-icons)
 
-(use-package orderless
-  :init
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion))))))
-
 (use-package lsp-bridge
   :ensure nil
   :bind

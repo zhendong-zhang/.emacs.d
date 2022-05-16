@@ -1,9 +1,10 @@
 (use-package projectile
   :demand
-  :init
-  (setq projectile-require-project-root nil)
-  (setq projectile-use-git-grep t)
-  (setq projectile-indexing-method 'hybrid)
+  :custom
+  (projectile-mode-line-prefix " P")
+  (projectile-require-project-root nil)
+  (projectile-use-git-grep t)
+  (projectile-indexing-method 'hybrid)
   :bind
   (("M-g f" . projectile-find-file)
    ("M-g P" . projectile-switch-open-project))
@@ -28,5 +29,13 @@
                (ibuffer-projectile-set-filter-groups)
                (unless (eq ibuffer-sorting-mode 'filename/process)
                  (ibuffer-do-sort-by-filename/process)))))
+
+(defun projectile-project-find-function (dir)
+  (let* ((root (projectile-project-root dir)))
+    (and root (cons 'transient root))))
+
+(use-package project
+  :config
+  (add-to-list 'project-find-functions 'projectile-project-find-function))
 
 (provide 'init-projectile)
