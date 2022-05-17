@@ -1,17 +1,14 @@
-(defun create-compile-flags-file ()
+(defun create-compile-commands-json ()
   "For quickly use."
   (interactive)
-  (declare-function loop-on-all-sub-directory "init")
   (declare-function projectile-project-root "projectile")
   (require 'projectile)
-  (with-temp-buffer
-    (erase-buffer)
-    (insert "-xc++")
-    (let ((project-root (projectile-project-root)))
-      (loop-on-all-sub-directory project-root
-                                 '(lambda (dir)
-                                    (insert "-I\n" dir "\n")))
-      (write-file (concat project-root "compile_flags.txt")))
+  (let ((project-root (projectile-project-root)))
+    (when (and (executable-find "cmake")
+               (file-exists-p (concat project-root "CMakeLists.txt")))
+      (shell-command (concat "cd " project-root "; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 &")))
+    (when (executable-find "make")
+      (shell-command (concat "cd " project-root "; bear --append -- make -j8 &")))
     ))
 
 (defun create-dot-clang-format ()

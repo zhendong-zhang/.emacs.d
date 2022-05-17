@@ -14,6 +14,9 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 
 (when window-system
+  (setq frame-title-format
+        '(buffer-file-name (:eval (abbreviate-file-name buffer-file-name))
+                         (dired-directory dired-directory "%b")))
   (global-hl-line-mode 1)
   (global-linum-mode 1)
   (use-package linum-relative
