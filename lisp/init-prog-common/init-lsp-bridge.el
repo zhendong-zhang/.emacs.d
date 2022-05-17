@@ -20,11 +20,19 @@
     (write-file (concat (projectile-project-root) ".clang-format"))
     ))
 
+(use-package dumb-jump
+  :config
+  (require 'xref)
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate 2)
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+  (setq dumb-jump-force-searcher 'ag))
+
 (use-package lsp-bridge
   :load-path "site-lisp/lsp-bridge"
-  :commands (lsp-bridge-find-def lsp-bridge-find-references lsp-bridge-mode)
+  :commands (lsp-bridge-find-def lsp-bridge-find-references global-lsp-bridge-mode)
   :init
   (require 'lsp-bridge)
+  (setq lsp-bridge-enable-signature-help t)
   :config
   (require 'lsp-bridge-orderless)
 
@@ -48,12 +56,7 @@
   (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql lsp-bridge)))
     nil)
 
-  (dolist (hook lsp-bridge-default-mode-hooks)
-    (add-hook hook (lambda ()
-                     (setq-local corfu-auto nil) ;; let lsp-bridge control when popup completion frame
-                     (add-to-list 'xref-backend-functions 'lsp-bridge-xref-backend) ;; xref
-                     (lsp-bridge-mode 1)
-                     )))
-  )
+  (add-hook 'xref-backend-functions #'lsp-bridge-xref-backend 1)
+  (global-lsp-bridge-mode))
 
 (provide 'init-lsp-bridge)
