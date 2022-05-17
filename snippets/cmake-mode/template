@@ -1,0 +1,8 @@
+# -*- mode: snippet; -*-
+# name: template
+# key: tem
+# --
+cmake_minimum_required(VERSION 3.0)
+project(${1:`(projectile-project-name)`})
+set(SRC_LIST $2)
+add_executable($1 \${SRC_LIST})
