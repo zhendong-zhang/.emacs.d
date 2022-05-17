@@ -19,10 +19,10 @@
               truncate-lines nil
               truncate-partial-width-windows nil
               visible-bell nil
-              view-read-only t
               tab-width 4
               next-line-add-newlines nil
-              warning-suppress-types '((comp)))
+              warning-suppress-types '((comp))
+              confirm-kill-processes nil)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 

@@ -33,6 +33,12 @@
   :init
   (require 'lsp-bridge)
   (setq lsp-bridge-enable-signature-help t)
+  :bind
+  (:map lsp-bridge-ref-mode-map
+        ([remap next-line] . lsp-bridge-ref-jump-next-keyword)
+        ([remap previous-line] . lsp-bridge-ref-jump-prev-keyword)
+        ("M-n" . lsp-bridge-ref-jump-next-file)
+        ("M-p" . lsp-bridge-ref-jump-prev-file))
   :config
   (require 'lsp-bridge-orderless)
 
