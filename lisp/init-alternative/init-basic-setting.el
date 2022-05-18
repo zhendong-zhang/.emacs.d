@@ -22,7 +22,8 @@
               tab-width 4
               next-line-add-newlines nil
               warning-suppress-types '((comp))
-              confirm-kill-processes nil)
+              confirm-kill-processes nil
+              enable-recursive-minibuffers t)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 

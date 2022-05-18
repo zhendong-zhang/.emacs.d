@@ -1,7 +1,3 @@
-(use-package orderless
-  :init
-  (setq completion-styles '(orderless basic)))
-
 (use-package corfu
   :custom
   (corfu-auto t)
