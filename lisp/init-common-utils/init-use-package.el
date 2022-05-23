@@ -20,4 +20,9 @@
 ;;   :config
 ;;   (use-package moccur-edit))
 
+(use-package quelpa
+  :config
+  (setq use-package-ensure-function 'quelpa))
+(use-package quelpa-use-package)
+
 (provide 'init-use-package)

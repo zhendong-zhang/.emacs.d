@@ -25,9 +25,7 @@
     (pyim-default-scheme 'quanpin)
 
     (use-package pyim-tsinghua-dict
-      :load-path "site-lisp/pyim-tsinghua-dict"
-      :init
-      (require 'pyim-tsinghua-dict)
+      :quelpa (pyim-tsinghua-dict :fetcher github :repo "redguardtoo/pyim-tsinghua-dict")
       :config
       (pyim-tsinghua-dict-enable))
     ))

@@ -36,14 +36,15 @@
         cmake-mode
         lua-mode
         python-mode
-        web-mode) . eglot-ensure))
+        web-mode) . eglot-ensure)
+      :init
+      (setq eglot-events-buffer-size 0))
   (use-package posframe)
   (use-package all-the-icons)
   (use-package lsp-bridge
-    :load-path "site-lisp/lsp-bridge"
+    :quelpa (lsp-bridge :fetcher github :repo "manateelazycat/lsp-bridge")
     :commands (lsp-bridge-find-def lsp-bridge-find-references global-lsp-bridge-mode)
     :init
-    (require 'lsp-bridge)
     (setq lsp-bridge-enable-signature-help t)
     :bind
     (:map lsp-bridge-ref-mode-map
