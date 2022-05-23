@@ -1,8 +1,10 @@
 (defun simple-buffer-encoding ()
   (let ((encoding (format "%s" buffer-file-coding-system)))
-    (string-remove-suffix
-     "-unix"
-     (string-remove-prefix "prefer-" encoding))))
+    (string-remove-prefix "prefer-" encoding)))
+
+(defun simple-buffer-postion ()
+  (concat (format "(%s:%s %s" (current-line) (current-column) (/ (* 100 (point)) (buffer-size))) "%%)")
+  )
 
 (use-package powerline
   :config
@@ -16,10 +18,6 @@
                           (face1 (if active 'powerline-active1 'powerline-inactive1))
                           (face2 (if active 'powerline-active2 'powerline-inactive2))
                           (lhs (list (powerline-raw "%*" face0 'l)
-                                     (when powerline-display-buffer-size
-                                       (powerline-buffer-size face0 'l))
-                                     (when powerline-display-mule-info
-                                       (powerline-raw mode-line-mule-info face0 'l))
                                      (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
                                      (when (and (boundp 'which-func-mode) which-func-mode)
                                        (powerline-raw which-func-format face0 'l))
@@ -36,12 +34,9 @@
                                        (powerline-raw (list (nyan-create)) face2 'l))))
                           (rhs (list (unless window-system
                                        (powerline-raw (char-to-string #xe0a1) face1 'r))
-                                     (powerline-raw " %l" face1 'r)
-                                     (powerline-raw ":" face1 'r)
-                                     (powerline-raw "%c" face1 'r)
-                                     (powerline-raw " " face0)
-                                     (powerline-raw "%p" face0 'r)
+                                     (powerline-raw (or current-input-method-title "ENG") face1 'r)
                                      (powerline-raw global-mode-string face1 'r)
+                                     (powerline-raw (simple-buffer-postion) face1 'r)
                                      (powerline-raw (simple-buffer-encoding) face0 'r)
                                      )))
                      (concat (powerline-render lhs)
