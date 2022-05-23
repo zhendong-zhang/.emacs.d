@@ -7,9 +7,8 @@
     (make-directory "~/.local/share/" t)
     (shell-command (concat "ln -sf " user-emacs-directory "fonts/ ~/.local/share/fonts"))))
 
-(when is-windows-nt
-  (let ((emacs-font-size 14)
-        (emacs-font-name "LXGW WenKai Mono"))
-    (set-frame-font (format "%s-%s" (eval emacs-font-name) (eval emacs-font-size)))))
+(let ((emacs-font-size 14)
+      (emacs-font-name "LXGW WenKai Mono"))
+  (set-frame-font (format "%s-%s" (eval emacs-font-name) (eval emacs-font-size))))
 
 (provide 'init-fonts)
