@@ -1,16 +1,13 @@
-(require-package 'window-numbering)
 (use-package window-numbering
   :config
   (window-numbering-mode 1))
 
-(require-package 'ace-window)
 (use-package ace-window
   :bind
   ("C-x o" . ace-window)
   :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-(require-package 'buffer-move)
 (use-package buffer-move
   :bind
   (("<C-S-up>" . buf-move-up)
@@ -23,7 +20,6 @@
 ;;----------------------------------------------------------------------------
 ;; Navigate window layouts with "C-c <left>" and "C-c <right>"
 ;;----------------------------------------------------------------------------
-(require-package 'winner)
 (use-package winner
   :demand
   :bind
