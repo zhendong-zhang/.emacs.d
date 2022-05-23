@@ -1,7 +1,7 @@
 ;; insert links form clipboard.
 (use-package org-cliplink)
 
-(defvar my-org-directory (expand-file-name ".notes/" user-emacs-directory))
+(defvar my-org-directory "~/notes")
 
 (use-package org
   :bind

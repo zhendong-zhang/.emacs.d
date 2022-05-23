@@ -10,4 +10,10 @@
   (declare-function fullframe/maybe-restore-configuration "fullframe" (config))
   (fullframe magit-status magit-mode-quit-window))
 
+(use-package git-auto-commit-mode
+  :defer t
+  :config
+  (setq-default gac-debounce-interval 600)
+  (setq-default gac-automatically-push-p t))
+
 (provide 'init-vc)
