@@ -18,7 +18,7 @@
               tooltip-delay 1.5
               truncate-lines nil
               truncate-partial-width-windows nil
-              visible-bell nil
+              ring-bell-function #'ignore
               tab-width 4
               next-line-add-newlines nil
               warning-suppress-types '((comp))

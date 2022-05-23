@@ -20,3 +20,8 @@ url
 org-clock-save.el
 *.html
 tramp
+site-lisp
+*~
+projects
+pyim/
+server/

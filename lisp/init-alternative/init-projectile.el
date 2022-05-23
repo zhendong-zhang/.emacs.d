@@ -10,6 +10,16 @@
    ("M-g P" . projectile-switch-open-project))
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+  (cond
+   ((executable-find "fd")
+    (setq-default projectile-generic-command "fd . -0 --type f --color=never"))
+   ((executable-find "rg")
+    (setq projectile-generic-command "rg -0 --files --follow --color=never --hidden")))
+
+  (when is-windows-nt
+    (setq projectile-git-submodule-command nil))
+
   (projectile-mode))
 
 (use-package ibuffer-projectile

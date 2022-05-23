@@ -10,9 +10,6 @@
   :config
   ;; 多目录操作时，优先以另外的目录做为目标
   (setq dired-dwim-target t)
-  (use-package diff-hl)
-  (use-package dired-quick-sort
-    :config
-    (dired-quick-sort-setup)))
+  (use-package diff-hl))
 
 (provide 'init-dired)

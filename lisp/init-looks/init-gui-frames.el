@@ -38,7 +38,8 @@
         display-time-format "%a %m.%d %R"
         display-time-default-load-average nil)
   :config
-  (display-time-mode t))
+  (unless is-windows-nt
+    (display-time-mode t)))
 
 (add-hook 'window-setup-hook 'toggle-frame-maximized)
 

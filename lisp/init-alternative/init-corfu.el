@@ -3,6 +3,9 @@
   (corfu-auto t)
   (corfu-cycle t)             ;; Enable cycling for `corfu-next/previous'
   :init
-  (global-corfu-mode))
+  (require 'corfu-info)
+  (require 'corfu-history)
+  (global-corfu-mode)
+  (corfu-history-mode t))
 
 (provide 'init-corfu)

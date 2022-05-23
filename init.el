@@ -5,6 +5,7 @@
   "Turn on to show debug log."
   :group 'my-private
   :type 'boolean)
+(defvar is-windows-nt (equal system-type 'windows-nt))
 
 (let ((minver "27.1"))
   (when (version< emacs-version minver)
@@ -44,7 +45,10 @@
       (error "no one or more than one dir match, do nothing for require-dir %s." dir))))
 
 (setq gc-cons-threshold (* 100 1024 1024))
-(setq package-native-compile t)
+;; 避免首次启动出现“too many file open”
+(unless (and is-windows-nt
+             (not (file-exists-p (concat user-emacs-directory "eln-cache"))))
+  (setq package-native-compile t))
 (if (and (fboundp 'native-comp-available-p)
        (native-comp-available-p))
   (message "Native compilation is available")

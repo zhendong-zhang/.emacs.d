@@ -73,13 +73,11 @@
   (setq consult-async-refresh-delay 0.5)
   :bind
   (("M-g b" . consult-buffer)
-   ("M-g s" . consult-line)
+   ("M-g l" . consult-line)
    ("M-g o" . consult-ripgrep)
    ("M-g I" . consult-imenu-multi)
-   ("M-g l" . consult-locate)
    ("M-g m" . consult-mark)
    ("M-g M" . consult-bookmark)
-   ("M-g F" . consult-find)
    ))
 
 (use-package embark
