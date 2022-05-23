@@ -19,7 +19,7 @@
         org-link-file-path-type 'relative
         org-support-shift-select t
         org-directory my-org-directory
-        org-default-notes-file (concat my-org-directory "gtd.org")
+        org-default-notes-file (concat my-org-directory "/gtd.org")
         org-todo-keywords
         '((sequence "TODO(t)" "DOING(i!)" "HANGUP(h@/!)" "|" "DONE(d!)" "CANCEL(c@/@)"))
         org-todo-keyword-faces '(("HANGUP" . warning))
