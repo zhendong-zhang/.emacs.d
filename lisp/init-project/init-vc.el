@@ -16,7 +16,7 @@
 (use-package git-auto-commit-mode
   :defer t
   :config
-  (setq-default gac-debounce-interval 600)
+  ;; (setq-default gac-debounce-interval 600)
   (setq-default gac-automatically-push-p t))
 
 (provide 'init-vc)
