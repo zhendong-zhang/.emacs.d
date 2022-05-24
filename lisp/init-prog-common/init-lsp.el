@@ -27,7 +27,7 @@
   (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
   (setq dumb-jump-force-searcher 'ag))
 
-(if (not (executable-find "python"))
+(if (not (executable-find "pip"))
     (use-package eglot
       :hook
       ((c-mode-common
@@ -40,7 +40,7 @@
       :init
       (setq eglot-events-buffer-size 0))
   (use-package posframe)
-  (use-package all-the-icons)
+  ;(use-package all-the-icons)
   (use-package lsp-bridge
     :demand
     :quelpa (lsp-bridge :fetcher github :repo "manateelazycat/lsp-bridge" :files ("*.el" "*.py" "core" "langserver"))
@@ -55,7 +55,7 @@
           ("M-n" . lsp-bridge-ref-jump-next-file)
           ("M-p" . lsp-bridge-ref-jump-prev-file))
     :config
-    (require 'lsp-bridge-icon)        ;; show icons for completion items, optional
+    ;(require 'lsp-bridge-icon)        ;; show icons for completion items, optional
     (require 'lsp-bridge-orderless)   ;; make lsp-bridge support fuzzy match, optional
 
     (global-lsp-bridge-mode)

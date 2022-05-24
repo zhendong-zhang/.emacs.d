@@ -3,6 +3,7 @@
     (string-remove-prefix "prefer-" encoding)))
 
 (defun simple-buffer-postion ()
+  (require 'array)
   (concat (format "(%s:%s %s" (current-line) (current-column) (/ (* 100 (point)) (buffer-size))) "%%)")
   )
 
