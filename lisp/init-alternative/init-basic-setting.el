@@ -181,7 +181,10 @@
   :custom
   (repeat-exit-key (kbd "RET")))
 
-(use-package wgrep)
+(use-package wgrep
+  :bind
+  (:map grep-mode-map
+        ("C-x C-q" . wgrep-change-to-wgrep-mode)))
 
 (use-package abbrev
   :diminish

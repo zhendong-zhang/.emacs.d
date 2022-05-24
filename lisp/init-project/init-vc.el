@@ -8,7 +8,10 @@
   (setq magit-refresh-status-buffer nil)
   :config
   (declare-function fullframe/maybe-restore-configuration "fullframe" (config))
-  (fullframe magit-status magit-mode-quit-window))
+  (fullframe magit-status magit-mode-quit-window)
+  :bind
+  (:map magit-status-mode-map
+        ("C-<tab>" . nil)))
 
 (use-package git-auto-commit-mode
   :defer t

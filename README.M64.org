@@ -1,7 +1,7 @@
 #+TITLE: My Private Emacs Config
 以下记录windows下不依赖wsl的安装过程
-*安装 Msys2
-进入 msys2 根目录下的/etc/pacman.d/里面，将3个 mirrorlist 文件中 TUNA 和 USTC 的源的顺序提到前面，这样下载速度就非常快了。 然后进入 mingw64 终端，安装好 Msys2 后进入 Mingw64 终端，先执行 pacman -Syu 更新系统到最新。
+* python环境
+安装[[https://www.python.org/ftp/python/][python最新版]],绿色化则直接将安装目录复制，通过python [[https://bootstrap.pypa.io/get-pip.py][get-pip.py]]安装pip
 * 安装emacs及依赖软件
 下载[[https://corwin.bru.st/emacs-28/][emacs最新版]]
 下载以下软件，将需要的文件放入对应目录
@@ -13,6 +13,10 @@
 [[https://gitforwindows.org/][git]]
 [[https://www.voidtools.com/zh-cn/downloads/][everything]]
 [[https://github.com/llvm/llvm-project/releases][llvm]]
+通过pip安装
+#+begin_src shell
+  pip install epc
+#+end_src
 * checkout emacs配置
 #+begin_src shell
   git clone git@github.com:zhendong-zhang/.emacs.d.git ~/.emacs.d --recurse-submodules
