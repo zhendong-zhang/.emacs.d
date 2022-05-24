@@ -27,7 +27,7 @@
   (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
   (setq dumb-jump-force-searcher 'ag))
 
-(if is-windows-nt
+(if (not (executable-find "python"))
     (use-package eglot
       :hook
       ((c-mode-common
@@ -42,10 +42,12 @@
   (use-package posframe)
   (use-package all-the-icons)
   (use-package lsp-bridge
-    :quelpa (lsp-bridge :fetcher github :repo "manateelazycat/lsp-bridge")
+    :demand
+    :quelpa (lsp-bridge :fetcher github :repo "manateelazycat/lsp-bridge" :files ("*.el" "*.py" "core" "langserver"))
     :commands (lsp-bridge-find-def lsp-bridge-find-references global-lsp-bridge-mode)
     :init
     (setq lsp-bridge-enable-signature-help t)
+    (setq lsp-bridge-completion-provider 'corfu)
     :bind
     (:map lsp-bridge-ref-mode-map
           ([remap next-line] . lsp-bridge-ref-jump-next-keyword)
@@ -53,16 +55,14 @@
           ("M-n" . lsp-bridge-ref-jump-next-file)
           ("M-p" . lsp-bridge-ref-jump-prev-file))
     :config
-    (require 'lsp-bridge-ui)
-    (require 'lsp-bridge-ui-history)
-    (require 'lsp-bridge-orderless)
+    (require 'lsp-bridge-icon)        ;; show icons for completion items, optional
+    (require 'lsp-bridge-orderless)   ;; make lsp-bridge support fuzzy match, optional
 
-    (global-lsp-bridge-ui-mode)       ;; use lsp-bridge-ui as completion ui
-    (lsp-bridge-ui-history-mode t)
     (global-lsp-bridge-mode)
 
     ;; For Xref support
     (add-hook 'lsp-bridge-mode-hook (lambda ()
-                                      (add-hook 'xref-backend-functions #'lsp-bridge-xref-backend 1 t)))))
+                                      (add-hook 'xref-backend-functions #'lsp-bridge-xref-backend nil t))))
+  )
 
 (provide 'init-lsp)
