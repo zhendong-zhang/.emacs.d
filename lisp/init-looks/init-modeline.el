@@ -2,8 +2,8 @@
   (let ((encoding (format "%s" buffer-file-coding-system)))
     (string-remove-prefix "prefer-" encoding)))
 
+(require 'array)
 (defun simple-buffer-postion ()
-  (require 'array)
   (concat (format "(%s:%s %s" (current-line) (current-column) (/ (* 100 (point)) (buffer-size))) "%%)")
   )
 

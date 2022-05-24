@@ -161,19 +161,15 @@
   :config
   (move-text-default-bindings))
 
-(use-package undo-tree
-  :diminish undo-tree-mode
-  :custom
-  (undo-tree-history-directory-alist
-      `((".*" . ,temporary-file-directory)))
-  :config
-  (global-undo-tree-mode))
-
 (use-package hungry-delete
   :diminish hungry-delete-mode
   :config
   (add-to-list 'hungry-delete-except-modes 'minibuffer-mode)
   (global-hungry-delete-mode t))
+
+(use-package undohist
+  :config
+  (undohist-initialize))
 
 (use-package repeat
   :ensure nil
