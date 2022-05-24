@@ -4,8 +4,10 @@
 
 (require 'array)
 (defun simple-buffer-postion ()
-  (concat (format "(%s:%s %s" (current-line) (current-column) (/ (* 100 (point)) (buffer-size))) "%%)")
-  )
+  (when (> (buffer-size) 0)
+    (concat (format "(%s:%s %s"
+                    (current-line) (current-column)
+                    (/ (* 100 (point)) (buffer-size))) "%%)")))
 
 (use-package powerline
   :config
@@ -37,7 +39,7 @@
                                        (powerline-raw (char-to-string #xe0a1) face1 'r))
                                      (powerline-raw (or current-input-method-title "ENG") face1 'r)
                                      (powerline-raw global-mode-string face1 'r)
-                                     (powerline-raw (simple-buffer-postion) face1 'r)
+                                     (powerline-raw (when active (simple-buffer-postion)) face1 'r)
                                      (powerline-raw (simple-buffer-encoding) face0 'r)
                                      )))
                      (concat (powerline-render lhs)
