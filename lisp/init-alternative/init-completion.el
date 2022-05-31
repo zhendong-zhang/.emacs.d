@@ -78,7 +78,15 @@
    ("M-g I" . consult-imenu-multi)
    ("M-g m" . consult-mark)
    ("M-g M" . consult-bookmark)
-   ))
+   )
+  :config
+  (consult-customize
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-recent-file
+   consult--source-project-recent-file
+   :preview-key (kbd "C-<return>"))
+  )
 
 (use-package embark
   :bind
