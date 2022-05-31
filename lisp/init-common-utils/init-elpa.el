@@ -37,11 +37,15 @@
 (require 'use-package)
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
+
 (use-package diminish)
+(use-package no-littering)
 
 (use-package quelpa
   :init
-  (setq quelpa-checkout-melpa-p nil))
+  (setq quelpa-checkout-melpa-p nil)
+  (setq quelpa-dir (no-littering-expand-var-file-name "quelpa")))
+
 (use-package quelpa-use-package
   :config
   (quelpa-use-package-activate-advice))

@@ -36,7 +36,9 @@
   (setq recentf-exclude '("/tmp/"
                           "/ssh:"
                           "/sudo:"
-                          "autoloads.el$")
+                          "autoloads.el$"
+                          no-littering-etc-directory
+                          no-littering-var-directory)
         recentf-max-saved-items 1000
         recentf-keep '(file-remote-p file-readable-p))
   :config
@@ -44,6 +46,16 @@
     :init
     (setq recentf-auto-cleanup 60))
   (recentf-mode 1))
+
+(setq custom-file (no-littering-expand-etc-file-name "custom.el"))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
+;; store all backup and autosave files in the var dir
+  (setq backup-directory-alist
+        `((".*" . ,(no-littering-expand-var-file-name "backup/"))))
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 (use-package unfill)
 ;; type text replaces the selection
@@ -64,12 +76,6 @@
 (show-paren-mode 1)
 (global-display-fill-column-indicator-mode 1)
 (midnight-mode 1)
-
-;; store all backup and autosave files in the tmp dir
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
 
 ;; Don't disable narrowing commands
 (put 'narrow-to-region 'disabled nil)

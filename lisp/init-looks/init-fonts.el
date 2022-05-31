@@ -5,7 +5,7 @@
 (when (eq system-type 'gnu/linux)
   (unless (file-exists-p "~/.local/share/fonts")
     (make-directory "~/.local/share/" t)
-    (shell-command (concat "ln -sf " user-emacs-directory "fonts/ ~/.local/share/fonts"))))
+    (shell-command (concat "ln -sf " user-emacs-directory "etc/fonts/ ~/.local/share/fonts"))))
 
 (let ((emacs-font-size 14)
       (emacs-font-name "LXGW WenKai Mono"))
