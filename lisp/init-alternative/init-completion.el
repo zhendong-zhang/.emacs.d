@@ -73,11 +73,12 @@
   (setq consult-async-refresh-delay 0.5)
   :bind
   (("M-g b" . consult-buffer)
-   ("M-g l" . consult-line)
+   ("M-g s" . consult-line)
    ("M-g o" . consult-ripgrep)
    ("M-g I" . consult-imenu-multi)
    ("M-g m" . consult-mark)
    ("M-g M" . consult-bookmark)
+   ("M-g l" . consult-locate)
    )
   :config
   (consult-customize
@@ -86,6 +87,8 @@
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
    :preview-key (kbd "C-<return>"))
+  (when (and is-windows-nt (executable-find "es"))
+    (setq consult-locate-args "es -sort date-modified-descending"))
   )
 
 (use-package embark
