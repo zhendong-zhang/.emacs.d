@@ -16,7 +16,7 @@
   (declare-function projectile-project-root "projectile")
   (with-temp-buffer
     (erase-buffer)
-    (insert "clang-format -style=\"{BasedOnStyle: llvm, IndentWidth: 4}\" -dump-config")
+    (insert "BasedOnStyle: llvm\nIndentWidth: 4")
     (write-file (concat (projectile-project-root) ".clang-format"))
     ))
 
@@ -40,14 +40,14 @@
       :init
       (setq eglot-events-buffer-size 0))
   (use-package posframe)
-  ;(use-package all-the-icons)
   (use-package lsp-bridge
     :demand
-    :quelpa (lsp-bridge :fetcher github :repo "manateelazycat/lsp-bridge" :files ("*.el" "*.py" "core" "langserver"))
+    :quelpa (lsp-bridge :fetcher github :repo "manateelazycat/lsp-bridge" :files ("*"))
     :commands (lsp-bridge-find-def lsp-bridge-find-references global-lsp-bridge-mode)
     :init
-    (setq lsp-bridge-enable-signature-help t)
-    (setq lsp-bridge-completion-provider 'corfu)
+    (setq lsp-bridge-enable-signature-help nil)
+    (setq lsp-bridge-disable-backup nil)
+    (setq lsp-bridge-enable-diagnostics nil)
     :bind
     (:map lsp-bridge-ref-mode-map
           ([remap next-line] . lsp-bridge-ref-jump-next-keyword)
@@ -55,12 +55,29 @@
           ("M-n" . lsp-bridge-ref-jump-next-file)
           ("M-p" . lsp-bridge-ref-jump-prev-file))
     :config
-    ;(require 'lsp-bridge-icon)        ;; show icons for completion items, optional
-    (require 'lsp-bridge-orderless)   ;; make lsp-bridge support fuzzy match, optional
-
     (global-lsp-bridge-mode)
 
     ;; For Xref support
+    (defun lsp-bridge-xref-backend ()
+      "lsp-bridge backend for Xref."
+      (when lsp-bridge-mode
+        'lsp-bridge))
+
+    (cl-defmethod xref-backend-identifier-at-point ((_backend (eql lsp-bridge)))
+      (let ((current-symbol (symbol-at-point)))
+        (when current-symbol
+          (symbol-name current-symbol))))
+
+    (cl-defmethod xref-backend-definitions ((_backend (eql lsp-bridge)) symbol)
+      (lsp-bridge-find-def)
+      nil)
+
+    (cl-defmethod xref-backend-references ((_backend (eql lsp-bridge)) symbol)
+      (lsp-bridge-find-references)
+      nil)
+
+    (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql lsp-bridge)))
+      nil)
     (add-hook 'lsp-bridge-mode-hook (lambda ()
                                       (add-hook 'xref-backend-functions #'lsp-bridge-xref-backend nil t))))
   )

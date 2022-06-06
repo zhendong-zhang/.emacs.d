@@ -5,7 +5,7 @@
   :init
   (require 'corfu-info)
   (require 'corfu-history)
-  (global-corfu-mode)
+  ;; (global-corfu-mode)
   (corfu-history-mode t))
 
 (provide 'init-corfu)

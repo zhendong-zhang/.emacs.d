@@ -1,5 +1,4 @@
 (setq-default buffers-menu-max-size 30
-              bookmark-default-file (expand-file-name ".bookmarks.el" user-emacs-directory)
               make-backup-files nil
               scroll-preserve-screen-position 'always
               show-trailing-whitespace nil
