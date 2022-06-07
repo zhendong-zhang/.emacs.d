@@ -137,7 +137,7 @@
 
 (use-package iedit
   :bind
-  ("C-'" . iedit-mode))
+  ("C-;" . iedit-mode))
 
 (use-package avy
   :init
@@ -146,10 +146,10 @@
   :bind
   (("M-g ;" . avy-goto-word-1)
    ("M-g :" . avy-goto-subword-1)
-   ("C-;" . avy-goto-word-1)
-   ("C-:" . avy-goto-subword-1)
+   ("C-'" . avy-goto-word-1)
+   ("C-\"" . avy-goto-subword-1)
    :map isearch-mode-map
-   ("C-;" . avy-isearch))
+   ("C-'" . avy-isearch))
   :config
   (use-package ace-pinyin
     :diminish ace-pinyin-mode
