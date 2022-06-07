@@ -48,6 +48,7 @@
     (setq lsp-bridge-enable-signature-help nil)
     (setq lsp-bridge-disable-backup nil)
     (setq lsp-bridge-enable-diagnostics nil)
+    (setq acm-enable-icon nil)
     :bind
     (:map lsp-bridge-ref-mode-map
           ([remap next-line] . lsp-bridge-ref-jump-next-keyword)

@@ -2,9 +2,10 @@
   :bind
   ("M-s d" . fanyi-dwim))
 
-(use-package corfu-english-helper
-  :quelpa (corfu-english-helper :fetcher github :repo "manateelazycat/corfu-english-helper")
+(use-package acm
+  :after (lsp-bridge)
+  :ensure nil
   :bind
-  ("M-s t" . toggle-corfu-english-helper))
+  ("M-s t" . lsp-bridge-toggle-english-helper))
 
 (provide 'init-dictionary)
