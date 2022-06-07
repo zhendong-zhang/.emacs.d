@@ -51,10 +51,10 @@
   (load custom-file))
 
 ;; store all backup and autosave files in the var dir
-  (setq backup-directory-alist
-        `((".*" . ,(no-littering-expand-var-file-name "backup/"))))
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+(setq backup-directory-alist
+      `((".*" . ,(no-littering-expand-var-file-name "backup/"))))
+(setq auto-save-file-name-transforms
+      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 (use-package unfill)
 ;; type text replaces the selection
@@ -172,9 +172,10 @@
   (add-to-list 'hungry-delete-except-modes 'minibuffer-mode)
   (global-hungry-delete-mode t))
 
-(use-package undohist
+(use-package undo-tree
+  :diminish undo-tree-mode
   :config
-  (undohist-initialize))
+  (global-undo-tree-mode))
 
 (use-package repeat
   :ensure nil
