@@ -77,6 +77,117 @@
 
   (use-package org-preview-html :diminish)
 
+  (use-package emacsql-sqlite-builtin)
+  (use-package org-roam
+    :after (emacsql-sqlite-builtin)
+    :custom
+    (org-roam-directory my-org-directory)
+    (org-roam-dailies-directory my-org-directory)
+    (org-roam-database-connector 'sqlite-builtin)
+    (org-roam-db-gc-threshold most-positive-fixnum)
+    (org-roam-completion-everywhere t)
+    (org-roam-capture-templates '(("m" "main" plain
+                                   "%?"
+                                   :target (file+head "main/${slug}.org"
+                                                      "#+title: ${title}\n#+date: %t\n#+filetags:\n")
+                                   :immediate-finish t
+                                   :unnarrowed t)
+                                  ("r" "reference" plain "%?"
+                                   :target
+                                   (file+head "reference/${title}.org" "#+title: ${title}\n")
+                                   :immediate-finish t
+                                   :unnarrowed t)
+                                  ("a" "article" plain "%?"
+                                   :target
+                                   (file+head "articles/${title}.org" "#+title: ${title}\n#+date: %t\n#+filetags: :article:\n")
+                                   :immediate-finish t
+                                   :unnarrowed t)))
+    (org-roam-node-display-template (concat "${type:15} ${title:*} "
+                                            (propertize "${tags:*}" 'face 'org-tag)))
+    (org-roam-list-files-commands '(fd fdfind rg find))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n i" . org-roam-node-insert))
+    :config
+    (org-roam-db-autosync-mode)
+    (add-hook 'org-roam-capture-new-node-hook (lambda()
+                                                (org-roam-tag-add '("draft"))))
+    (cl-defmethod org-roam-node-type ((node org-roam-node))
+      "Return the TYPE of NODE."
+      (condition-case nil
+          (file-name-nondirectory
+           (directory-file-name
+            (file-name-directory
+             (file-relative-name (org-roam-node-file node) org-roam-directory))))
+        (error "")))
+    (add-to-list 'display-buffer-alist
+                 '("\\*org-roam\\*"
+                   (display-buffer-in-side-window)
+                   (side . right)
+                   (slot . 0)
+                   (window-width . 0.33)
+                   (window-parameters . ((no-other-window . t)
+                                         (no-delete-other-windows . t)))))
+    (defun org-roam-node-from-pdf ()
+      (interactive)
+      (let* ((file-path (org-pdftools-complete-link))
+             (file-name (file-name-base file-path)))
+        (org-roam-capture- :templates
+                           '(("r" "reference" plain "%?" :if-new
+                              (file+head "reference/${title}.org"
+                                         ":PROPERTIES:
+:ROAM_REFS: ${pdf-key}
+:END:
+#+title: ${title}\n")
+                              :immediate-finish t
+                              :unnarrowed t))
+                           :info (list :pdf-key file-path)
+                           :node (org-roam-node-create :title file-name)
+                           :props '(:finalize find-file))))
+    )
+  (use-package org-roam-ui :after org-roam)
+
+  (use-package oc
+    :ensure nil
+    :custom
+    (org-cite-global-bibliography `(,(concat my-org-directory "/references.bib"))))
+  (use-package citar :after oc
+    :custom
+    (org-cite-insert-processor 'citar)
+    (org-cite-follow-processor 'citar)
+    (org-cite-activate-processor 'citar)
+    (citar-bibliography org-cite-global-bibliography)
+    (citar-library-paths `(,(concat my-org-directory "/books")))
+    :config
+    (defun org-roam-node-from-cite (keys-entries)
+      (interactive (list (citar-select-ref :multiple nil :rebuild-cache t)))
+      (let ((title (citar--format-entry-no-widths (cdr keys-entries)
+                                                  "${author editor} :: ${title}")))
+        (org-roam-capture- :templates
+                           '(("r" "reference" plain "%?" :if-new
+                              (file+head "reference/${citekey}.org"
+                                         ":PROPERTIES:
+:ROAM_REFS: [cite:@${citekey}]
+:END:
+#+title: ${title}\n")
+                              :immediate-finish t
+                              :unnarrowed t))
+                           :info (list :citekey (car keys-entries))
+                           :node (org-roam-node-create :title title)
+                           :props '(:finalize find-file)))))
+
+  (use-package org-download
+    :config
+    (when is-windows-nt
+      (defun yank-image-from-win-clipboard(&optional basename)
+        (interactive)
+        (let* ((file-name (or basename (format-time-string "screenshot_%Y%m%d_%H%M%S.png"))))
+          (shell-command (concat "powershell -command \"(get-clipboard -format image).Save(\\\"" file-name "\\\")\""))
+          (insert (concat "[[file:" file-name "]] "))
+          ))
+      (advice-add 'org-download-screenshot :override 'yank-image-from-win-clipboard)
+      ))
+
   ;; RESET_CHECK_BOXES
   (setq org-default-properties (cons "RESET_CHECK_BOXES" org-default-properties))
   (defun my-org-reset-checkbox-state-maybe ()
@@ -122,14 +233,14 @@
 
   (add-hook 'org-after-todo-state-change-hook 'my-org-reset-subtask-when-done)
 
-   ;; SUMMARY_SUBTASKS
+  ;; SUMMARY_SUBTASKS
   (setq org-default-properties (cons "SUMMARY_SUBTASKS" org-default-properties))
   (defun my-org-summary-subtask (n-done n-not-done)
-  "Switch entry to DONE when the `SUMMARY_SUBTASKS' property is set and all subentries are done."
-  (when (and (org-entry-get (point) "SUMMARY_SUBTASKS")
-             (= n-not-done 0))
-        (let (org-log-done org-log-states)
-          (org-todo (car org-done-keywords)))))
+    "Switch entry to DONE when the `SUMMARY_SUBTASKS' property is set and all subentries are done."
+    (when (and (org-entry-get (point) "SUMMARY_SUBTASKS")
+               (= n-not-done 0))
+      (let (org-log-done org-log-states)
+        (org-todo (car org-done-keywords)))))
 
   (add-hook 'org-after-todo-statistics-hook #'my-org-summary-subtask)
   )
