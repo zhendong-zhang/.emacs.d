@@ -79,6 +79,7 @@
    ("M-g m" . consult-mark)
    ("M-g M" . consult-bookmark)
    ("M-g l" . consult-locate)
+   ([remap recentf-open-files] . consult-recent-file)
    )
   :config
   (consult-customize

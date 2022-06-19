@@ -47,14 +47,23 @@
     :init
     (setq lsp-bridge-enable-signature-help nil)
     (setq lsp-bridge-disable-backup nil)
-    (setq lsp-bridge-enable-diagnostics nil)
     (setq acm-enable-icon nil)
+    (setq acm-candidate-match-function 'orderless-flex)
     :bind
     (:map lsp-bridge-ref-mode-map
-          ([remap next-line] . lsp-bridge-ref-jump-next-keyword)
-          ([remap previous-line] . lsp-bridge-ref-jump-prev-keyword)
+          ("n" . lsp-bridge-ref-jump-next-keyword)
+          ("p" . lsp-bridge-ref-jump-prev-keyword)
+          ("M-n" . lsp-bridge-ref-jump-next-file)
+          ("M-p" . lsp-bridge-ref-jump-prev-file)
+          ("C-x C-q" . lsp-bridge-ref-switch-to-edit-mode)
+          :map lsp-bridge-ref-mode-edit-map
+          ("C-x C-q" . lsp-bridge-ref-apply-changed)
+          ("C-x C-s" . lsp-bridge-ref-apply-changed)
+          ("C-c C-k" . lsp-bridge-ref-quit)
           ("M-n" . lsp-bridge-ref-jump-next-file)
           ("M-p" . lsp-bridge-ref-jump-prev-file))
+    :hook
+    (lsp-bridge-mode . (lambda () (flycheck-mode -1)))
     :config
     (global-lsp-bridge-mode)
 

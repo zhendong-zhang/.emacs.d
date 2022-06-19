@@ -2,7 +2,7 @@
   :custom
   (doom-modeline-minor-modes t)
   (doom-modeline-enable-word-count t)
-  :config
-  (doom-modeline-mode t))
+  :hook
+  (after-init . doom-modeline-mode))
 
 (provide 'init-modeline)
