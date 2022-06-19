@@ -18,11 +18,12 @@
         '(buffer-file-name (:eval (abbreviate-file-name buffer-file-name))
                          (dired-directory dired-directory "%b")))
   (global-hl-line-mode 1)
-  (global-linum-mode 1)
+  (global-display-line-numbers-mode 1)
   (use-package linum-relative
     :diminish linum-relative-mode
     :init
     (setq linum-relative-current-symbol "")
+    (setq linum-relative-backend 'display-line-numbers-mode)
     :config
     (linum-relative-global-mode)))
 

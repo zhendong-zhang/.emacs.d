@@ -22,7 +22,8 @@
               next-line-add-newlines nil
               warning-suppress-types '((comp))
               confirm-kill-processes nil
-              enable-recursive-minibuffers t)
+              enable-recursive-minibuffers t
+              large-file-warning-threshold nil)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -141,8 +142,7 @@
 
 (use-package avy
   :init
-  (setq avy-all-windows nil
-        avy-case-fold-search nil)
+  (setq avy-case-fold-search nil)
   :bind
   (("M-g ;" . avy-goto-word-1)
    ("M-g :" . avy-goto-subword-1)

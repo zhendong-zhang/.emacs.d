@@ -83,6 +83,8 @@
   (require-dir "init-modes")
   ;; 支持emacs client
   (require 'init-daemon)
+  ;; emacs替换外部应用相关
+  (require-dir "init-all-in-emacs")
 )
 
 (provide 'init)
