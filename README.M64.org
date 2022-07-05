@@ -17,6 +17,9 @@
 #+begin_src shell
   pip install epc
 #+end_src
+* 需编译的软件
+依赖[[https://www.msys2.org/][msys2]]环境
+[[https://github.com/vedang/pdf-tools#compiling-and-installing-the-epdfinfo-server-from-source-on-windows][epdfinfo]] : 可直接在配置好编译环境后直接M-x pdf-tools-install进行编译安装.
 * checkout emacs配置
 #+begin_src shell
   git clone git@github.com:zhendong-zhang/.emacs.d.git ~/.emacs.d --recurse-submodules
