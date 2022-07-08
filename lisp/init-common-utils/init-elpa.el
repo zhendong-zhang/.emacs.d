@@ -29,6 +29,11 @@
                          ("gnu" . "https://mirrors.163.com/elpa/gnu/")
                          ("org" . "https://mirrors.163.com/elpa/org/")))
 (package-initialize)
+;; (package-initialize 'noactivate)
+;; (unless (file-exists-p package-user-dir)
+;;   (make-directory package-user-dir t))
+;; (let ((default-directory package-user-dir))
+;;   (normal-top-level-add-subdirs-to-load-path))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -42,6 +47,7 @@
 (use-package no-littering)
 
 (use-package quelpa
+  :defer t
   :init
   (setq quelpa-checkout-melpa-p nil)
   (setq quelpa-dir (no-littering-expand-var-file-name "quelpa")))

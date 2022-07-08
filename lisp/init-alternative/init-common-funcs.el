@@ -1,4 +1,3 @@
-(require 'org)
 (defun narrow-or-widen-dwim ()
   "If the buffer is narrowed, it widens. Otherwise, it narrows to region
 , or Org subtree."

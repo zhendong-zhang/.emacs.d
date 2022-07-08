@@ -62,6 +62,6 @@ LOAD-DURATION is the time taken in milliseconds to load FEATURE.")
   (message "init completed in %.2fms"
            (my-time-subtract-millis after-init-time before-init-time)))
 
-(add-hook 'after-init-hook 'my-show-init-time)
+(add-hook 'emacs-startup-hook 'my-show-init-time)
 
 (provide 'init-benchmarking)

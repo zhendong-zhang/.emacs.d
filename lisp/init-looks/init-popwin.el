@@ -12,6 +12,7 @@
      (compilation-mode :noselect t)
      ;;(grep-mode :noselect t)
      ;;(occur-mode :noselect t)
+     "*Warnings*"
      ("*Pp Macroexpand Output*" :noselect t)
      "*Shell Command Output*"
      ;; VC

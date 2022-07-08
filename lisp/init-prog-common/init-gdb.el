@@ -1,4 +1,6 @@
 (use-package gdb-mi
+  :defer t
+  :commands (gdb)
   :config
   (setq-default gdb-many-windows nil
                 gdb-show-main t

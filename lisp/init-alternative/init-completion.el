@@ -84,9 +84,7 @@
   :config
   (consult-customize
    consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-recent-file
-   consult--source-project-recent-file
+   consult-bookmark consult-recent-file
    :preview-key (kbd "C-<return>"))
   (when (and is-windows-nt (executable-find "es"))
     (setq consult-locate-args "es -sort date-modified-descending"))

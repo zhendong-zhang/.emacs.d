@@ -8,12 +8,11 @@
       (display-line-numbers-mode -1)
       (when (featurep 'linum-relative)
         (linum-relative-mode -1))))
-  (add-hook 'after-change-major-mode-hook 'pdf-view-setup 2))
+  (add-hook 'after-change-major-mode-hook 'pdf-view-setup 2)
+  (use-package saveplace-pdf-view))
 
 (use-package org-pdftools
   :hook
   (org-mode . org-pdftools-setup-link))
-(use-package saveplace-pdf-view
-  :after pdf-view)
 
 (provide 'init-pdf-tools)

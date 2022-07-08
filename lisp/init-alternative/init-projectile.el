@@ -1,5 +1,5 @@
 (use-package projectile
-  :demand
+  :commands (projectile-project-root)
   :custom
   (projectile-mode-line-prefix " P")
   (projectile-require-project-root nil)
@@ -23,6 +23,7 @@
   (projectile-mode))
 
 (use-package ibuffer-projectile
+  :after (ibuffer projectile)
   :init
   (setq ibuffer-formats
         '((mark modified read-only " "

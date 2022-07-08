@@ -1,7 +1,7 @@
-(require 'dired)
 (defun show-this-file-external ()
   "Show current file in OS explorer."
   (interactive)
+  (require 'dired)
   (let ((current-file (or (buffer-file-name)
                           (expand-file-name (dired-file-name-at-point))
                           default-directory)))

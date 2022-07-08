@@ -1,3 +1,6 @@
-(use-package cmake-mode)
+(use-package cmake-mode
+  :mode
+  ("CMakeLists\\.txt\\'" . cmake-mode)
+  ("\\.cmake\\'" . cmake-mode))
 
 (provide 'init-cmake)

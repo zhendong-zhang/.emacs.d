@@ -1,9 +1,7 @@
-;; insert links form clipboard.
-(use-package org-cliplink)
-
 (defvar my-org-directory "~/notes")
 
 (use-package org
+  :mode ("\\.org\\'" . org-mode)
   :bind
   (("C-c c" . org-capture)
    ("C-c a" . org-agenda)
@@ -33,6 +31,9 @@
         org-enforce-todo-dependencies t
         org-enforce-todo-checkbox-dependencies t)
   :config
+  ;; insert links form clipboard.
+  (use-package org-cliplink)
+
   (use-package org-clock :ensure nil
     :init
     (setq org-clock-persist t)

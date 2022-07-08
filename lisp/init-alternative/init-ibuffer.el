@@ -1,4 +1,3 @@
-(require 'ibuf-ext)
 (use-package ibuffer
   :bind
   ([remap list-buffers] . ibuffer-list-buffers)
@@ -8,6 +7,7 @@
         ibuffer-display-summary nil
         ibuffer-filter-group-name-face 'font-lock-doc-face)
   :config
+  (require 'ibuf-ext)
   (define-ibuffer-column size-h
     (:name "Size" :inline t)
     (cond

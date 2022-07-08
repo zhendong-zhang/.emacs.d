@@ -3,6 +3,8 @@
 (use-package fullframe)
 
 (use-package magit
+  :defer 10
+  :commands (magit-status)
   :init
   (setq vc-handled-backends (delq 'Git vc-handled-backends))
   (setq magit-refresh-status-buffer nil)

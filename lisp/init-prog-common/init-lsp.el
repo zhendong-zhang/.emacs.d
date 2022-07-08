@@ -21,8 +21,8 @@
     ))
 
 (use-package dumb-jump
+  :after (xref)
   :config
-  (require 'xref)
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate 2)
   (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
   (setq dumb-jump-force-searcher 'ag))
@@ -41,7 +41,6 @@
       (setq eglot-events-buffer-size 0))
   (use-package posframe)
   (use-package lsp-bridge
-    :demand
     :quelpa (lsp-bridge :fetcher github :repo "manateelazycat/lsp-bridge" :files ("*"))
     :commands (lsp-bridge-find-def lsp-bridge-find-references global-lsp-bridge-mode)
     :init
@@ -64,9 +63,8 @@
           ("M-p" . lsp-bridge-ref-jump-prev-file))
     :hook
     (lsp-bridge-mode . (lambda () (flycheck-mode -1)))
+    (after-init . global-lsp-bridge-mode)
     :config
-    (global-lsp-bridge-mode)
-
     ;; For Xref support
     (defun lsp-bridge-xref-backend ()
       "lsp-bridge backend for Xref."
@@ -89,7 +87,7 @@
     (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql lsp-bridge)))
       nil)
     (add-hook 'lsp-bridge-mode-hook (lambda ()
-                                      (add-hook 'xref-backend-functions #'lsp-bridge-xref-backend nil t))))
+                                      (add-hook 'xref-backend-functions #'lsp-bridge-xref-backend nil))))
   )
 
 (provide 'init-lsp)

@@ -42,6 +42,4 @@
   (unless is-windows-nt
     (display-time-mode t)))
 
-(add-hook 'window-setup-hook 'toggle-frame-maximized)
-
 (provide 'init-gui-frames)

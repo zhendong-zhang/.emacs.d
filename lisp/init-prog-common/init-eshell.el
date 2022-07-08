@@ -1,9 +1,9 @@
-(use-package em-smart :ensure nil)
-
 (use-package eshell
+  :defer t
   :demand
   :hook (eshell-mode . eshell-smart-initialize)
   :config
+  (use-package em-smart :ensure nil)
   (use-package eshell-z)
   (use-package eshell-prompt-extras
     :defines (eshell-highlight-prompt eshell-prompt-function)

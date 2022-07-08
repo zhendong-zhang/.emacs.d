@@ -13,4 +13,18 @@
 
 (add-hook 'after-make-frame-functions 'run-after-make-frame-hooks)
 
-(provide 'init-frame-hooks)
+(defvar first-file-hook '()
+  "Transient hooks run after the first interactively opened file.")
+
+(defmacro add-hook-run-once (hook function &optional append local)
+  "Like add-hook, but remove the hook after it is called"
+  (let ((sym (make-symbol (format "%s%s" function "#once"))))
+    `(progn
+       (defun ,sym ()
+         (remove-hook ,hook ',sym ,local)
+         (run-hooks ,function))
+       (add-hook ,hook ',sym ,append ,local))))
+
+(add-hook-run-once 'find-file-hook 'first-file-hook)
+
+(provide 'init-custom-hooks)

@@ -23,7 +23,8 @@
               warning-suppress-types '((comp))
               confirm-kill-processes nil
               enable-recursive-minibuffers t
-              large-file-warning-threshold nil)
+              large-file-warning-threshold nil
+              warning-minimum-level :error)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -106,7 +107,7 @@
         ("M-p" . ahs-backward)
         ("M-n" . ahs-forward))
   :hook
-  (after-init . global-auto-highlight-symbol-mode))
+  (emacs-startup . global-auto-highlight-symbol-mode))
 
 (use-package whitespace-cleanup-mode
   :diminish
@@ -121,11 +122,6 @@
         ([remap comment-dwim] . nil))
   :config
   (whole-line-or-region-global-mode t))
-
-(use-package page-break-lines
-  :diminish
-  :config
-  (global-page-break-lines-mode))
 
 (use-package goto-chg
   :bind
@@ -172,14 +168,25 @@
   (add-to-list 'hungry-delete-except-modes 'minibuffer-mode)
   (global-hungry-delete-mode t))
 
-(use-package undo-tree
-  :diminish undo-tree-mode
+(use-package undo-fu
+  :hook (first-file . undo-fu-mode)
   :config
-  (global-undo-tree-mode))
+  (define-minor-mode undo-fu-mode
+    "Enables `undo-fu' for the current session."
+    :keymap (let ((map (make-sparse-keymap)))
+              (define-key map [remap undo] #'undo-fu-only-undo)
+              (define-key map [remap redo] #'undo-fu-only-redo)
+              map)
+    :init-value nil
+    :global t))
+(use-package undo-fu-session
+  :hook (undo-fu-mode . global-undo-fu-session-mode)
+  :init
+  (setq undo-fu-session-incompatible-files '("\\.gpg$" "/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
 
 (use-package repeat
   :ensure nil
-  :hook (after-init . repeat-mode)
+  :hook (emacs-startup . repeat-mode)
   :custom
   (repeat-exit-key (kbd "RET")))
 
@@ -191,6 +198,11 @@
 (use-package abbrev
   :diminish
   :ensure nil)
+
+(use-package gcmh
+  :diminish
+  :config
+  (gcmh-mode))
 
 (global-set-key (kbd "C-h C-f") 'find-function)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
