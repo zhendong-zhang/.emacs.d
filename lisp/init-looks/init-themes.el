@@ -42,13 +42,11 @@
      `(lsp-bridge-ref-font-lock-mark-changed ((t (:foreground ,zenburn-bg+05 :background ,zenburn-blue))))
      `(lsp-bridge-ref-font-lock-mark-deleted ((t (:foreground ,zenburn-red))))
      `(lsp-bridge-ref-font-lock-function-location ((t (:foreground ,zenburn-orange))))
-     )))
-
-(defun zenburn-setup ()
-  "Activate another dark color theme."
-  (interactive)
-  (load-theme 'zenburn t))
-
-(add-hook 'after-init-hook 'zenburn-setup)
+     ;; cal-china-x
+     `(cal-china-x-important-holiday-face ((t (:background ,zenburn-red))))
+     `(cal-china-x-general-holiday-face ((t (:background ,zenburn-green))))
+     ))
+  (load-theme 'zenburn t)
+  )
 
 (provide 'init-themes)
