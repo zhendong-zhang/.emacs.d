@@ -18,8 +18,26 @@
   pip install epc
 #+end_src
 * 需编译的软件
-依赖[[https://www.msys2.org/][msys2]]环境
+依赖[[https://github.com/msys2/msys2-installer/releases][msys2]]环境
 [[https://github.com/vedang/pdf-tools#compiling-and-installing-the-epdfinfo-server-from-source-on-windows][epdfinfo]] : 可直接在配置好编译环境后直接M-x pdf-tools-install进行编译安装.
+编译native-comp emacs
+#+begin_src shell
+  pacman --noconfirm -Syuu
+  pacman --needed --noconfirm -S git base-devel mingw-w64-x86_64-toolchain autoconf automake
+  packages="mingw-w64-x86_64-xpm-nox mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-libtiff mingw-w64-x86_64-giflib mingw-w64-x86_64-libpng mingw-w64-x86_64-librsvg mingw-w64-x86_64-cairo mingw-w64-x86_64-harfbuzz mingw-w64-x86_64-jansson mingw-w64-x86_64-lcms2 mingw-w64-x86_64-gnutls mingw-w64-x86_64-zlib mingw-w64-x86_64-binutils mingw-w64-x86_64-crt-git mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-libs mingw-w64-x86_64-libgccjit mingw-w64-x86_64-libmangle-git mingw-w64-x86_64-libwinpthread-git mingw-w64-x86_64-winpthreads-git mingw-w64-x86_64-winstorecompat-git"
+  pacman --needed --noconfirm -S ${packages}
+  git clone https://github.com/emacs-mirror/emacs.git
+  cd emacs
+  ./autogen.sh
+  ./configure --with-native-compilation --prefix=/e/local/emacs-install
+  make NATIVE_FULL_AOT=1 -j$(nproc)
+  make install
+  depend_packages=`pacman -Qii ${packages} | grep Depends | sed -e 's,[>=][^ ]*,,g;s,Depends[^:]*:,,g;s,None,,g'`
+  all_packages=`echo ${packages} ${depend_packages} | sed -e 's,[[:space:]][[:space:]]*,\n,g' | sort | uniq | sed -e '/^$/d'`
+  files=`pacman -Ql $all_packages | cut -d ' ' -f 2 | sort | uniq | grep "/mingw64/" | sed -e "s,/mingw64/,,g"
+                | grep -P -v '^(.*bin/((?!x86_64-w64-mingw32-)(?!addpm)(?!as)(?!ctags)(?!ebrowse)(?!emacs)(?!etags)(?!ld)(?!objdump)).*.exe$|.*doc|.*include|etc|var|share/((?!emacs)(?!icons)(?!info))|lib/((?!emacs)(?!gcc)(?![^/]*\.(a|o)$))|lib/.*\.exe|.*lib.*/lib((?!advapi32)(?!gcc\.a)(?!gcc_)(?!kernel32)(?!mingw32)(?!mingwex)(?!moldname)(?!msvcrt)(?!pthread)(?!shell32)(?!user32)).*\.a$|.*bin/[^.]*$|.*bin/.*\.py$)'`
+  cd /mingw64 && zip deps.zip -9v $files
+#+end_src
 * checkout emacs配置
 #+begin_src shell
   git clone git@github.com:zhendong-zhang/.emacs.d.git ~/.emacs.d --recurse-submodules
