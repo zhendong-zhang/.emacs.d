@@ -6,3 +6,4 @@ var/
 /etc/rime-config/installation.yaml
 /etc/custom.el
 /etc/eshell/
+/server/
