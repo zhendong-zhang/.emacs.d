@@ -182,7 +182,9 @@
 (use-package undo-fu-session
   :hook (undo-fu-mode . global-undo-fu-session-mode)
   :init
-  (setq undo-fu-session-incompatible-files '("\\.gpg$" "/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
+  (setq undo-fu-session-incompatible-files '("\\.gpg$" "/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")
+        undo-fu-session-compression 'zst)
+  )
 
 (use-package repeat
   :ensure nil

@@ -17,6 +17,7 @@
 
 (use-package git-auto-commit-mode
   :defer t
+  :commands (git-auto-commit-mode)
   :config
   ;; (setq-default gac-debounce-interval 600)
   (setq-default gac-automatically-push-p t))
