@@ -24,7 +24,7 @@
 #+begin_src shell
   pacman --noconfirm -Syuu
   pacman --needed --noconfirm -S git base-devel mingw-w64-x86_64-toolchain autoconf automake
-  packages="mingw-w64-x86_64-xpm-nox mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-libtiff mingw-w64-x86_64-giflib mingw-w64-x86_64-libpng mingw-w64-x86_64-librsvg mingw-w64-x86_64-cairo mingw-w64-x86_64-harfbuzz mingw-w64-x86_64-jansson mingw-w64-x86_64-lcms2 mingw-w64-x86_64-gnutls mingw-w64-x86_64-zlib mingw-w64-x86_64-binutils mingw-w64-x86_64-crt-git mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-libs mingw-w64-x86_64-libgccjit mingw-w64-x86_64-libmangle-git mingw-w64-x86_64-libwinpthread-git mingw-w64-x86_64-winpthreads-git mingw-w64-x86_64-winstorecompat-git"
+  packages="mingw-w64-x86_64-xpm-nox mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-libtiff mingw-w64-x86_64-giflib mingw-w64-x86_64-libpng mingw-w64-x86_64-librsvg mingw-w64-x86_64-cairo mingw-w64-x86_64-harfbuzz mingw-w64-x86_64-jansson mingw-w64-x86_64-lcms2 mingw-w64-x86_64-gnutls mingw-w64-x86_64-zlib mingw-w64-x86_64-binutils mingw-w64-x86_64-crt-git mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-libs mingw-w64-x86_64-libgccjit mingw-w64-x86_64-libmangle-git mingw-w64-x86_64-libwinpthread-git mingw-w64-x86_64-winpthreads-git mingw-w64-x86_64-winstorecompat-git mingw-w64-x86_64-sqlite3"
   pacman --needed --noconfirm -S ${packages}
   git clone https://github.com/emacs-mirror/emacs.git
   cd emacs
