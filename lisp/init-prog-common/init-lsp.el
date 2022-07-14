@@ -65,6 +65,7 @@
     (lsp-bridge-mode . (lambda () (flycheck-mode -1)))
     (after-init . global-lsp-bridge-mode)
     :config
+    (remove-hook 'lsp-bridge-default-mode-hooks 'org-mode-hook)
     ;; For Xref support
     (defun lsp-bridge-xref-backend ()
       "lsp-bridge backend for Xref."
