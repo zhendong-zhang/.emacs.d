@@ -1,6 +1,5 @@
 (use-package eshell
-  :defer t
-  :demand
+  :defer-incrementally esh-util esh-module esh-proc esh-io esh-cmd
   :hook (eshell-mode . eshell-smart-initialize)
   :config
   (use-package em-smart :ensure nil)

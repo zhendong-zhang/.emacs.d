@@ -1,6 +1,5 @@
 (use-package yasnippet
-  :defer 5
-  :demand
+  :defer-incrementally eldoc easymenu help-mode
   :config
   (yas-global-mode 1)
   :bind

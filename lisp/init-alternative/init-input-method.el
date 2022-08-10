@@ -11,7 +11,7 @@
             rime-show-candidate 'posframe
             rime-title "CH "))
   (use-package pyim
-    :defer t
+    :defer-incrementally pyim-autoselector pyim-common pyim-cstring pyim-dhashcache pyim-indicator pyim-page pyim-preview pyim-process pyim-scheme
     :init
     (setq default-input-method "pyim")
     :bind (:map pyim-mode-map

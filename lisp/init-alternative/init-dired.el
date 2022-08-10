@@ -5,7 +5,7 @@
     (hungry-delete-mode -1)))
 
 (use-package dired
-  :defer t
+  :defer-incrementally dired-loaddefs dnd
   :ensure nil
   :hook
   (dired-mode . my-dired-setup)
