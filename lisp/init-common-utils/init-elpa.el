@@ -22,6 +22,10 @@
        (tencent     . "https://mirrors.cloud.tencent.com/elpa/melpa/")
        (tuna        . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))))))
 
+(defun install-package-from-github (package repo)
+  (unless (package-installed-p package)
+    (quelpa `(,package :fetcher github :repo ,repo :files ("*")))))
+
 (require 'package)
 ;; 国内elpa源
 (setq package-archives '(("melpa" . "https://mirrors.163.com/elpa/melpa/")
@@ -39,8 +43,8 @@
   (package-install 'use-package)
 )
 (require 'use-package)
-(require 'use-package-ensure)
 (setq use-package-always-ensure t)
+(require 'use-package-ensure)
 
 (use-package diminish)
 (use-package no-littering)
@@ -50,10 +54,6 @@
   :init
   (setq quelpa-checkout-melpa-p nil)
   (setq quelpa-dir (no-littering-expand-var-file-name "quelpa")))
-
-(use-package quelpa-use-package
-  :config
-  (quelpa-use-package-activate-advice))
 
 ;; from doom-emacs
 (defvar incremental-packages-list '(t)

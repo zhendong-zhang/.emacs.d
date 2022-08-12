@@ -24,8 +24,8 @@
           pyim-dcache-backend 'pyim-dhashcache)
     (pyim-default-scheme 'quanpin)
 
+    (install-package-from-github 'pyim-tsinghua-dict "redguardtoo/pyim-tsinghua-dict")
     (use-package pyim-tsinghua-dict
-      :quelpa (pyim-tsinghua-dict :fetcher github :repo "redguardtoo/pyim-tsinghua-dict")
       :config
       (pyim-tsinghua-dict-enable))
     ))
