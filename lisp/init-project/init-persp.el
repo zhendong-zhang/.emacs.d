@@ -11,12 +11,12 @@
               persp-kill-foreign-buffer-behaviour 'kill
               persp-auto-resume-time 0.1)
   :config
-  ;; Don't save dead or temporary buffers
   (add-hook 'persp-filter-save-buffers-functions
             (lambda (b)
-              "Ignore dead and unneeded buffers."
+              "Ignore dead or temporary or not visible buffers."
               (or (not (buffer-live-p b))
-                  (string-prefix-p "*" (buffer-name b)))))
+                  (string-prefix-p "*" (buffer-name b))
+                  (not (get-buffer-window b)))))
   (add-hook 'persp-filter-save-buffers-functions
             (lambda (b)
               "Ignore temporary buffers."
