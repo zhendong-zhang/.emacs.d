@@ -1,4 +1,5 @@
 (use-package ibuffer
+  :defer t
   :bind
   ([remap list-buffers] . ibuffer-list-buffers)
   :init

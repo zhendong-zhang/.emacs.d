@@ -1,4 +1,5 @@
-(setq-default buffers-menu-max-size 30
+(setq-default use-short-answers t
+              buffers-menu-max-size 30
               make-backup-files nil
               scroll-preserve-screen-position 'always
               show-trailing-whitespace nil
@@ -25,8 +26,6 @@
               enable-recursive-minibuffers t
               large-file-warning-threshold nil
               warning-minimum-level :error)
-
-(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; recentf
 (use-package recentf
@@ -187,10 +186,12 @@
   )
 
 (use-package repeat
+  :defer-incrementally repeat
   :ensure nil
-  :hook (emacs-startup . repeat-mode)
   :custom
-  (repeat-exit-key (kbd "RET")))
+  (repeat-exit-key (kbd "RET"))
+  :config
+  (repeat-mode))
 
 (use-package wgrep
   :bind

@@ -1,5 +1,5 @@
 (use-package cc-mode
-  :demand
+  :defer t
   :mode
   ("\\.h\\'" . c++-mode)
   :config
