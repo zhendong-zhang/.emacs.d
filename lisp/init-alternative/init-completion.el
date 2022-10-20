@@ -57,19 +57,8 @@
   :config
   (marginalia-mode t))
 
-(defun my-consult-line (consult-line-function &rest rest)
-  (interactive)
-  (if (use-region-p)
-      (let ((thing (buffer-substring-no-properties
-                    (region-beginning) (region-end))))
-        (deactivate-mark)
-        (apply consult-line-function (list thing)))
-    (apply consult-line-function
-           rest)))
-
 (use-package consult
   :init
-  (advice-add #'consult-line :around #'my-consult-line '((depth . -1)))
   (setq consult-async-refresh-delay 0.5)
   :bind
   (("M-g b" . consult-buffer)
@@ -110,5 +99,42 @@
   :demand t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
+;; from https://emacs-china.org/t/xxx-thing-at-point/18047/10
+(defvar common-thing-at-point-commands
+  '(consult-line
+    consult-outline
+    consult-git-grep
+    consult-ripgrep))
+
+(defvar common-thing-at-point-overwrite-commands
+  '(self-insert-command
+    yank
+    yank-pop
+    org-yank))
+
+(defun common-thign-at-point-actions ()
+  (remove-hook 'pre-command-hook 'common-thign-at-point-actions t)
+  (cond ((and (memq last-command common-thing-at-point-commands)
+              (equal (this-command-keys-vector) (kbd "M-p")))
+         ;; repeat one time to get straight to the first history item
+         (setq unread-command-events
+               (append unread-command-events
+                       (listify-key-sequence (kbd "M-p")))))
+        ((memq this-command common-thing-at-point-overwrite-commands)
+         (delete-region (point) (point-max)))))
+
+(defun common-thing-at-point-setup ()
+  (when (memq this-command common-thing-at-point-commands)
+    (let ((pre-insert-string (with-minibuffer-selected-window
+                               (or (seq-some
+                                    (lambda (thing) (thing-at-point thing t))
+                                    '(region url symbol))
+                                   "No thing at point"))))
+      (save-excursion
+        (insert (propertize pre-insert-string 'face 'shadow))))
+    (add-hook 'pre-command-hook 'common-thign-at-point-actions nil t)))
+
+(add-hook 'minibuffer-setup-hook #'common-thing-at-point-setup)
 
 (provide 'init-completion)
