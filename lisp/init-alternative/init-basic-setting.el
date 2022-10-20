@@ -74,7 +74,7 @@
 (save-place-mode 1)
 (savehist-mode 1)
 (show-paren-mode 1)
-(global-display-fill-column-indicator-mode 1)
+;(global-display-fill-column-indicator-mode 1)
 (midnight-mode 1)
 
 ;; Don't disable narrowing commands
