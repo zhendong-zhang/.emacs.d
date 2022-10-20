@@ -15,7 +15,7 @@
 [[https://github.com/llvm/llvm-project/releases][llvm]]
 通过pip安装
 #+begin_src shell
-  pip install epc
+  pip install epc PyStarDict orjson
 #+end_src
 * 需编译的软件
 依赖[[https://github.com/msys2/msys2-installer/releases][msys2]]环境
@@ -29,13 +29,18 @@
   git clone https://github.com/emacs-mirror/emacs.git
   cd emacs
   ./autogen.sh
-  ./configure --with-native-compilation --prefix=/e/local/emacs-install
+  ./configure --with-native-compilation=aot --prefix=/e/local/emacs-install
   make NATIVE_FULL_AOT=1 -j$(nproc)
   make install
-  depend_packages=`pacman -Qii ${packages} | grep Depends | sed -e 's,[>=][^ ]*,,g;s,Depends[^:]*:,,g;s,None,,g'`
-  all_packages=`echo ${packages} ${depend_packages} | sed -e 's,[[:space:]][[:space:]]*,\n,g' | sort | uniq | sed -e '/^$/d'`
-  files=`pacman -Ql $all_packages | cut -d ' ' -f 2 | sort | uniq | grep "/mingw64/" | sed -e "s,/mingw64/,,g"
-                | grep -P -v '^(.*bin/((?!x86_64-w64-mingw32-)(?!addpm)(?!as)(?!ctags)(?!ebrowse)(?!emacs)(?!etags)(?!ld)(?!objdump)).*.exe$|.*doc|.*include|etc|var|share/((?!emacs)(?!icons)(?!info))|lib/((?!emacs)(?!gcc)(?![^/]*\.(a|o)$))|lib/.*\.exe|.*lib.*/lib((?!advapi32)(?!gcc\.a)(?!gcc_)(?!kernel32)(?!mingw32)(?!mingwex)(?!moldname)(?!msvcrt)(?!pthread)(?!shell32)(?!user32)).*\.a$|.*bin/[^.]*$|.*bin/.*\.py$)'`
+  all_packages=${packages}
+  while [[ "" != ${packages} ]];
+  do
+      depend_packages=`pacman -Qii ${packages} | grep Depends | sed -e 's,[>=][^ ]*,,g;s,Depends[^:]*:,,g;s,None,,g' | sed -e 's,[[:space:]][[:space:]]*,\n,g' | sort | uniq | sed -e '/^$/d'`
+      depend_packages=`echo ${all_packages} ${all_packages} ${depend_packages} | sed -e 's,[[:space:]][[:space:]]*,\n,g' | sort | uniq -u`
+      all_packages=`echo ${all_packages} ${packages} ${depend_packages} | sed -e 's,[[:space:]][[:space:]]*,\n,g' | sort | uniq`
+      packages=${depend_packages}
+  done
+  files=`pacman -Ql $all_packages | cut -d ' ' -f 2 | sort | uniq | grep "/mingw64/" | sed -e "s,/mingw64/,,g" | grep -P -v '^(.*bin/((?!x86_64-w64-mingw32-)(?!addpm)(?!as)(?!ctags)(?!ebrowse)(?!emacs)(?!etags)(?!ld)(?!objdump)).*.exe$|.*doc|.*include|etc|var|share/((?!emacs)(?!icons)(?!info))|lib/((?!emacs)(?!gcc)(?![^/]*\.(a|o)$))|lib/.*\.exe|.*lib.*/lib((?!advapi32)(?!gcc\.a)(?!gcc_)(?!kernel32)(?!mingw32)(?!mingwex)(?!moldname)(?!msvcrt)(?!pthread)(?!shell32)(?!user32)).*\.a$|.*bin/[^.]*$|.*bin/.*\.py$)'`
   cd /mingw64 && zip deps.zip -9v $files
 #+end_src
 * checkout emacs配置
