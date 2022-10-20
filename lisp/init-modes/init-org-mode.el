@@ -2,6 +2,9 @@
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)
+  :bind
+  (:map org-mode-map
+        ("C-'" . nil))
   :init
   (setq org-log-done 'time
         org-log-into-drawer t
