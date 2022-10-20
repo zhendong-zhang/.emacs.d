@@ -3,7 +3,7 @@
 (use-package fullframe)
 
 (use-package magit
-  :defer-incrementally magit-core magit-diff magit-log magit-wip magit-apply magit-repos git-commit format-spec with-editor
+  :defer-incrementally magit-core magit-diff magit-log magit-wip magit-apply magit-repos git-commit format-spec with-editor magit
   :init
   (setq vc-handled-backends (delq 'Git vc-handled-backends))
   (setq magit-refresh-status-buffer nil)

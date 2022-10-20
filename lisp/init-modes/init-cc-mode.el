@@ -1,5 +1,4 @@
 (use-package cc-mode
-  :defer t
   :mode
   ("\\.h\\'" . c++-mode)
   :config

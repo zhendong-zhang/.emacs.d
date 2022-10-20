@@ -50,7 +50,7 @@
 (use-package no-littering)
 
 (use-package quelpa
-  :defer t
+  :commands (quelpa quelpa-upgrade)
   :init
   (setq quelpa-checkout-melpa-p nil)
   (setq quelpa-dir (no-littering-expand-var-file-name "quelpa")))
@@ -68,7 +68,7 @@
        org-footnote org-macro ob org org-clock org-agenda
        org-capture))")
 
-(defvar incremental-first-idle-timer 5.0
+(defvar incremental-first-idle-timer 3.0
   "How long (in idle seconds) until incremental loading starts.
 
  Set this to nil to disable incremental loading.")
