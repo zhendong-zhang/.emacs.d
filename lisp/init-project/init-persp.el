@@ -13,10 +13,11 @@
   :config
   (add-hook 'persp-filter-save-buffers-functions
             (lambda (b)
-              "Ignore dead or temporary or not visible buffers."
+              "Ignore dead, temporary, not visible or not recently buffers."
               (or (not (buffer-live-p b))
                   (string-prefix-p "*" (buffer-name b))
-                  (not (get-buffer-window b)))))
+                  (not (or (get-buffer-window b)
+                        (< (cl-position b (buffer-list)) 10))))))
   (add-hook 'persp-filter-save-buffers-functions
             (lambda (b)
               "Ignore temporary buffers."
