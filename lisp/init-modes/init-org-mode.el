@@ -159,7 +159,7 @@
   :custom
   (org-roam-directory my-org-directory)
   (org-roam-dailies-directory my-org-directory)
-  (org-roam-database-connector 'sqlite-builtin)
+  ;(org-roam-database-connector 'sqlite-builtin)
   (org-roam-db-gc-threshold most-positive-fixnum)
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates '(("m" "main" plain
@@ -185,7 +185,7 @@
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert))
   :config
-  (use-package emacsql-sqlite-builtin)
+  ;(use-package emacsql-sqlite-builtin)
   (org-roam-db-autosync-mode)
   (add-hook 'org-roam-capture-new-node-hook (lambda()
                                               (org-roam-tag-add '("draft"))))
