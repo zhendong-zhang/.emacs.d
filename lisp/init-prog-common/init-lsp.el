@@ -47,8 +47,9 @@
     (setq lsp-bridge-enable-signature-help nil)
     (setq lsp-bridge-disable-backup nil)
     (setq acm-enable-icon nil)
-    (setq acm-candidate-match-function 'orderless-flex)
+    ;(setq acm-candidate-match-function 'orderless-flex)
     (setq acm-enable-search-words nil)
+    (setq acm-enable-quick-access t)
     :bind
     (:map lsp-bridge-ref-mode-map
           ("n" . lsp-bridge-ref-jump-next-keyword)

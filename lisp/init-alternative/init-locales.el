@@ -1,5 +1,5 @@
-(when (fboundp 'set-charset-priority)
-  (set-charset-priority 'unicode))
+;; (when (fboundp 'set-charset-priority)
+;;   (set-charset-priority 'unicode))
 
 ;; set coding config, last is highest priority.
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Recognize-Coding.html#Recognize-Coding

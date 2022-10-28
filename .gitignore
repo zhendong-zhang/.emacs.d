@@ -7,3 +7,4 @@ var/
 /etc/custom.el
 /etc/eshell/
 /server/
+/lisp/init-private-config/
