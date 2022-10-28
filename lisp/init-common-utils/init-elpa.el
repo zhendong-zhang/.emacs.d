@@ -12,10 +12,10 @@
          (cons
           name
           (benchmark-elapse
-            (url-copy-file
-             (concat url "archive-contents")
-             null-device
-             'OK-IF-ALREADY-EXISTS)))))
+           (url-copy-file
+            (concat url "archive-contents")
+            null-device
+            'OK-IF-ALREADY-EXISTS)))))
      '((163         . "https://mirrors.163.com/elpa/melpa/")
        (emacs-china . "https://elpa.emacs-china.org/melpa/")
        (sjtu        . "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/")
@@ -40,8 +40,8 @@
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package)
-)
+  (package-install 'use-package))
+
 (require 'use-package)
 (setq use-package-always-ensure t)
 (require 'use-package-ensure)
@@ -56,7 +56,7 @@
   (setq quelpa-dir (no-littering-expand-var-file-name "quelpa")))
 
 ;; from doom-emacs
-(defvar incremental-packages-list '(t)
+(defvar incremental-packages-list '()
   "A list of packages to load incrementally after startup. Any large packages
   here may cause noticeable pauses, so it's recommended you break them up into
   sub-packages. For example, `org' is comprised of many packages, and can be
@@ -85,8 +85,8 @@
   If NOW is non-nil, load PACKAGES incrementally, in `incremental-idle-timer'
   intervals."
   (if (not now)
-      (setq incremental-packages-list (append incremental-packages-list packages ))
-    (while packages
+      (setq incremental-packages-list (append incremental-packages-list packages))
+    (when packages
       (let* ((gc-cons-threshold most-positive-fixnum)
              (req (pop packages)))
         (unless (featurep req)
@@ -104,24 +104,23 @@
                   (push req packages))
             (error
              (message "Failed to load %S package incrementally, because: %s"
-                      req e)))
-          (if (not packages)
-              (message "Finished incremental loading")
-            (run-with-idle-timer incremental-idle-timer
-                                 nil #'load-packages-incrementally
-                                 packages t)
-            (setq packages nil)))))))
+                      req e))))
+        (if (not packages)
+            (message "Finished incremental loading")
+          (run-with-idle-timer incremental-idle-timer
+                               nil #'load-packages-incrementally
+                               packages t))))))
 
 (defun start-load-packages-incrementally ()
   "Begin incrementally loading packages in `incremental-packages-list'.
 
 If this is a daemon session, load them all immediately instead."
   (if incremental-load-immediately
-      (mapc #'require (cdr incremental-packages-list))
+      (mapc #'require incremental-packages-list)
     (when (numberp incremental-first-idle-timer)
       (run-with-idle-timer incremental-first-idle-timer
                            nil #'load-packages-incrementally
-                           (cdr incremental-packages-list) t))))
+                           incremental-packages-list t))))
 (add-hook 'emacs-startup-hook #'start-load-packages-incrementally)
 
 (push :defer-incrementally use-package-deferring-keywords)
@@ -129,12 +128,12 @@ If this is a daemon session, load them all immediately instead."
       (use-package-list-insert :defer-incrementally use-package-keywords :after))
 
 (defalias 'use-package-normalize/:defer-incrementally #'use-package-normalize-symlist)
-(defun use-package-handler/:defer-incrementally (name _keyword targets rest state)
+(defun use-package-handler/:defer-incrementally (name _keyword _arg rest state)
   (use-package-concat
    `((load-packages-incrementally
-      ',(if (equal targets '(t))
+      ',(if (equal _arg '(t))
             (list name)
-          (append targets (list name)))))
+          (append _arg (list name)))))
    (use-package-process-keywords name rest state)))
 
 (provide 'init-elpa)

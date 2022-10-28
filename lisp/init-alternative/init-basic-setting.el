@@ -186,7 +186,7 @@
   )
 
 (use-package repeat
-  :defer-incrementally repeat
+  :defer-incrementally t
   :ensure nil
   :custom
   (repeat-exit-key (kbd "RET"))

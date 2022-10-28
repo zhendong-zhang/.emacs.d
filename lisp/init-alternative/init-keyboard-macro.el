@@ -1,5 +1,5 @@
 (use-package elmacro
-  :defer-incrementally elmacro
+  :defer-incrementally t
   :diminish
   :config
   (elmacro-mode)
