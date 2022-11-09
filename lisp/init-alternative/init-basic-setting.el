@@ -91,23 +91,6 @@
   :config
   (browse-kill-ring-default-keybindings))
 
-(use-package auto-highlight-symbol
-  :diminish
-  :init
-  (setq ahs-default-range 'ahs-range-whole-buffer)
-  :bind
-  (:map auto-highlight-symbol-mode-map
-        ("M-<left>" . nil)
-        ("M-<right>" . nil)
-        ("M-S-<left>" . nil)
-        ("M-S-<right>" . nil)
-        ("M--" . nil)
-        ("C-x C-'" . nil)
-        ("M-p" . ahs-backward)
-        ("M-n" . ahs-forward))
-  :hook
-  (emacs-startup . global-auto-highlight-symbol-mode))
-
 (use-package whitespace-cleanup-mode
   :diminish
   :config
