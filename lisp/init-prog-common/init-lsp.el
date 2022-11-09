@@ -27,18 +27,31 @@
   (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
   (setq dumb-jump-force-searcher 'ag))
 
-(if (not (executable-find "pip"))
-    (use-package eglot
-      :hook
-      ((c-mode-common
-        bash-mode
-        python-mode
-        cmake-mode
-        lua-mode
-        python-mode
-        web-mode) . eglot-ensure)
-      :init
-      (setq eglot-events-buffer-size 0))
+(defvar use-lsp-bridge nil)
+(if (not use-lsp-bridge)
+    (progn
+      (use-package corfu
+        :custom
+        (corfu-auto t)
+        (corfu-cycle t)             ;; Enable cycling for `corfu-next/previous'
+        :init
+        (require 'corfu-info)
+        (require 'corfu-history)
+        (global-corfu-mode t)
+        (corfu-history-mode t))
+      (use-package eglot
+        :after corfu
+        :hook
+        ((c-mode-common
+          bash-mode
+          python-mode
+          cmake-mode
+          lua-mode
+          python-mode
+          web-mode) . eglot-ensure)
+        :init
+        (setq eglot-events-buffer-size 0)))
+  ;; else
   (use-package posframe)
   (install-package-from-github 'lsp-bridge "manateelazycat/lsp-bridge")
   (use-package lsp-bridge
@@ -47,7 +60,7 @@
     (setq lsp-bridge-enable-signature-help nil)
     (setq lsp-bridge-disable-backup nil)
     (setq acm-enable-icon nil)
-    ;(setq acm-candidate-match-function 'orderless-flex)
+    ;;(setq acm-candidate-match-function 'orderless-flex)
     (setq acm-enable-search-words nil)
     (setq acm-enable-quick-access t)
     :bind
