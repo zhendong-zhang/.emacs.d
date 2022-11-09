@@ -20,6 +20,8 @@
       ))
   (add-to-list 'process-coding-system-alist '("[eE][sS]" . (gbk . gbk)))
   (add-to-list 'process-coding-system-alist '("[gG][iI][tT]" . (utf-8 . utf-8)))
+  ;; shell/eshell 中文输入乱码问题
+  (add-to-list 'process-coding-system-alist '("[cC][mM][dD][pP][rR][oO][xX][yY]" . (gbk . gbk)))
   ;; emacs client 中文文件名乱码问题
   (setq w32-unicode-filenames nil)
   (setq file-name-coding-system 'gb18030)
