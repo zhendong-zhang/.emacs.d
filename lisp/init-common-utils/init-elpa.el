@@ -73,7 +73,7 @@
 
  Set this to nil to disable incremental loading.")
 
-(defvar incremental-idle-timer 0.75
+(defvar incremental-idle-timer 1.0
   "How long (in idle seconds) in between incrementally loading packages.")
 
 (defvar incremental-load-immediately (daemonp)
@@ -109,7 +109,8 @@
             (message "Finished incremental loading")
           (run-with-idle-timer incremental-idle-timer
                                nil #'load-packages-incrementally
-                               packages t))))))
+                               packages t)
+          (setq packages nil))))))
 
 (defun start-load-packages-incrementally ()
   "Begin incrementally loading packages in `incremental-packages-list'.
@@ -135,5 +136,52 @@ If this is a daemon session, load them all immediately instead."
             (list name)
           (append _arg (list name)))))
    (use-package-process-keywords name rest state)))
+
+(defun require-package (package &optional min-version no-refresh)
+  "Install given PACKAGE, optionally requiring MIN-VERSION.
+If NO-REFRESH is non-nil, the available package lists will not be
+re-downloaded in order to locate PACKAGE."
+  (if (package-installed-p package min-version)
+      (let* ((desc (cadr (assq package package-alist)))
+             (pkg-dir (if desc (package-desc-dir desc))))
+        (require package (concat pkg-dir "/" (symbol-name package) ".el")))
+    (let* ((known (cdr (assoc package package-archive-contents)))
+           (best (car (sort known (lambda (a b)
+                                    (version-list-<= (package-desc-version b)
+                                                     (package-desc-version a)))))))
+      (if (and best (version-list-<= min-version (package-desc-version best)))
+          (unless (package-installed-p best)
+            (progn
+              (package-download-transaction
+               (package-compute-transaction (list best) (package-desc-reqs best)))
+              (package--quickstart-maybe-refresh)))
+        (if no-refresh
+            (error "No version of %s >= %S is available" package min-version)
+          (package-refresh-contents)
+          (require-package package min-version t)))
+      (package-installed-p package min-version))))
+
+(setq use-package-keywords
+      (use-package-list-insert :min-version use-package-keywords :pin))
+(defun use-package-normalize/:min-version (_name keyword args)
+  (use-package-only-one (symbol-name keyword) args
+    #'(lambda (_label arg)
+        (cond
+         ((stringp arg)
+          (mapcar #'(lambda (str) (string-to-number str))
+                  (split-string arg "\\.")))
+         ((use-package-non-nil-symbolp arg)
+          (mapcar #'(lambda (str) (string-to-number str))
+                  (split-string (symbol-name arg) "\\.")))
+         (t
+          (use-package-error
+           ":min-version wants an version number"))))))
+(defun use-package-handler/:min-version (name _keyword _arg rest state)
+  (let ((body (use-package-process-keywords name rest state))
+        (min-versin-form `(require-package ',name ',_arg)))
+    (if (bound-and-true-p byte-compile-current-file)
+        (eval min-versin-form)              ; Eval when byte-compiling,
+      (push min-versin-form body))          ; or else wait until runtime.
+    body))
 
 (provide 'init-elpa)
