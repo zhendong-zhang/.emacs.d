@@ -114,10 +114,6 @@
   :bind
   ("C-=" . er/expand-region))
 
-(use-package iedit
-  :bind
-  ("C-;" . iedit-mode))
-
 (use-package avy
   :init
   (setq avy-case-fold-search nil)
