@@ -25,7 +25,7 @@
   ;; emacs client 中文文件名乱码问题
   (setq w32-unicode-filenames nil)
   (setq file-name-coding-system 'gb18030)
-  ;(w32-set-system-coding-system 'gb18030)
+  ;(setq locale-coding-system 'gb18030)
   ;(set-language-environment 'gb18030)
   )
 

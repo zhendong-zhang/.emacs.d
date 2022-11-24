@@ -81,6 +81,7 @@
   )
 
 (use-package embark
+  :demand t
   :bind
   (("C-." . embark-act)
    ("M-." . embark-dwim)
