@@ -8,4 +8,10 @@
   :bind
   ("M-s t" . lsp-bridge-toggle-english-helper))
 
+(use-package corfu-english-helper
+  :github "manateelazycat/corfu-english-helper"
+  :after (corfu)
+  :bind
+  ("M-s t" . toggle-corfu-english-helper))
+
 (provide 'init-dictionary)

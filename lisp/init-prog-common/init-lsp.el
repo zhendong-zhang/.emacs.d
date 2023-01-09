@@ -56,8 +56,8 @@
         (setq eglot-events-buffer-size 0)))
   ;; else
   (use-package posframe)
-  (install-package-from-github 'lsp-bridge "manateelazycat/lsp-bridge")
   (use-package lsp-bridge
+    :github "manateelazycat/lsp-bridge"
     :commands (lsp-bridge-find-def lsp-bridge-find-references global-lsp-bridge-mode)
     :init
     (setq lsp-bridge-enable-signature-help nil)

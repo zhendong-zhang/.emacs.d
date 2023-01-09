@@ -175,13 +175,34 @@ re-downloaded in order to locate PACKAGE."
                   (split-string (symbol-name arg) "\\.")))
          (t
           (use-package-error
-           ":min-version wants an version number"))))))
+           ":min-version wants a version number"))))))
 (defun use-package-handler/:min-version (name _keyword _arg rest state)
   (let ((body (use-package-process-keywords name rest state))
         (min-versin-form `(require-package ',name ',_arg)))
     (if (bound-and-true-p byte-compile-current-file)
         (eval min-versin-form)              ; Eval when byte-compiling,
       (push min-versin-form body))          ; or else wait until runtime.
+    body))
+
+(setq use-package-keywords
+      (use-package-list-insert :github use-package-keywords :ensure))
+(defun use-package-normalize/:github (_name keyword args)
+  (use-package-only-one (symbol-name keyword) args
+    #'(lambda (_label arg)
+        (cond
+         ((stringp arg)
+          arg)
+         ((use-package-non-nil-symbolp arg)
+          (symbol-name arg))
+         (t
+          (use-package-error
+           ":github wants a short url(string)"))))))
+(defun use-package-handler/:github (name _keyword _arg rest state)
+  (let ((body (use-package-process-keywords name rest state))
+        (github-form `(install-package-from-github ',name ',_arg)))
+    (if (bound-and-true-p byte-compile-current-file)
+        (eval github-form)              ; Eval when byte-compiling,
+      (push github-form body))          ; or else wait until runtime.
     body))
 
 (provide 'init-elpa)
