@@ -1,4 +1,5 @@
 (use-package meow
+  :github "zhendong-zhang/meow"
   :custom
   (meow-char-thing-table '((?\( . round)
                            (?\[ . square)
@@ -12,54 +13,33 @@
                            (?l . line)
                            (?f . defun)
                            (?. . sentence)))
-  (meow-mode-state-list '((authinfo-mode . insert)
-                          (beancount-mode . insert)
-                          (bibtex-mode . insert)
-                          (cider-repl-mode . insert)
-                          (cider-test-report-mode . insert)
-                          (cider-browse-spec-view-mode . motion)
-                          (cargo-process-mode . insert)
-                          (conf-mode . insert)
-                          (deadgrep-edit-mode . insert)
-                          (deft-mode . insert)
-                          (diff-mode . insert)
-                          (ediff-mode . motion)
-                          (gud-mode . insert)
-                          (haskell-interactive-mode . insert)
-                          (help-mode . insert)
-                          (json-mode . insert)
-                          (jupyter-repl-mode . insert)
-                          (mix-mode . insert)
-                          (occur-edit-mode . insert)
-                          (pass-view-mode . insert)
-                          (prog-mode . insert)
-                          (py-shell-mode . insert)
-                          (restclient-mode . insert)
-                          (telega-chat-mode . insert)
-                          (term-mode . insert)
-                          (text-mode . insert)
-                          (vterm-mode . insert)
-                          (Custom-mode . insert)))
+  (meow-cheatsheet-physical-layout meow-cheatsheet-physical-layout-ansi)
+  (meow-cheatsheet-layout meow-cheatsheet-layout-dvp)
+  (meow-keypad-ctrl-meta-prefix ?M)
+  (meow-text-edit-state 'insert)
   :config
   (defun meow-setup ()
     (meow-leader-define-key
-     '("1" . meow-digit-argument)
-     '("2" . meow-digit-argument)
-     '("3" . meow-digit-argument)
-     '("4" . meow-digit-argument)
-     '("5" . meow-digit-argument)
-     '("6" . meow-digit-argument)
-     '("7" . meow-digit-argument)
-     '("8" . meow-digit-argument)
-     '("9" . meow-digit-argument)
-     '("0" . meow-digit-argument)
-     '("/" . meow-keypad-describe-key)
-     '("?" . meow-cheatsheet))
+     '("?" . meow-cheatsheet)
+     '("1" . "M-1")
+     '("2" . "M-2")
+     '("3" . "M-3")
+     '("4" . "M-4")
+     '("5" . "M-5")
+     '("6" . "M-6")
+     '("7" . "M-7")
+     '("8" . "M-8")
+     '("9" . "M-9")
+     '("0" . "M-0")
+     '("s" . "M-g s")
+     '("i" . "M-g i")
+     '("," . "M-,")
+     '("." . "M-.")
+     )
     (meow-motion-overwrite-define-key
      ;; custom keybinding for motion state
      '("<escape>" . ignore))
     (meow-normal-define-key
-     '("0" . meow-expand-0)
      '("1" . meow-expand-1)
      '("2" . meow-expand-2)
      '("3" . meow-expand-3)
@@ -69,6 +49,7 @@
      '("7" . meow-expand-7)
      '("8" . meow-expand-8)
      '("9" . meow-expand-9)
+     '("0" . meow-expand-0)
      '("-" . negative-argument)
      '("p" . meow-prev)
      '("n" . meow-next)
@@ -79,44 +60,61 @@
      '("B" . meow-left-expand)
      '("F" . meow-right-expand)
      '("q" . meow-quit)
-     '("g" . meow-cancel-selection) ;; C-g
-     '("w" . meow-save)             ;; M-w
-     '("k" . meow-kill)             ;; C-k
-     '("y" . meow-yank)             ;; C-y
-     '("u" . meow-undo)             ;; C-x u
+     '("G" . meow-cancel-selection) ;; C-g
+     '("<escape>" . meow-cancel-selection)
      '("U" . meow-undo-in-selection)
-     '("x" . meow-reverse)          ;; C-x C-x
-     '("z" . repeat)                ;; C-x z
-     '("d" . meow-delete)           ;; C-d
      '("s" . meow-search)           ;; C-s
      '("r" . meow-replace)
      '("v" . meow-visit)
-     '("l" . meow-goto-line)        ;; M-g M-g
-     '("= i" . meow-inner-of-thing) ;; C-=
-     '("= o" . meow-bounds-of-thing)
-     '("= b" . meow-beginning-of-thing)
-     '("= e" . meow-end-of-thing)
+     '("/" . meow-pop-selection)
 
-     '("G" . meow-grab)
+     '("g" . meow-grab)
      '("m w" . meow-mark-word)
-     '("m W" . meow-next-word)
+     '("e w" . meow-next-word)
      '("m s" . meow-mark-symbol)
-     '("m S" . meow-next-symbol)
+     '("e s" . meow-next-symbol)
+     '("m p" . meow-mark-sexp)
+     '("e p" . meow-next-sexp)
+     '("m n" . meow-mark-number)
+     '("e n" . meow-next-number)
+     '("m d" . meow-mark-defun)
+     '("e d" . meow-next-defun)
      '("m l" . meow-line)
+     '("e l" . meow-line-expand)
      '("m b" . meow-block)
-     '("m B" . meow-to-block)
+     '("e b" . meow-to-block)
      '("m f" . meow-find)
-     '("m F" . meow-till)
-     '("m i" . meow-join)           ;; indentation
+     '("e f" . meow-find-expand)
+     '("m u" . meow-till)
+     '("e u" . meow-till-expand)
+     '("m t" . meow-join)           ;; indentation
+     '("e t" . meow-join)
+     '("m i" . meow-inner-of-thing) ;; C-=
+     '("m o" . meow-bounds-of-thing)
+     '("m a" . meow-beginning-of-thing)
+     '("m e" . meow-end-of-thing)
 
      '("a" . meow-append)
      '("A" . meow-open-below)
      '("i" . meow-insert)
      '("I" . meow-open-above)
      '("c" . meow-change)
+     '("C" . meow-insert-only)
 
      '("T" . meow-swap-grab)        ;; M-t
      '("W" . meow-sync-grab)        ;; overwrite
+
+     '(">" . "M->")
+     '("<" . "M-<")
+     '("}" . "M-}")
+     '("{" . "M-{")
+     '("d" . "C-d")
+     '("w" . "M-w")
+     '("k" . "C-k")
+     '("y" . "C-y")
+     '("u" . "C-x u")
+     '("x" . "C-x C-x")
+     '("z" . "C-x z")
      ))
 
   (meow-setup)
