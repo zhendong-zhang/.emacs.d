@@ -84,8 +84,16 @@
                (= n-not-done 0))
       (let (org-log-done org-log-states)
         (org-todo (car org-done-keywords)))))
+  (add-hook 'org-after-todo-statistics-hook #'my-org-summary-subtask)
 
-  (add-hook 'org-after-todo-statistics-hook #'my-org-summary-subtask))
+   ;; AUTO_LOAD_FILE
+  (setq org-default-properties (cons "AUTO_LOAD_FILE" org-default-properties))
+  (defun my-org-auto-load-file ()
+    "Auto load file."
+    (when-let (file (org-entry-get (point) "AUTO_LOAD_FILE"))
+      (load-file file)))
+  (add-hook 'org-mode-hook #'my-org-auto-load-file)
+  )
 
 ;; insert links form clipboard.
 (use-package org-cliplink
