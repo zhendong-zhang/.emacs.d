@@ -24,7 +24,7 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             "Recover GC values after startup."
-            (setq gc-cons-threshold 800000)))
+            (setq gc-cons-threshold 4000000)))
 
 (defvar is-windows-nt (equal system-type 'windows-nt))
 

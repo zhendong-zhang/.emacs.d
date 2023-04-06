@@ -30,8 +30,7 @@
 ;; 国内elpa源
 (setq package-archives '(("melpa" . "https://mirrors.163.com/elpa/melpa/")
                          ;; ("melpa-stable" . "https://mirrors.163.com/elpa/melpa-stable/")
-                         ("gnu" . "https://mirrors.163.com/elpa/gnu/")
-                         ("org" . "https://mirrors.163.com/elpa/org/")))
+                         ("gnu" . "https://mirrors.163.com/elpa/gnu/")))
 (package-initialize 'noactivate)
 (unless (file-exists-p package-user-dir)
   (make-directory package-user-dir t))
@@ -73,7 +72,7 @@
 
  Set this to nil to disable incremental loading.")
 
-(defvar incremental-idle-timer 1.0
+(defvar incremental-idle-timer 2.0
   "How long (in idle seconds) in between incrementally loading packages.")
 
 (defvar incremental-load-immediately (daemonp)

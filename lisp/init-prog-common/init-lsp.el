@@ -42,7 +42,6 @@
         (global-corfu-mode t)
         (corfu-history-mode t))
       (use-package eglot
-        :min-version "20221020.1010"
         :after corfu
         :hook
         ((c-mode-common

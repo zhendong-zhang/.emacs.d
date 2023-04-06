@@ -74,7 +74,7 @@
   (consult-customize
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file
-   :preview-key (kbd "C-<return>"))
+   :preview-key "C-<return>")
   (when (and is-windows-nt (executable-find "es"))
     (setq consult-locate-args "es -sort date-modified-descending"))
   (set-use-common-thing-at-point 'consult-line 'consult-ripgrep 'consult-locate)
