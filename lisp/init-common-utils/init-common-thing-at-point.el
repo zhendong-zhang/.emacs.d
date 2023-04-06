@@ -20,7 +20,8 @@
          (delete-region (point) (point-max)))))
 
 (defun common-thing-at-point-minibuffer-setup ()
-  (when (memq this-command common-thing-at-point-commands)
+  (when (and (memq this-command common-thing-at-point-commands)
+             (equal current-prefix-arg nil))
     (let ((pre-insert-string (with-minibuffer-selected-window
                                (or (seq-some (lambda (thing)
                                                (thing-at-point thing t))

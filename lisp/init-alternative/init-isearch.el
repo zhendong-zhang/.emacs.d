@@ -15,6 +15,7 @@
    ([remap query-replace] . anzu-query-replace))
   :config
   (setq anzu-cons-mode-line-p nil)
+  (set-use-common-thing-at-point 'anzu-query-replace 'anzu-query-replace-regexp)
   (global-anzu-mode t))
 
 ;; DEL during isearch should edit the search string, not jump back to the previous result
