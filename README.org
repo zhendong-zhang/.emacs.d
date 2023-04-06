@@ -1,21 +1,21 @@
-#+TITLE: My Private Emacs Config
+* 安装过程
 以下记录windows wslg下的安装过程，linux下跳过前面的步骤
-* [[https://insider.windows.com/register][加入windows预览体验计划]],并升级到[[https://www.microsoft.com/software-download/windowsinsiderpreviewiso?rfs=1][预览版]]
-* 升级或安装wslg
+- [[https://insider.windows.com/register][加入windows预览体验计划]],并升级到[[https://www.microsoft.com/software-download/windowsinsiderpreviewiso?rfs=1][预览版]]
+- 升级或安装wslg
 #+begin_src bat
   wsl --update
   wsl --list --online
   wsl --install -d Debian
 #+end_src
 由于国内Power Shell下下载过慢，可以考虑用Windows Store里的来安装
-* apt换源
+- apt换源
 #+begin_src text
   deb http://ftp.cn.debian.org/debian bullseye main contrib non-free
   deb http://ftp.cn.debian.org/debian bullseye-updates main contrib non-free
   deb http://ftp.cn.debian.org/debian-security/ bullseye-security/updates main contrib non-free
   deb http://ftp.cn.debian.org/debian bullseye-backports main contrib non-free
 #+end_src
-* 安装emacs及依赖软件
+- 安装emacs及依赖软件
 安装外部依赖工具
 #+begin_src shell
   apt-get update
@@ -35,11 +35,11 @@
   make NATIVE_FULL_AOT=1 -j$(nproc)
   make install
 #+end_src
-* checkout emacs配置
+- checkout emacs配置
 #+begin_src shell
   git clone git@github.com:zhendong-zhang/.emacs.d.git ~/.emacs.d --recurse-submodules
 #+end_src
-* 创建快捷方式
+- 创建快捷方式
 修改已有快捷方式属性，目标换成emacs：
 #+begin_src text
   C:\Windows\System32\wslg.exe ~ -d Debian /usr/local/bin/emacs
