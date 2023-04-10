@@ -1,4 +1,5 @@
 (use-package persp-mode
+  :after tab-bar
   :demand
   :diminish
   :defines (recentf-exclude)
@@ -7,7 +8,6 @@
   :hook ((after-init . persp-mode))
   :init (setq persp-keymap-prefix (kbd "C-x p")
               persp-nil-name "default"
-              persp-set-last-persp-for-new-frames nil
               persp-kill-foreign-buffer-behaviour 'kill
               persp-auto-resume-time 0.1)
   :config
@@ -49,6 +49,19 @@
   (persp-def-buffer-save/load
    :mode 'shell-mode :tag-symbol 'def-shell-buffer
    :mode-restore-function (lambda (_) (shell))
-   :save-vars '(major-mode default-directory)))
+   :save-vars '(major-mode default-directory))
+
+  ;; Tab-Bar-Mode integration
+  (defun my-save-tabs (&rest _)
+    (set-persp-parameter 'tab-bar-tabs (frameset-filter-tabs (tab-bar-tabs) nil nil t)))
+
+  (defun my-load-tabs (&rest _)
+    (tab-bar-tabs-set (persp-parameter 'tab-bar-tabs))
+    (tab-bar--update-tab-bar-lines t))
+
+  (add-hook 'persp-before-deactivate-functions 'my-save-tabs)
+  (add-hook 'persp-activated-functions 'my-load-tabs)
+  (add-hook 'persp-before-save-state-to-file-functions 'my-save-tabs)
+  (add-hook 'persp-after-load-state-functions 'my-load-tabs))
 
 (provide 'init-persp)
