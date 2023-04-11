@@ -31,11 +31,10 @@
 (if (not use-lsp-bridge)
     (progn
       (use-package corfu
-        :bind
-        (:map corfu-map ("SPC" . corfu-insert-separator))
         :custom
         (corfu-auto t)
         (corfu-cycle t)             ;; Enable cycling for `corfu-next/previous'
+        (corfu-separator ?|)
         :init
         (require 'corfu-info)
         (require 'corfu-history)

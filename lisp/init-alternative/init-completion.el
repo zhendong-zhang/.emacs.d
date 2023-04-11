@@ -3,7 +3,7 @@
   (setq completion-styles '(orderless basic)
         completion-category-defaults nil)
   :custom
-  (orderless-component-separator #'orderless-escapable-split-on-space)
+  (orderless-component-separator "[ |]+")
   (orderless-matching-styles '(orderless-initialism orderless-literal orderless-regexp))
   :config
   (defun my-orderless-dispatcher (pattern index _total)
