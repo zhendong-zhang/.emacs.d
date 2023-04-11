@@ -17,7 +17,8 @@
               (or (not (buffer-live-p b))
                   (string-prefix-p "*" (buffer-name b))
                   (not (or (get-buffer-window b)
-                        (< (cl-position b (buffer-list)) 10))))))
+                           (tab-bar-get-buffer-tab b)
+                           (< (cl-position b (buffer-list)) 10))))))
   (add-hook 'persp-filter-save-buffers-functions
             (lambda (b)
               "Ignore temporary buffers."
