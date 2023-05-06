@@ -1,11 +1,9 @@
-(setq vc-handled-backends '(Git SVN))
-
 (use-package fullframe)
 
 (use-package magit
-  :defer-incrementally magit-core magit-diff magit-log magit-wip magit-apply magit-repos git-commit format-spec with-editor
+  :defer-incrementally magit-core magit-diff magit-log magit-wip magit-apply magit-repos git-commit format-spec with-editor magit
+  :commands (magit-status)
   :init
-  (setq vc-handled-backends (delq 'Git vc-handled-backends))
   (setq magit-refresh-status-buffer nil)
   :config
   (declare-function fullframe/maybe-restore-configuration "fullframe" (config))
@@ -20,5 +18,9 @@
   :config
   ;; (setq-default gac-debounce-interval 600)
   (setq-default gac-automatically-push-p t))
+
+(use-package diff-hl
+  :config
+  (global-diff-hl-mode))
 
 (provide 'init-vc)
