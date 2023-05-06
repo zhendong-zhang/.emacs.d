@@ -146,23 +146,10 @@
   (add-to-list 'hungry-delete-except-modes 'minibuffer-mode)
   (global-hungry-delete-mode t))
 
-(use-package undo-fu
-  :hook (first-file . undo-fu-mode)
+(use-package undohist
   :config
-  (define-minor-mode undo-fu-mode
-    "Enables `undo-fu' for the current session."
-    :keymap (let ((map (make-sparse-keymap)))
-              (define-key map [remap undo] #'undo-fu-only-undo)
-              (define-key map [remap redo] #'undo-fu-only-redo)
-              map)
-    :init-value nil
-    :global t))
-(use-package undo-fu-session
-  :hook (undo-fu-mode . global-undo-fu-session-mode)
-  :init
-  (setq undo-fu-session-incompatible-files '("\\.gpg$" "/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")
-        undo-fu-session-compression 'zst)
-  )
+  (undohist-initialize))
+(use-package vundo)
 
 (use-package repeat
   :defer-incrementally t
