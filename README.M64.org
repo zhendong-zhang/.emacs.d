@@ -13,6 +13,7 @@
  - [[https://gitforwindows.org/][git]]
  - [[https://www.voidtools.com/zh-cn/downloads/][everything]]
  - [[https://github.com/llvm/llvm-project/releases][llvm]]（或直接在msys2里安装）
+ - [[https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html][plink]]
 - 通过pip安装
 #+begin_src shell
   # mind-wave
