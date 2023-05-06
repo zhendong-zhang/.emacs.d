@@ -98,7 +98,7 @@
                     (let ((default-directory user-emacs-directory)
                           (inhibit-message t)
                           file-name-handler-alist)
-                      (require req nil t))
+                      (require req))
                     t)
                   (push req packages))
             (error
