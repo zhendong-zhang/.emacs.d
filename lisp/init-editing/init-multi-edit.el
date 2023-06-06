@@ -64,7 +64,7 @@
     (setq multi-edit--select-direction (>= n 0))
     (deactivate-mark t))
   (when (and (not (region-active-p)) (not (multi-edit--get-current-overlay)))
-    (multi-edit--add-overlay-at-region (1- (point)) (point) t)
+    (multi-edit--add-overlay-at-region (point) (point) t)
     (setq multi-edit--select-column (- (point) (line-beginning-position)))
     (setq multi-edit--select-direction (>= n 0)))
   (unless (equal multi-edit--select-direction (>= n 0))
@@ -81,7 +81,7 @@
         (if (< n 0) (multi-edit-beginning-of-line nil) (end-of-line))
         (multi-edit--forward-line nil (if (< n 0) -1 1))
         (move-to-column multi-edit--select-column)
-        (setq bounds (cons (1- (point)) (point))))
+        (setq bounds (cons (point) (point))))
       (cl-incf times)
       (multi-edit--add-overlay-at-region (car bounds) (cdr bounds) t))))
 
@@ -358,7 +358,9 @@ Use negative argument to create a backward selection."
 (defun multi-edit--add-overlay-at-region (p1 p2 &optional current)
   (let ((ol (make-overlay p1 p2)))
     (overlay-put ol 'multi-edit t)
-    (overlay-put ol 'face 'region)
+    (if (= p1 p2)
+        (overlay-put ol 'before-string (propertize "|" 'face 'region))
+      (overlay-put ol 'face 'region))
     (overlay-put ol 'multi-edit-order (> p2 p1))
     (when current
       (setq multi-edit--current-overlay ol))
@@ -368,7 +370,7 @@ Use negative argument to create a backward selection."
   (save-restriction
     (multi-edit--narrow-to-secondary-selection-if-exist)
     (let ((step (if (> end beg) 1 -1))
-          (match (multi-edit--region-to-regexp beg end)))
+          (match (multi-edit--region-to-regexp beg end t)))
       (save-mark-and-excursion
         (goto-char (point-min))
         (let ((case-fold-search nil)
@@ -398,13 +400,13 @@ Use negative argument to create a backward selection."
     (narrow-to-region (overlay-start mouse-secondary-overlay)
                       (overlay-end mouse-secondary-overlay))))
 
-(defun multi-edit--region-to-regexp (beg end)
+(defun multi-edit--region-to-regexp (beg end &optional whole-word)
   "Convert the word selected in region to a regexp."
   (let ((s (buffer-substring-no-properties beg end))
         (re (car regexp-search-ring)))
     (if (string-match-p (format "\\`%s\\'" re) s)
         re
-      (format "\\<%s\\>" (regexp-quote s)))))
+      (format (if whole-word "\\<%s\\>" "%s") (regexp-quote s)))))
 
 (defun multi-edit--forward-line (skip-whitespaces &optional n)
   (if (> n 0)
