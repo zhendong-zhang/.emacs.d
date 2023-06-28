@@ -65,7 +65,7 @@
     (deactivate-mark t))
   (when (and (not (region-active-p)) (not (multi-edit--get-current-overlay)))
     (multi-edit--add-overlay-at-region (point) (point) t)
-    (setq multi-edit--select-column (- (point) (line-beginning-position)))
+    (setq multi-edit--select-column (current-column))
     (setq multi-edit--select-direction (>= n 0)))
   (unless (equal multi-edit--select-direction (>= n 0))
     (setq multi-edit--select-direction (>= n 0))
