@@ -114,28 +114,6 @@
   :bind
   ("C-=" . er/expand-region))
 
-(use-package avy
-  :init
-  (setq avy-case-fold-search nil)
-  :bind
-  (("M-g ;" . avy-goto-word-1)
-   ("M-g :" . avy-goto-subword-1)
-   ("C-'" . avy-goto-word-1)
-   ("C-\"" . avy-goto-subword-1)
-   :map isearch-mode-map
-   ("C-'" . avy-isearch))
-  :config
-  (use-package ace-pinyin
-    :diminish ace-pinyin-mode
-    :config
-    (ace-pinyin-global-mode 1)))
-
-(use-package ace-link
-  :bind
-  ("M-g L" . ace-link)
-  :config
-  (ace-link-setup-default))
-
 (use-package move-text
   :config
   (move-text-default-bindings))
