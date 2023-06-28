@@ -1,4 +1,5 @@
 (use-package smartparens
+  :demand
   :diminish (smartparens-strict-mode smartparens-mode)
   :bind
   (:map smartparens-strict-mode-map
@@ -14,8 +15,6 @@
         ("C-M-<return>" . sp-split-sexp)
         ("M-]" . sp-forward-slurp-sexp)
         ("M-[" . sp-forward-barf-sexp))
-  :hook
-  (emacs-lisp-mode . smartparens-strict-mode)
   :config
   (require 'smartparens-config)
   (push 'org-mode sp-ignore-modes-list)
