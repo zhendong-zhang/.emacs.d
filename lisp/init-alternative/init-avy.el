@@ -1,9 +1,17 @@
 (require 'ring)
 
+(defun get-available-avy-keys (dispatch-alist)
+  (let ((keys '(?q ?w ?e ?r ?u ?i ?o ?p ?a ?s ?d ?f ?g ?h ?j ?k ?l ?\;)))
+    (dolist (x dispatch-alist)
+      (when (memq (car x) keys)
+        (setq keys (delq (car x) keys))))
+    keys))
+
 (use-package avy
   :functions avy-action-copy-whole-line avy-action-kill-whole-line flyspell-auto-correct-word
   :custom
   (avy-case-fold-search nil)
+  (avy-style 'at)
   (avy-dispatch-alist '((?k . avy-action-kill-stay)
                         (?K . avy-action-kill-whole-line)
                         (?w . avy-action-copy)
@@ -23,6 +31,7 @@
    :map isearch-mode-map
    ("C-'" . avy-isearch))
   :config
+  (setq avy-keys (get-available-avy-keys avy-dispatch-alist))
   ;; https://karthinks.com/software/avy-can-do-anything/#avy-actions
   (defun avy-action-kill-whole-line (pt)
     (save-excursion
