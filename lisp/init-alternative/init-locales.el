@@ -18,15 +18,16 @@
       ad-do-it
       (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" cmdproxy-old-encoding)
       ))
-  (add-to-list 'process-coding-system-alist '("[eE][sS]" . (gbk . gbk)))
-  (add-to-list 'process-coding-system-alist '("[gG][iI][tT]" . (utf-8 . utf-8)))
-  ;; shell/eshell 中文输入乱码问题
-  (add-to-list 'process-coding-system-alist '("[cC][mM][dD][pP][rR][oO][xX][yY]" . (gbk . gbk)))
-  ;; emacs client 中文文件名乱码问题
-  (setq w32-unicode-filenames nil)
-  (setq file-name-coding-system 'gb18030)
-  ;(setq locale-coding-system 'gb18030)
-  ;(set-language-environment 'gb18030)
-  )
+  ;; 系统环境为中文时以下命令可能存在问题
+  (when (equal current-language-environment "Chinese-GBK")
+    ;; consult-locate
+    (add-to-list 'process-coding-system-alist '("[eE][sS]" . (gbk . gbk)))
+    ;; magit-status
+    (add-to-list 'process-coding-system-alist '("[gG][iI][tT]" . (utf-8 . utf-8)))
+    ;; consult-ripgrep
+    (add-to-list 'process-coding-system-alist '("[rR][gG]" . (utf-8 . gbk)))
+    ;; emacs client 中文文件名乱码问题
+    (setq w32-unicode-filenames nil)
+    (setq file-name-coding-system 'gb18030)))
 
 (provide 'init-locales)
