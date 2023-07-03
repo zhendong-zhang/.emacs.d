@@ -1,5 +1,6 @@
 (use-package doom-modeline
   :custom
+  (doom-modeline-icon nil)
   (doom-modeline-minor-modes t)
   (doom-modeline-enable-word-count t)
   :hook
