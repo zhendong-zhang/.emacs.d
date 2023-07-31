@@ -1,6 +1,7 @@
 (use-package keycast
   :after doom-modeline
   :commands keycast-mode
+  :demand
   :custom
   (keycast-mode-line-format "%k%c")
   :config
@@ -13,7 +14,6 @@
           (add-to-list 'global-mode-string '("" keycast-mode-line " ")))
       (remove-hook 'pre-command-hook 'keycast--update)
       (setq global-mode-string (remove '("" keycast-mode-line " ") global-mode-string))))
-  (keycast-mode)
-  )
+  (keycast-mode))
 
 (provide 'init-keycast)
