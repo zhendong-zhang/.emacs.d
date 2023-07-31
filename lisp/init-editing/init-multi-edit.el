@@ -21,10 +21,40 @@
     keymap)
   "Global keymap for multi edit guide mode.")
 
+(defcustom multi-edit-mode-line-lighter " [ME]"
+  "Mode-line lighter for Multi edit."
+  :type 'string
+  :group 'multi-edit)
+
+(defcustom multi-edit-set-mode-line-p t
+  "Set nil if you use your own mode-line setting"
+  :type 'boolean
+  :group 'multi-edit)
+
+(defvar multi-edit-need-update-mode-line nil)
+
+(defconst multi-edit--mode-line-format '(:eval (multi-edit--update-mode-line)))
+
+(defun multi-edit--update-mode-line ()
+  (let* ((before (multi-edit--overlays-in (point-min) (point)))
+         (after (multi-edit--overlays-in (point) (point-max)))
+         (count (length before)))
+    (format " %d/%d " (+ count 1) (+ count (length after)))))
+
+(defun multi-edit-set-mode-line ()
+  (setq multi-edit-need-update-mode-line t)
+  (when (and multi-edit-set-mode-line-p (not (member multi-edit--mode-line-format mode-line-format)))
+    (setq mode-line-format (cons multi-edit--mode-line-format mode-line-format))))
+
+(defun multi-edit-remove-mode-line ()
+  (setq multi-edit-need-update-mode-line nil)
+  (when (and multi-edit-set-mode-line-p (member multi-edit--mode-line-format mode-line-format))
+    (setq mode-line-format (delete multi-edit--mode-line-format mode-line-format))))
+
 (define-minor-mode multi-edit-guide-mode
   "Multi edit guide mode. "
   :init-value nil
-  :lighter " [ME]"
+  :lighter multi-edit-mode-line-lighter
   :keymap multi-edit-guide-mode-keymap)
 
 (defun multi-edit-guide-mode-toggle (n)
@@ -47,7 +77,7 @@
 (define-minor-mode multi-edit-quick-select-mode
   "Multi edit quick select mode. "
   :init-value nil
-  :lighter " [ME]"
+  :lighter multi-edit-mode-line-lighter
   :keymap multi-edit-quick-select-mode-keymap
   (if multi-edit-quick-select-mode
       (add-hook 'pre-command-hook 'multi-edit-quick-select-actions nil t)
@@ -124,7 +154,7 @@
 (define-minor-mode multi-edit-mode
   "Multi edit mode. "
   :init-value nil
-  :lighter " [ME]"
+  :lighter multi-edit-mode-line-lighter
   :keymap multi-edit-mode-keymap
   (if multi-edit-mode
       (cond (multi-edit-guide-mode
@@ -328,17 +358,23 @@ Use negative argument to create a backward selection."
   multi-edit--current-overlay)
 
 (defun multi-edit--set-current-overlay (current-overlay)
-  (setq multi-edit--current-overlay current-overlay))
+  (setq multi-edit--current-overlay current-overlay)
+  (multi-edit-set-mode-line)
+  (force-mode-line-update))
 
-(defun multi-edit--remove-overlay (ov)
-  (when (overlayp ov)
-    (delete-overlay ov))
-  (setq multi-edit--overlays (cl-remove ov multi-edit--overlays)))
+(defun multi-edit--is-current-overlay (ol)
+  (equal ol multi-edit--current-overlay))
+
+(defun multi-edit--remove-overlay (ol)
+  (when (overlayp ol)
+    (delete-overlay ol))
+  (setq multi-edit--overlays (cl-remove ol multi-edit--overlays)))
 
 (defun multi-edit--remove-overlays ()
   (mapc #'delete-overlay multi-edit--overlays)
   (setq multi-edit--overlays nil)
-  (setq multi-edit--current-overlay nil))
+  (multi-edit--set-current-overlay nil)
+  (multi-edit-remove-mode-line))
 
 (defun mult-edit--overlay< (a b)
   (< (overlay-start a) (overlay-start b)))
@@ -349,11 +385,16 @@ Use negative argument to create a backward selection."
 
 (defun multi-edit--overlay-at-point ()
   (let ((overlays (overlays-at (point)))
-        ov found)
-    (while (and (not found) (setq ov (car overlays)))
-      (setq found (and (overlay-get ov 'multi-edit) ov)
+        ol found)
+    (while (and (not found) (setq ol (car overlays)))
+      (setq found (and (overlay-get ol 'multi-edit) ol)
             overlays (cdr overlays)))
     found))
+
+(defun multi-edit--overlays-in (beg end)
+  (seq-filter (lambda (ol)
+                (overlay-get ol 'multi-edit))
+              (overlays-in beg end)))
 
 (defun multi-edit--add-overlay-at-region (p1 p2 &optional current)
   (let ((ol (make-overlay p1 p2)))
@@ -363,7 +404,7 @@ Use negative argument to create a backward selection."
       (overlay-put ol 'face 'region))
     (overlay-put ol 'multi-edit-order (> p2 p1))
     (when current
-      (setq multi-edit--current-overlay ol))
+      (multi-edit--set-current-overlay ol))
     (push ol multi-edit--overlays)))
 
 (defun multi-edit--add-overlays-for-match (beg end)
@@ -473,7 +514,7 @@ Use negative argument to create a backward selection."
   (atomic-change-group
     (save-mark-and-excursion
       (cl-loop for ol in multi-edit--overlays
-                 when (and (overlayp ol) (not (equal ol multi-edit--current-overlay)))
+                 when (and (overlayp ol) (not (multi-edit--is-current-overlay ol)))
                  do (let* ((order (overlay-get ol 'multi-edit-order)))
                       (goto-char (if order (overlay-end ol) (overlay-start ol)))
                       (funcall 'kmacro-call-macro nil)))
