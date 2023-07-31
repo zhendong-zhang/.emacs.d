@@ -17,7 +17,7 @@
   (setq url-proxy-services
         `(("http" . ,my-proxy)
           ("https" . ,my-proxy)
-          ("no_proxy" . "^\\(localhost\\|192.168.*\\|10.*\\)")))
+          ("no_proxy" . "^\\(localhost\\|127.0.0.1\\|::1\\|192.168.*\\|10.*\\)")))
   (proxy-http-show))
 
 (defun proxy-http-disable ()
@@ -69,5 +69,16 @@
   (if (bound-and-true-p socks-noproxy)
       (proxy-socks-disable)
     (proxy-socks-enable)))
+
+(defvar use-proxy-for-github t)
+(cl-defmacro with-proxy (&rest body)
+  `(progn
+    (when ,use-proxy-for-github
+      ;(proxy-http-enable)
+      (proxy-socks-enable))
+    ,@body
+    (when ,use-proxy-for-github
+      ;(proxy-http-disable)
+      (proxy-socks-disable))))
 
 (provide 'init-proxy)

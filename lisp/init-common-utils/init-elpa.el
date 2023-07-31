@@ -24,7 +24,8 @@
 
 (defun install-package-from-github (package repo)
   (unless (package-installed-p package)
-    (quelpa `(,package :fetcher github :repo ,repo :files ("*")))))
+    (require 'init-proxy)
+    (with-proxy (quelpa `(,package :fetcher github :repo ,repo :files ("*"))))))
 
 (require 'package)
 ;; 国内elpa源
@@ -43,6 +44,7 @@
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+;; (setq use-package-always-demand t)
 (require 'use-package-ensure)
 
 (use-package diminish)
