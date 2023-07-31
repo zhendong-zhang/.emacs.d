@@ -16,6 +16,8 @@
       '(orderless-literal . ""))
      ((string-prefix-p "!" pattern)
       `(orderless-without-literal . ,(substring pattern 1)))
+     ((string-suffix-p "=" pattern)
+      `(orderless-literal . ,(substring pattern 0 -1)))
      ))
 
   (setq orderless-style-dispatchers '(my-orderless-dispatcher))
@@ -58,8 +60,9 @@
   (marginalia-mode t))
 
 (use-package consult
-  :init
-  (setq consult-async-refresh-delay 0.5)
+  :custom
+  (consult-async-refresh-delay 0.5)
+  (consult-async-min-input 1)
   :bind
   (("M-g b" . consult-buffer)
    ("M-g s" . consult-line)

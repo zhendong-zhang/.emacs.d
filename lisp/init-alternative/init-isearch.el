@@ -15,13 +15,23 @@
    ([remap query-replace] . anzu-query-replace))
   :config
   (setq anzu-cons-mode-line-p nil)
-  (set-use-common-thing-at-point 'anzu-query-replace 'anzu-query-replace-regexp)
+  (set-use-common-thing-at-point-unless-use-region 'anzu-query-replace 'anzu-query-replace-regexp)
   (global-anzu-mode t))
+
+;; replace whole buffer when no region select
+(defun perform-replace-in-buffer (oldfun from-string replacements
+                                         query-flag regexp-flag delimited-flag
+                                         &optional repeat-count map start end backward region-noncontiguous-p)
+  (if (and (not start) (not end))
+      (apply oldfun from-string replacements query-flag regexp-flag delimited-flag repeat-count map (point-min) (point-max) backward region-noncontiguous-p)
+    (apply oldfun from-string replacements query-flag regexp-flag delimited-flag repeat-count map start end backward region-noncontiguous-p)))
+(advice-add 'perform-replace :around 'perform-replace-in-buffer)
 
 ;; DEL during isearch should edit the search string, not jump back to the previous result
 (define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
 
-(defun isearch-yank-symbol ()
+(require 'thingatpt)
+(defun isearch-yank-symbol-at-point ()
   "*Put symbol at current point into search string."
   (interactive)
   (let ((sym (symbol-at-point)))
@@ -32,8 +42,20 @@
                 isearch-yank-flag t))
       (ding)))
   (isearch-search-and-update))
+(define-key isearch-mode-map "\C-w" 'isearch-yank-symbol-at-point)
 
-(define-key isearch-mode-map "\C-w" 'isearch-yank-symbol)
+(defun isearch-yank-word-at-point ()
+  "*Put symbol at current point into search string."
+  (interactive)
+  (let ((word (word-at-point)))
+    (if word
+        (progn
+          (setq isearch-string word
+                isearch-message (mapconcat 'isearch-text-char-description isearch-string "")
+                isearch-yank-flag t))
+      (ding)))
+  (isearch-search-and-update))
+(define-key isearch-mode-map "\M-\C-w" 'isearch-yank-word-at-point)
 
 ;; http://www.emacswiki.org/emacs/ZapToISearch
 (defun zap-to-isearch (rbeg rend)
