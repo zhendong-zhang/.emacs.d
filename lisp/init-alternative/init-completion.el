@@ -79,9 +79,7 @@
    consult-bookmark consult-recent-file
    :preview-key "C-<return>")
   (when (and is-windows-nt (executable-find "es"))
-    (setq consult-locate-args "es -sort date-modified-descending"))
-  (set-use-common-thing-at-point 'consult-line 'consult-ripgrep 'consult-locate)
-  )
+    (setq consult-locate-args "es -sort date-modified-descending")))
 
 (use-package embark
   :demand t

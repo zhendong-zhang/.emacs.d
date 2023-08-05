@@ -24,7 +24,7 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             "Recover GC values after startup."
-            (setq gc-cons-threshold 4000000)))
+            (setq gc-cons-threshold 16000000)))
 
 (defvar is-windows-nt (equal system-type 'windows-nt))
 
@@ -82,6 +82,8 @@
 (require-dir "init-common-utils")
 ;; 替换部分内置功能以提升体验
 (require-dir "init-alternative")
+;; 跳转相关
+(require-dir "init-jump-around")
 ;; 外观相关配置
 (require-dir "init-looks")
 ;; 项目管理

@@ -51,6 +51,7 @@
 #+begin_src shell
   git clone https://github.com/casouri/tree-sitter-module
   cd tree-sitter-module
+  export all_proxy=socks5://127.0.0.1:1080
   ./batch.sh
   cp dist/* /e/local/emacs-deps/bin/
 #+end_src

@@ -15,7 +15,6 @@
    ([remap query-replace] . anzu-query-replace))
   :config
   (setq anzu-cons-mode-line-p nil)
-  (set-use-common-thing-at-point-unless-use-region 'anzu-query-replace 'anzu-query-replace-regexp)
   (global-anzu-mode t))
 
 ;; replace whole buffer when no region select
