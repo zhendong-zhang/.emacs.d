@@ -1,5 +1,7 @@
 (use-package treesit
   :ensure nil
+  :init
+  (setq treesit-font-lock-level 4)
   :config
 
   (use-package treesit-auto

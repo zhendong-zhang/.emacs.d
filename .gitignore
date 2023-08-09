@@ -8,3 +8,4 @@ var/
 /etc/eshell/
 /server/
 /lisp/init-private-config/
+/tree-sitter/
