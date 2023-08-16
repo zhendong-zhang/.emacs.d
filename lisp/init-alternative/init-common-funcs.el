@@ -266,4 +266,17 @@ With arg N, insert N newlines."
 
 (global-set-key [remap open-line] 'open-line-with-reindent)
 
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+
+(global-set-key [remap elisp-eval-region-or-buffer] 'eval-and-replace)
+(global-set-key (kbd "C-c C-e") 'eval-and-replace)
+
 (provide 'init-common-funcs)

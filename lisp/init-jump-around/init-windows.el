@@ -13,9 +13,7 @@
   (("<C-S-up>" . buf-move-up)
    ("<C-S-down>" . buf-move-down)
    ("<C-S-left>" . buf-move-left)
-   ("<C-S-right>" . buf-move-right))
-  :config
-  (setq buffer-move-behavior 'move))
+   ("<C-S-right>" . buf-move-right)))
 
 ;;----------------------------------------------------------------------------
 ;; Navigate window layouts with "C-c <left>" and "C-c <right>"
