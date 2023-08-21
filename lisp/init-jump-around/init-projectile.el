@@ -1,4 +1,5 @@
 (use-package projectile
+  :defines is-windows-nt
   :commands (projectile-project-root)
   :custom
   (projectile-mode-line-prefix " P")
