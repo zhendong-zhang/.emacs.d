@@ -56,6 +56,11 @@
 ;;   )
 
 (use-package ef-themes
+  :custom
+  (ef-themes-common-palette-overrides
+   '((bg-tab-bar      bg-alt)
+     (bg-tab-current  bg-alt)
+     (bg-tab-other    bg-alt)))
   :config
   (load-theme 'ef-light :no-confirm))
 
