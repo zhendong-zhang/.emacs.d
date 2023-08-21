@@ -7,7 +7,6 @@
 
   (use-package find-file
     :config
-    (add-to-list 'cc-search-directories "/usr/include/c++/*"))
-  )
+    (add-to-list 'cc-search-directories "/usr/include/c++/*")))
 
 (provide 'init-cc-mode)

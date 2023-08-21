@@ -2,6 +2,7 @@
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)
+  :functions org-entry-get
   :bind
   (:map org-mode-map
         ("C-'" . nil))
@@ -10,7 +11,7 @@
         org-log-into-drawer t
         org-edit-timestamp-down-means-later t
         org-hide-emphasis-markers t
-        org-catch-invisible-edits 'smart
+        org-fold-catch-invisible-edits 'smart
         org-tags-column -80
         org-fast-tag-selection-single-key 'expert
         org-use-fast-todo-selection 'expert
@@ -31,68 +32,69 @@
         org-enforce-todo-dependencies t
         org-enforce-todo-checkbox-dependencies t)
   :config
-  ;; RESET_CHECK_BOXES
-  (setq org-default-properties (cons "RESET_CHECK_BOXES" org-default-properties))
-  (defun my-org-reset-checkbox-state-maybe ()
-    "Reset all checkboxes in an entry if the `RESET_CHECK_BOXES' property is set"
-    (interactive "*")
-    (if (org-entry-get (point) "RESET_CHECK_BOXES")
-        (org-reset-checkbox-state-subtree)))
+  (with-no-warnings
+    ;; RESET_CHECK_BOXES
+    (setq org-default-properties (cons "RESET_CHECK_BOXES" org-default-properties))
+    (defun my-org-reset-checkbox-state-maybe ()
+      "Reset all checkboxes in an entry if the `RESET_CHECK_BOXES' property is set"
+      (interactive "*")
+      (if (org-entry-get (point) "RESET_CHECK_BOXES")
+          (org-reset-checkbox-state-subtree)))
 
-  (defun my-org-reset-checkbox-when-done ()
-    (when (member org-state org-done-keywords)
-      (my-org-reset-checkbox-state-maybe)))
+    (defun my-org-reset-checkbox-when-done ()
+      (when (member org-state org-done-keywords)
+        (my-org-reset-checkbox-state-maybe)))
 
-  (add-hook 'org-after-todo-state-change-hook 'my-org-reset-checkbox-when-done)
+    (add-hook 'org-after-todo-state-change-hook 'my-org-reset-checkbox-when-done)
 
-  ;; RESET_SUBTASKS
-  (setq org-default-properties (cons "RESET_SUBTASKS" org-default-properties))
-  (defun my-org-reset-subtask-state-subtree ()
-    "Reset all subtasks in an entry subtree."
-    (interactive "*")
-    (if (org-before-first-heading-p)
-        (error "Not inside a tree")
-      (save-excursion
-        (save-restriction
-          (org-narrow-to-subtree)
-          (org-show-subtree)
-          (goto-char (point-min))
-          (beginning-of-line 2)
-          (narrow-to-region (point) (point-max))
-          (org-map-entries
-           '(when (member (org-get-todo-state) org-done-keywords)
-              (org-todo (car org-todo-keywords))))
-          ))))
+    ;; RESET_SUBTASKS
+    (setq org-default-properties (cons "RESET_SUBTASKS" org-default-properties))
+    (defun my-org-reset-subtask-state-subtree ()
+      "Reset all subtasks in an entry subtree."
+      (interactive "*")
+      (if (org-before-first-heading-p)
+          (error "Not inside a tree")
+        (save-excursion
+          (save-restriction
+            (org-narrow-to-subtree)
+            (org-show-subtree)
+            (goto-char (point-min))
+            (beginning-of-line 2)
+            (narrow-to-region (point) (point-max))
+            (org-map-entries
+             '(when (member (org-get-todo-state) org-done-keywords)
+                (org-todo (car org-todo-keywords))))
+            ))))
 
-  (defun my-org-reset-subtask-state-maybe ()
-    "Reset all subtasks in an entry if the `RESET_SUBTASKS' property is set"
-    (interactive "*")
-    (if (org-entry-get (point) "RESET_SUBTASKS")
-        (my-org-reset-subtask-state-subtree)))
+    (defun my-org-reset-subtask-state-maybe ()
+      "Reset all subtasks in an entry if the `RESET_SUBTASKS' property is set"
+      (interactive "*")
+      (if (org-entry-get (point) "RESET_SUBTASKS")
+          (my-org-reset-subtask-state-subtree)))
 
-  (defun my-org-reset-subtask-when-done ()
-    (when (member org-state org-done-keywords)
-      (my-org-reset-subtask-state-maybe)))
+    (defun my-org-reset-subtask-when-done ()
+      (when (member org-state org-done-keywords)
+        (my-org-reset-subtask-state-maybe)))
 
-  (add-hook 'org-after-todo-state-change-hook 'my-org-reset-subtask-when-done)
+    (add-hook 'org-after-todo-state-change-hook 'my-org-reset-subtask-when-done)
 
-  ;; SUMMARY_SUBTASKS
-  (setq org-default-properties (cons "SUMMARY_SUBTASKS" org-default-properties))
-  (defun my-org-summary-subtask (n-done n-not-done)
-    "Switch entry to DONE when the `SUMMARY_SUBTASKS' property is set and all subentries are done."
-    (when (and (org-entry-get (point) "SUMMARY_SUBTASKS")
-               (= n-not-done 0))
-      (let (org-log-done org-log-states)
-        (org-todo (car org-done-keywords)))))
-  (add-hook 'org-after-todo-statistics-hook #'my-org-summary-subtask)
+    ;; SUMMARY_SUBTASKS
+    (setq org-default-properties (cons "SUMMARY_SUBTASKS" org-default-properties))
+    (defun my-org-summary-subtask (n-done n-not-done)
+      "Switch entry to DONE when the `SUMMARY_SUBTASKS' property is set and all subentries are done."
+      (when (and (org-entry-get (point) "SUMMARY_SUBTASKS")
+                 (= n-not-done 0))
+        (let (org-log-done org-log-states)
+          (org-todo (car org-done-keywords)))))
+    (add-hook 'org-after-todo-statistics-hook #'my-org-summary-subtask)
 
-   ;; AUTO_LOAD_FILE
-  (setq org-default-properties (cons "AUTO_LOAD_FILE" org-default-properties))
-  (defun my-org-auto-load-file ()
-    "Auto load file."
-    (when-let (file (org-entry-get (point) "AUTO_LOAD_FILE"))
-      (load-file file)))
-  (add-hook 'org-mode-hook #'my-org-auto-load-file)
+    ;; AUTO_LOAD_FILE
+    (setq org-default-properties (cons "AUTO_LOAD_FILE" org-default-properties))
+    (defun my-org-auto-load-file ()
+      "Auto load file."
+      (when-let (file (org-entry-get (point) "AUTO_LOAD_FILE"))
+        (load-file file)))
+    (add-hook 'org-mode-hook #'my-org-auto-load-file))
   )
 
 ;; insert links form clipboard.
@@ -152,6 +154,7 @@
 (use-package org-preview-html :after org :diminish)
 
 (use-package org-download
+  :defines is-windows-nt
   :after org
   :config
   (when is-windows-nt
@@ -194,8 +197,9 @@
   :config
   (use-package emacsql-sqlite-builtin)
   (org-roam-db-autosync-mode)
-  (add-hook 'org-roam-capture-new-node-hook (lambda()
-                                              (org-roam-tag-add '("draft"))))
+  (with-no-warnings
+    (add-hook 'org-roam-capture-new-node-hook (lambda()
+                                                (org-roam-tag-add '("draft")))))
   (cl-defmethod org-roam-node-type ((node org-roam-node))
     "Return the TYPE of NODE."
     (condition-case nil
@@ -245,21 +249,22 @@
   (citar-bibliography org-cite-global-bibliography)
   (citar-library-paths `(,(concat my-org-directory "/books")))
   :config
-  (defun org-roam-node-from-cite (keys-entries)
-    (interactive (list (citar-select-ref :multiple nil :rebuild-cache t)))
-    (let ((title (citar--format-entry-no-widths (cdr keys-entries)
-                                                "${author editor} :: ${title}")))
-      (org-roam-capture- :templates
-                         '(("r" "reference" plain "%?" :if-new
-                            (file+head "reference/${citekey}.org"
-                                       ":PROPERTIES:
+  (with-no-warnings
+    (defun org-roam-node-from-cite (keys-entries)
+      (interactive (list (citar-select-ref :multiple nil :rebuild-cache t)))
+      (let ((title (citar--format-entry-no-widths (cdr keys-entries)
+                                                  "${author editor} :: ${title}")))
+        (org-roam-capture- :templates
+                           '(("r" "reference" plain "%?" :if-new
+                              (file+head "reference/${citekey}.org"
+                                         ":PROPERTIES:
 :ROAM_REFS: [cite:@${citekey}]
 :END:
 #+title: ${title}\n")
-                            :immediate-finish t
-                            :unnarrowed t))
-                         :info (list :citekey (car keys-entries))
-                         :node (org-roam-node-create :title title)
-                         :props '(:finalize find-file)))))
+                              :immediate-finish t
+                              :unnarrowed t))
+                           :info (list :citekey (car keys-entries))
+                           :node (org-roam-node-create :title title)
+                           :props '(:finalize find-file))))))
 
 (provide 'init-org-mode)

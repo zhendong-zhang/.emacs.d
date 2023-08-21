@@ -5,6 +5,7 @@
   :config
 
   (use-package treesit-auto
+    :commands global-treesit-auto-mode
     :custom
     (treesit-auto-install 'prompt)
     :config

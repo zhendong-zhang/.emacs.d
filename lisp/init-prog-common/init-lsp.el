@@ -24,7 +24,8 @@
   :after (xref)
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate 2)
-  (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+  (with-no-warnings
+    (setq xref-show-definitions-function #'xref-show-definitions-completing-read))
   (setq dumb-jump-force-searcher 'ag))
 
 (defvar use-lsp-bridge nil)

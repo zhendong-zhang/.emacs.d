@@ -3,7 +3,7 @@
   :demand
   :diminish
   :defines (recentf-exclude)
-  :functions (recentf-include-p)
+  :functions (recentf-include-p set-persp-parameter persp-parameter)
   :commands (get-current-persp persp-contain-buffer-p)
   :hook ((after-init . persp-mode))
   :init (setq persp-keymap-prefix (kbd "C-x p")
@@ -52,13 +52,14 @@
    :mode-restore-function (lambda (_) (shell))
    :save-vars '(major-mode default-directory))
 
-  ;; Tab-Bar-Mode integration
-  (defun my-save-tabs (&rest _)
-    (set-persp-parameter 'tab-bar-tabs (frameset-filter-tabs (tab-bar-tabs) nil nil t)))
+  (with-no-warnings
+    ;; Tab-Bar-Mode integration
+    (defun my-save-tabs (&rest _)
+      (set-persp-parameter 'tab-bar-tabs (frameset-filter-tabs (tab-bar-tabs) nil nil t)))
 
-  (defun my-load-tabs (&rest _)
-    (tab-bar-tabs-set (persp-parameter 'tab-bar-tabs))
-    (tab-bar--update-tab-bar-lines t))
+    (defun my-load-tabs (&rest _)
+      (tab-bar-tabs-set (persp-parameter 'tab-bar-tabs))
+      (tab-bar--update-tab-bar-lines t)))
 
   (add-hook 'persp-before-deactivate-functions 'my-save-tabs)
   (add-hook 'persp-activated-functions 'my-load-tabs)
