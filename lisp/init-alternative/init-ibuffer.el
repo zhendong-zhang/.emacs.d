@@ -2,11 +2,11 @@
   :defer t
   :bind
   ([remap list-buffers] . ibuffer-list-buffers)
-  :init
-  (setq ibuffer-expert t
-        ibuffer-show-empty-filter-groups nil
-        ibuffer-display-summary nil
-        ibuffer-filter-group-name-face 'font-lock-doc-face)
+  :custom
+  (ibuffer-expert t)
+  (ibuffer-show-empty-filter-groups nil)
+  (ibuffer-display-summary nil)
+  (ibuffer-filter-group-name-face 'font-lock-doc-face)
   :config
   (require 'ibuf-ext)
   (define-ibuffer-column size-h

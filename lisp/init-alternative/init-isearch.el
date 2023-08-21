@@ -81,8 +81,7 @@ and the point, not include the isearch word."
       (if (> (mark) ismax)
           (kill-region ismax (mark))
         (error "Internal error in isearch kill function.")))
-    (isearch-exit)
-    ))
+    (isearch-exit)))
 
 (define-key isearch-mode-map [(meta z)] 'zap-to-isearch)
 

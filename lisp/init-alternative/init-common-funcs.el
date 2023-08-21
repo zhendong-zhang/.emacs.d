@@ -2,10 +2,11 @@
   "If the buffer is narrowed, it widens. Otherwise, it narrows to region
 , or Org subtree."
   (interactive)
-  (cond ((buffer-narrowed-p) (widen))
-        ((region-active-p) (narrow-to-region (region-beginning) (region-end)))
-        ((equal major-mode 'org-mode) (org-narrow-to-subtree))
-        (t (error "Please select a region to narrow to"))))
+  (with-no-warnings
+    (cond ((buffer-narrowed-p) (widen))
+          ((region-active-p) (narrow-to-region (region-beginning) (region-end)))
+          ((equal major-mode 'org-mode) (org-narrow-to-subtree))
+          (t (error "Please select a region to narrow to")))))
 ;; remap C-x n n to `narrow-or-widen-dwim'
 (global-set-key [remap narrow-to-region] 'narrow-or-widen-dwim)
 
@@ -124,7 +125,7 @@ point reaches the beginning or end of the buffer, stop there."
 
   (if (= char 13)
       (save-excursion
-        (copy-region-as-kill (point) (point-at-eol))
+        (copy-region-as-kill (point) (line-end-position))
         (message "copied to end of line."))
     (save-excursion
       (copy-region-as-kill (point) (search-forward (char-to-string char) nil nil arg)))
@@ -135,7 +136,7 @@ point reaches the beginning or end of the buffer, stop there."
   "Copy to end of line."
   (interactive)
   (save-excursion
-    (copy-region-as-kill (point) (point-at-eol))
+    (copy-region-as-kill (point) (line-end-position))
     (message "copied to end of line.")))
 (global-set-key (kbd "C-x c e") 'copy-to-end-of-line)
 

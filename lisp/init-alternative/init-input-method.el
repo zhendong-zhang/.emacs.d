@@ -1,4 +1,25 @@
-(if (not is-windows-nt)
+(use-package pyim
+  :when is-windows-nt
+  :defer-incrementally pyim-autoselector pyim-common pyim-cstring pyim-dhashcache pyim-indicator pyim-page pyim-preview pyim-process pyim-scheme
+  :init
+  (setq default-input-method "pyim")
+  :bind (:map pyim-mode-map
+              ("." . pyim-next-page)
+              ("," . pyim-previous-page))
+  :config
+  (setq pyim-page-length 5
+        pyim-page-tooltip 'posframe
+        pyim-page-style 'vertical
+        pyim-dcache-backend 'pyim-dhashcache)
+  (pyim-default-scheme 'quanpin)
+
+  (use-package pyim-tsinghua-dict
+    :github "redguardtoo/pyim-tsinghua-dict"
+    :config
+    (pyim-tsinghua-dict-enable)))
+
+(with-no-warnings
+  (unless is-windows-nt
     (use-package rime
       :init
       (setq rime-user-data-dir (expand-file-name "rime-config" user-emacs-directory)
@@ -9,25 +30,6 @@
                   :internal-border-width 10)
             default-input-method "rime"
             rime-show-candidate 'posframe
-            rime-title "CH "))
-  (use-package pyim
-    :defer-incrementally pyim-autoselector pyim-common pyim-cstring pyim-dhashcache pyim-indicator pyim-page pyim-preview pyim-process pyim-scheme
-    :init
-    (setq default-input-method "pyim")
-    :bind (:map pyim-mode-map
-                ("." . pyim-next-page)
-                ("," . pyim-previous-page))
-    :config
-    (setq pyim-page-length 5
-          pyim-page-tooltip 'posframe
-          pyim-page-style 'vertical
-          pyim-dcache-backend 'pyim-dhashcache)
-    (pyim-default-scheme 'quanpin)
-
-    (use-package pyim-tsinghua-dict
-      :github "redguardtoo/pyim-tsinghua-dict"
-      :config
-      (pyim-tsinghua-dict-enable))
-    ))
+            rime-title "CH "))))
 
 (provide 'init-input-method)

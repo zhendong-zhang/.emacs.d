@@ -17,11 +17,8 @@
      ((string-prefix-p "!" pattern)
       `(orderless-without-literal . ,(substring pattern 1)))
      ((string-suffix-p "=" pattern)
-      `(orderless-literal . ,(substring pattern 0 -1)))
-     ))
-
-  (setq orderless-style-dispatchers '(my-orderless-dispatcher))
-  )
+      `(orderless-literal . ,(substring pattern 0 -1)))))
+  (setq orderless-style-dispatchers '(my-orderless-dispatcher)))
 
 (use-package vertico
   :custom
@@ -43,23 +40,24 @@
     :bind (:map vertico-map
                 ([remap avy-goto-word-1] . vertico-quick-insert)))
 
-  (defun basic-remote-try-completion (string table pred point)
-    (and (vertico--remote-p string)
-         (completion-basic-try-completion string table pred point)))
-  (defun basic-remote-all-completions (string table pred point)
-    (and (vertico--remote-p string)
-         (completion-basic-all-completions string table pred point)))
-  (add-to-list
-   'completion-styles-alist
-   '(basic-remote basic-remote-try-completion basic-remote-all-completions nil))
-  (setq completion-category-overrides '((file (styles basic-remote partial-completion))))
-  )
+  (with-no-warnings
+    (defun basic-remote-try-completion (string table pred point)
+      (and (vertico--remote-p string)
+           (completion-basic-try-completion string table pred point)))
+    (defun basic-remote-all-completions (string table pred point)
+      (and (vertico--remote-p string)
+           (completion-basic-all-completions string table pred point)))
+    (add-to-list
+     'completion-styles-alist
+     '(basic-remote basic-remote-try-completion basic-remote-all-completions nil))
+    (setq completion-category-overrides '((file (styles basic-remote partial-completion))))))
 
 (use-package marginalia
   :config
   (marginalia-mode t))
 
 (use-package consult
+  :defines is-windows-nt
   :custom
   (consult-async-refresh-delay 0.5)
   (consult-async-min-input 1)
@@ -90,7 +88,6 @@
   (("C-." . embark-act)
    ("M-." . embark-dwim)
    ("C-h B" . embark-bindings))
-
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
