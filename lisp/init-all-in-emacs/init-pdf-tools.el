@@ -1,4 +1,5 @@
 (use-package pdf-tools
+  :commands pdf-view-midnight-minor-mode
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :magic ("%PDF" . pdf-view-mode)
   :config
