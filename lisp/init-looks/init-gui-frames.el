@@ -16,22 +16,24 @@
 (when window-system
   (setq frame-title-format
         '(buffer-file-name (:eval (abbreviate-file-name buffer-file-name))
-                         (dired-directory dired-directory "%b")))
+                           (dired-directory dired-directory "%b")))
   (global-hl-line-mode 1)
   (global-display-line-numbers-mode 1)
-  (use-package linum-relative
-    :diminish linum-relative-mode
-    :init
-    (setq linum-relative-current-symbol "")
-    (setq linum-relative-backend 'display-line-numbers-mode)
-    :config
-    (linum-relative-global-mode)))
+  (with-no-warnings
+    (use-package linum-relative
+      :diminish linum-relative-mode
+      :init
+      (setq linum-relative-current-symbol "")
+      (setq linum-relative-backend 'display-line-numbers-mode)
+      :config
+      (linum-relative-global-mode))))
 
 (which-function-mode t)
 (column-number-mode t)
 (size-indication-mode 1)
 
 (use-package time
+  :defines is-windows-nt
   :ensure nil
   :init
   (setq display-time-24hr-format t
