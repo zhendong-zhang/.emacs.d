@@ -2,9 +2,10 @@
   :defer t
   :commands (scratch))
 
-(use-package persistent-scratch
-  :if (not is-windows-nt)
-  :config
-  (persistent-scratch-setup-default))
+(with-no-warnings
+  (unless is-windows-nt
+    (use-package persistent-scratch
+      :config
+      (persistent-scratch-setup-default))))
 
 (provide 'init-scratch)

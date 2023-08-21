@@ -9,6 +9,7 @@
   (prog-mode . symbol-overlay-mode))
 
 (use-package hl-todo
+  :commands global-hl-todo-mode
   :config
   (global-hl-todo-mode t))
 

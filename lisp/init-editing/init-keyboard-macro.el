@@ -17,7 +17,6 @@
   (declare-function my-elmacro-show-defun "init-keyboard-macro")
   (advice-add 'elmacro-show-defun :override #'my-elmacro-show-defun)
 
-  (defalias 'save-last-macro 'elmacro-show-last-macro)
-  )
+  (defalias 'save-last-macro 'elmacro-show-last-macro))
 
 (provide 'init-keyboard-macro)
