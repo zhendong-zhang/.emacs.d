@@ -1,5 +1,5 @@
 (use-package pyim
-  :when is-windows-nt
+  :when (equal system-type 'windows-nt)
   :defer-incrementally pyim-autoselector pyim-common pyim-cstring pyim-dhashcache pyim-indicator pyim-page pyim-preview pyim-process pyim-scheme
   :init
   (setq default-input-method "pyim")
@@ -18,18 +18,16 @@
     :config
     (pyim-tsinghua-dict-enable)))
 
-(with-no-warnings
-  (unless is-windows-nt
-    (use-package rime
-      :init
-      (setq rime-user-data-dir (expand-file-name "rime-config" user-emacs-directory)
-            rime-posframe-properties
-            (list :background-color "#333333"
-                  :foreground-color "#dcdccc"
-                  :font "WenQuanYi Micro Hei Mono-14"
-                  :internal-border-width 10)
-            default-input-method "rime"
-            rime-show-candidate 'posframe
-            rime-title "CH "))))
+(use-package rime
+  :unless (equal system-type 'windows-nt)
+  :custom
+  (rime-user-data-dir (expand-file-name "rime-config" user-emacs-directory))
+  (rime-posframe-properties (list :background-color "#333333"
+                                  :foreground-color "#dcdccc"
+                                  :font "WenQuanYi Micro Hei Mono-14"
+                                  :internal-border-width 10))
+  (default-input-method "rime")
+  (rime-show-candidate 'posframe)
+  (rime-title "CH "))
 
 (provide 'init-input-method)

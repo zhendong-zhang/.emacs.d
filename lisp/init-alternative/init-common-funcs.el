@@ -2,11 +2,11 @@
   "If the buffer is narrowed, it widens. Otherwise, it narrows to region
 , or Org subtree."
   (interactive)
-  (with-no-warnings
-    (cond ((buffer-narrowed-p) (widen))
-          ((region-active-p) (narrow-to-region (region-beginning) (region-end)))
-          ((equal major-mode 'org-mode) (org-narrow-to-subtree))
-          (t (error "Please select a region to narrow to")))))
+  (declare-function org-narrow-to-subtree "org")
+  (cond ((buffer-narrowed-p) (widen))
+        ((region-active-p) (narrow-to-region (region-beginning) (region-end)))
+        ((equal major-mode 'org-mode) (org-narrow-to-subtree))
+        (t (error "Please select a region to narrow to"))))
 ;; remap C-x n n to `narrow-or-widen-dwim'
 (global-set-key [remap narrow-to-region] 'narrow-or-widen-dwim)
 
@@ -80,10 +80,8 @@ point reaches the beginning or end of the buffer, stop there."
   "Smarter zap up to char, to support mc."
   (interactive (list (prefix-numeric-value current-prefix-arg)
                      (read-char "Zap up to char: " t)))
-  ;; Avoid "obsolete" warnings for translation-table-for-input.
-  (with-no-warnings
-    (if (char-table-p translation-table-for-input)
-        (setq char (or (aref translation-table-for-input char) char))))
+  (if (char-table-p keyboard-translate-table)
+      (setq char (or (aref keyboard-translate-table char) char)))
   (let ((direction (if (>= arg 0) 1 -1)))
     (kill-region (point)
                  (progn
@@ -106,10 +104,8 @@ point reaches the beginning or end of the buffer, stop there."
   "Like Zap-to-char, but not kill."
   (interactive (list (prefix-numeric-value current-prefix-arg)
              (read-char "Jump to char: " t)))
-  ;; Avoid "obsolete" warnings for translation-table-for-input.
-  (with-no-warnings
-    (if (char-table-p translation-table-for-input)
-    (setq char (or (aref translation-table-for-input char) char))))
+  (if (char-table-p keyboard-translate-table)
+      (setq char (or (aref keyboard-translate-table char) char)))
   (search-forward (char-to-string char) nil nil arg))
 (global-set-key (kbd "M-g c") 'jump-to-char)
 (global-set-key (kbd "M-g C") 'goto-char)
@@ -118,10 +114,8 @@ point reaches the beginning or end of the buffer, stop there."
   "Like Zap-to-char, but not kill, default is copy to end of line."
   (interactive (list (prefix-numeric-value current-prefix-arg)
                      (read-char "Copy to char(default to end of line): " t)))
-  ;; Avoid "obsolete" warnings for translation-table-for-input.
-  (with-no-warnings
-    (if (char-table-p translation-table-for-input)
-        (setq char (or (aref translation-table-for-input char) char))))
+  (if (char-table-p keyboard-translate-table)
+      (setq char (or (aref keyboard-translate-table char) char)))
 
   (if (= char 13)
       (save-excursion

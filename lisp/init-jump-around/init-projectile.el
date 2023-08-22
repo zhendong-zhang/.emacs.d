@@ -1,5 +1,4 @@
 (use-package projectile
-  :defines is-windows-nt
   :commands (projectile-project-root)
   :custom
   (projectile-mode-line-prefix " P")
@@ -18,7 +17,7 @@
    ((executable-find "rg")
     (setq projectile-generic-command "rg -0 --files --follow --color=never --hidden")))
 
-  (when is-windows-nt
+  (when (equal system-type 'windows-nt)
     (setq projectile-git-submodule-command nil))
 
   (projectile-mode))

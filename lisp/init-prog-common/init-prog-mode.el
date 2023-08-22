@@ -27,6 +27,7 @@
   :init
   (setq next-error-verbose nil)
   (setq flycheck-emacs-lisp-load-path 'inherit)
+  (setq flycheck-emacs-lisp-check-declare t)
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
   :hook
   (after-init . global-flycheck-mode))

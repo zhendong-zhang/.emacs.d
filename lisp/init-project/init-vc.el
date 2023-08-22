@@ -1,5 +1,6 @@
 (use-package fullframe)
 
+;; TODO magit安装重启后报错,删除magit重新安装即可
 (use-package magit
   :defer-incrementally magit-core magit-diff magit-log magit-wip magit-apply magit-repos git-commit format-spec with-editor magit
   :commands (magit-status)

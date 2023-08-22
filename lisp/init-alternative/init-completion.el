@@ -40,24 +40,23 @@
     :bind (:map vertico-map
                 ([remap avy-goto-word-1] . vertico-quick-insert)))
 
-  (with-no-warnings
-    (defun basic-remote-try-completion (string table pred point)
-      (and (vertico--remote-p string)
-           (completion-basic-try-completion string table pred point)))
-    (defun basic-remote-all-completions (string table pred point)
-      (and (vertico--remote-p string)
-           (completion-basic-all-completions string table pred point)))
-    (add-to-list
-     'completion-styles-alist
-     '(basic-remote basic-remote-try-completion basic-remote-all-completions nil))
-    (setq completion-category-overrides '((file (styles basic-remote partial-completion))))))
+  (declare-function vertico--remote-p "vertico")
+  (defun basic-remote-try-completion (string table pred point)
+    (and (vertico--remote-p string)
+         (completion-basic-try-completion string table pred point)))
+  (defun basic-remote-all-completions (string table pred point)
+    (and (vertico--remote-p string)
+         (completion-basic-all-completions string table pred point)))
+  (add-to-list
+   'completion-styles-alist
+   '(basic-remote basic-remote-try-completion basic-remote-all-completions nil))
+  (setq completion-category-overrides '((file (styles basic-remote partial-completion)))))
 
 (use-package marginalia
   :config
   (marginalia-mode t))
 
 (use-package consult
-  :defines is-windows-nt
   :custom
   (consult-async-refresh-delay 0.5)
   (consult-async-min-input 1)
@@ -78,7 +77,7 @@
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file
    :preview-key "C-<return>")
-  (when (and is-windows-nt (executable-find "es"))
+  (when (and (equal system-type 'windows-nt) (executable-find "es"))
     (setq consult-locate-args "es -sort date-modified-descending"))
   (require 'consult-imenu))
 

@@ -19,7 +19,7 @@
                            (dired-directory dired-directory "%b")))
   (global-hl-line-mode 1)
   (global-display-line-numbers-mode 1)
-  (with-no-warnings
+  (with-suppressed-warnings
     (use-package linum-relative
       :diminish linum-relative-mode
       :init
@@ -33,7 +33,6 @@
 (size-indication-mode 1)
 
 (use-package time
-  :defines is-windows-nt
   :ensure nil
   :init
   (setq display-time-24hr-format t
@@ -41,7 +40,7 @@
         display-time-format "%a %m.%d %R"
         display-time-default-load-average nil)
   :config
-  (unless is-windows-nt
+  (unless (equal system-type 'windows-nt)
     (display-time-mode t)))
 
 (provide 'init-gui-frames)

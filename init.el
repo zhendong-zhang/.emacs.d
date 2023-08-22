@@ -26,8 +26,6 @@
             "Recover GC values after startup."
             (setq gc-cons-threshold 16000000)))
 
-(defvar is-windows-nt (equal system-type 'windows-nt))
-
 (let ((minver "28.2"))
   (when (version< emacs-version minver)
     (error "Your Emacs is too old -- this config requires v%s or higher" minver)))

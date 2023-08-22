@@ -1,30 +1,30 @@
 (defun find-fastest-mirror-for-me ()
   (interactive)
-  (with-no-warnings
-    (require 'benchmark)
-    (pp (seq-sort-by #'cdr #'<
-                     (mapcar
-                      (lambda (pair)
-                        (let ((name (car pair))
-                              (url  (cdr pair)))
-                          (cons
-                           name
-                           (benchmark-elapse
-                             (url-copy-file
-                              (concat url "archive-contents")
-                              null-device
-                              'OK-IF-ALREADY-EXISTS)))))
-                      '((163         . "https://mirrors.163.com/elpa/melpa/")
-                        (emacs-china . "https://elpamirror.emacs-china.org/melpa/")
-                        (sjtu        . "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/")
-                        (tencent     . "https://mirrors.cloud.tencent.com/elpa/melpa/")
-                        (tuna        . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))))))
+  (declare-function benchmark-elapse "benchmark")
+  (pp (seq-sort-by #'cdr #'<
+                   (mapcar
+                    (lambda (pair)
+                      (let ((name (car pair))
+                            (url  (cdr pair)))
+                        (cons
+                         name
+                         (benchmark-elapse
+                          (url-copy-file
+                           (concat url "archive-contents")
+                           null-device
+                           'OK-IF-ALREADY-EXISTS)))))
+                    '((163         . "https://mirrors.163.com/elpa/melpa/")
+                      (emacs-china . "https://elpamirror.emacs-china.org/melpa/")
+                      (sjtu        . "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/")
+                      (tencent     . "https://mirrors.cloud.tencent.com/elpa/melpa/")
+                      (tuna        . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))))))
 
 (defun install-package-from-github (package repo)
   (unless (package-installed-p package)
-    (with-no-warnings
-      (require 'init-proxy)
-      (with-proxy (quelpa `(,package :fetcher github :repo ,repo :files ("*")))))))
+    (require 'init-proxy)
+    (declare-function with-proxy "init-proxy")
+    (with-proxy
+     (package-vc-install (format "https://github.com/%s" repo)))))
 
 (require 'package)
 ;; 国内elpa源
@@ -49,25 +49,18 @@
 (use-package diminish)
 (use-package no-littering)
 
-(use-package quelpa
-  :commands (quelpa quelpa-upgrade)
-  :init
-  (setq quelpa-checkout-melpa-p nil)
-  (setq quelpa-dir (no-littering-expand-var-file-name "quelpa")))
-
 ;; from doom-emacs
-(with-no-warnings
-  (defvar incremental-packages-list '()
-    "A list of packages to load incrementally after startup. Any large packages
+(defvar incremental-packages-list '()
+  "A list of packages to load incrementally after startup. Any large packages
   here may cause noticeable pauses, so it's recommended you break them up into
   sub-packages. For example, `org' is comprised of many packages, and can be
   broken up into:
 
     (load-packages-incrementally
-     '(calendar find-func format-spec org-macs org-compat
+     \\='(calendar find-func format-spec org-macs org-compat
        org-faces org-entities org-list org-pcomplete org-src
        org-footnote org-macro ob org org-clock org-agenda
-       org-capture))"))
+       org-capture))")
 
 (defvar incremental-first-idle-timer 3.0
   "How long (in idle seconds) until incremental loading starts.

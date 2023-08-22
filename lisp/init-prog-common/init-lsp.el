@@ -21,11 +21,11 @@
     ))
 
 (use-package dumb-jump
+  :preface
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
   :after (xref)
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate 2)
-  (with-no-warnings
-    (setq xref-show-definitions-function #'xref-show-definitions-completing-read))
   (setq dumb-jump-force-searcher 'ag))
 
 (defvar use-lsp-bridge nil)
