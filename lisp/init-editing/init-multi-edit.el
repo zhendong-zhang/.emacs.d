@@ -1,3 +1,26 @@
+(defcustom multi-edit-mode-line-lighter " [ME]"
+  "Mode-line lighter for Multi edit."
+  :type 'string
+  :group 'multi-edit)
+
+(defcustom multi-edit-set-mode-line-p t
+  "Set nil if you use your own mode-line setting."
+  :type 'boolean
+  :group 'multi-edit)
+
+(defcustom multi-edit-grab-range-list (list 'defun 'paragraph 'buffer)
+  "Selection range for `multi-edit-guide-mode-toggle' and `multi-edit-try-grab'."
+  :type 'list
+  :group 'multi-edit)
+
+(defvar multi-edit-mode-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "C-;") 'multi-edit-guide-mode-toggle)
+    (define-key keymap (kbd "C->") 'multi-edit-quick-select)
+    (define-key keymap (kbd "C-<") 'multi-edit-quick-cancel)
+    keymap)
+  "Keymap for `multi-edit-mode'")
+
 (defvar multi-edit-guide-mode-keymap
   (let ((keymap (make-keymap)))
     (suppress-keymap keymap t)
@@ -19,145 +42,59 @@
     (define-key keymap (kbd "m L") 'multi-edit-mark-line-content)
     (define-key keymap (kbd "a L") 'multi-edit-mark-all-line-content)
     keymap)
-  "Global keymap for multi edit guide mode.")
-
-(defcustom multi-edit-mode-line-lighter " [ME]"
-  "Mode-line lighter for Multi edit."
-  :type 'string
-  :group 'multi-edit)
-
-(defcustom multi-edit-set-mode-line-p t
-  "Set nil if you use your own mode-line setting"
-  :type 'boolean
-  :group 'multi-edit)
-
-(defvar multi-edit-need-update-mode-line nil)
-
-(defconst multi-edit--mode-line-format '(:eval (multi-edit--update-mode-line)))
-
-(defun multi-edit--update-mode-line ()
-  (let* ((ol (multi-edit--get-nearest-overlay))
-         (before (multi-edit--overlays-in (point-min) (or (and (overlayp ol) (overlay-start ol)) (point))))
-         (after (multi-edit--overlays-in (or (and (overlayp ol) (1+ (overlay-end ol))) (point)) (point-max)))
-         (count (+ (length before) (if (overlayp ol) 1 0))))
-    (format " %d/%d " count (+ count (length after)))))
-
-(defun multi-edit-set-mode-line ()
-  (setq multi-edit-need-update-mode-line t)
-  (when (and multi-edit-set-mode-line-p (not (member multi-edit--mode-line-format mode-line-format)))
-    (setq mode-line-format (cons multi-edit--mode-line-format mode-line-format))))
-
-(defun multi-edit-remove-mode-line ()
-  (setq multi-edit-need-update-mode-line nil)
-  (when (and multi-edit-set-mode-line-p (member multi-edit--mode-line-format mode-line-format))
-    (setq mode-line-format (delete multi-edit--mode-line-format mode-line-format))))
-
-(define-minor-mode multi-edit-guide-mode
-  "Multi edit guide mode. "
-  :init-value nil
-  :lighter multi-edit-mode-line-lighter
-  :keymap multi-edit-guide-mode-keymap)
-
-(defun multi-edit-guide-mode-toggle (n)
-  (interactive "p")
-  (if multi-edit-guide-mode
-      (progn
-        (multi-edit-quit)
-        (multi-edit-guide-mode -1))
-    (multi-edit-guide-mode 1)
-    (multi-edit-grab n)))
-
-(define-key global-map (kbd "C-;") 'multi-edit-guide-mode-toggle)
+  "Keymap for `multi-edit-guide-mode'.")
 
 (defvar multi-edit-quick-select-mode-keymap
   (let ((keymap (make-sparse-keymap)))
+    (define-key keymap (kbd "C-;") 'multi-edit-quick-select-mode)
     (define-key keymap (kbd "C-g") 'multi-edit-quick-select-mode)
     keymap)
-  "Global keymap for multi edit mode.")
+  "Keymap for `multi-edit-quick-select-mode'.")
+
+(defvar multi-edit-action-mode-keymap
+  (let ((keymap (make-sparse-keymap)))
+    (define-key keymap (kbd "C-;") 'multi-edit-action-mode)
+    (define-key keymap (kbd "C-g") 'multi-edit-action-mode)
+    keymap)
+  "Keymap for `multi-edit-action-mode'.")
+
+(defvar multi-edit-need-update-mode-line nil)
+(defvar multi-edit--select-direction nil)
+(defvar multi-edit--select-column nil)
+(defvar multi-edit-quick-select-commands '(multi-edit-quick-select multi-edit-quick-cancel multi-edit-quick-select-mode
+                                           universal-argument universal-argument-more negative-argument digit-argument
+                                           previous-line next-line execute-extended-command)
+  "Which command should not change to `multi-edit-action-mode'.")
+(defvar multi-edit--last-undo-length nil
+  "Easy undo after multi edit.")
+(defvar multi-edit--last-modify-point nil)
+
+(defconst multi-edit--mode-line-format '(:eval (multi-edit--update-mode-line)))
+(defvar-local multi-edit--overlays nil)
+
+(define-minor-mode multi-edit-mode
+  "Multi edit mode. "
+  :init-value t
+  :keymap multi-edit-mode-keymap)
+
+(define-minor-mode multi-edit-guide-mode
+  "Multi edit guide mode. "
+  :lighter multi-edit-mode-line-lighter
+  :keymap multi-edit-guide-mode-keymap)
 
 (define-minor-mode multi-edit-quick-select-mode
   "Multi edit quick select mode. "
-  :init-value nil
   :lighter multi-edit-mode-line-lighter
   :keymap multi-edit-quick-select-mode-keymap
   (if multi-edit-quick-select-mode
       (add-hook 'pre-command-hook 'multi-edit-quick-select-actions nil t)
     (remove-hook 'pre-command-hook 'multi-edit-quick-select-actions t)))
 
-(defvar multi-edit--select-direction nil)
-(defvar multi-edit--select-column nil)
-(defun multi-edit-quick-select (n)
-  (interactive "p")
-  (multi-edit-quick-select-mode 1)
-  (when (not (multi-edit--overlays-exist))
-    (if (region-active-p)
-        (progn
-          (multi-edit--add-overlay-at-region (region-beginning) (region-end))
-          (setq multi-edit--select-column nil)
-          (deactivate-mark t))
-      (multi-edit--add-overlay-at-region (point) (point))
-      (setq multi-edit--select-column (current-column))))
-  (setq multi-edit--select-direction (>= n 0))
-  (when-let (ol (multi-edit--get-front-overlay multi-edit--select-direction))
-    (goto-char (if multi-edit--select-direction (overlay-end ol) (overlay-start ol)))
-    (let* ((case-fold-search nil)
-           (bounds (cons (overlay-start ol) (overlay-end ol)))
-           (match (multi-edit--region-to-regexp (car bounds) (cdr bounds)))
-           (times 0))
-      (while (and bounds (< times (abs n)))
-        (if (not multi-edit--select-column)
-            (setq bounds (if (< n 0) (multi-edit--re-search-backward match) (multi-edit--re-search-forward match)))
-          (if (< n 0) (multi-edit-beginning-of-line nil) (end-of-line))
-          (multi-edit--forward-line nil (if (< n 0) -1 1))
-          (move-to-column multi-edit--select-column)
-          (setq bounds (cons (point) (point))))
-        (cl-incf times)
-        (multi-edit--add-overlay-at-region (car bounds) (cdr bounds))))))
-
-(defun multi-edit-quick-cancel (n)
-  (interactive "p")
-  (if (or (not multi-edit-quick-select-mode) (not (multi-edit--overlays-exist)))
-      (error "quick select mode is not active!")
-    (when-let (ol (multi-edit--get-nearest-overlay (not multi-edit--select-direction)))
-      (goto-char (if multi-edit--select-direction (overlay-start ol) (overlay-end ol)))
-      (let* ((case-fold-search nil)
-             (bounds (cons (overlay-start ol) (overlay-end ol)))
-             (match (multi-edit--region-to-regexp (car bounds) (cdr bounds)))
-             (times 0))
-        (while (and bounds (< times (abs n)))
-          (multi-edit--remove-overlay (multi-edit--get-nearest-overlay (not multi-edit--select-direction)))
-          (setq bounds (if multi-edit--select-direction (multi-edit--re-search-backward match) (multi-edit--re-search-forward match)))
-          (cl-incf times))))))
-
-(defvar multi-edit-quick-select-commands '(multi-edit-quick-select multi-edit-quick-cancel
-                                           universal-argument universal-argument-more negative-argument digit-argument
-                                           previous-line next-line execute-extended-command)
-  "which command should not change to multi-edit-mode.")
-
-(defun multi-edit-quick-select-actions ()
-  (when (equal this-command 'multi-edit-quick-select-mode)
-    (multi-edit-quit))
-  (unless (memq this-command multi-edit-quick-select-commands)
-    (multi-edit-mode 1)
-    (setq this-command #'ignore)
-    (push last-input-event unread-command-events)))
-
-(define-key global-map (kbd "C->") 'multi-edit-quick-select)
-(define-key global-map (kbd "C-<") 'multi-edit-quick-cancel)
-
-(defvar multi-edit-mode-keymap
-  (let ((keymap (make-sparse-keymap)))
-    (define-key keymap (kbd "C-;") 'multi-edit-mode)
-    (define-key keymap (kbd "C-g") 'multi-edit-mode)
-    keymap)
-  "Global keymap for multi edit mode.")
-
-(define-minor-mode multi-edit-mode
-  "Multi edit mode. "
-  :init-value nil
+(define-minor-mode multi-edit-action-mode
+  "Multi edit action mode. "
   :lighter multi-edit-mode-line-lighter
-  :keymap multi-edit-mode-keymap
-  (if multi-edit-mode
+  :keymap multi-edit-action-mode-keymap
+  (if multi-edit-action-mode
       (cond (multi-edit-guide-mode
              (multi-edit-guide-mode -1)
              (multi-edit--maybe-start-macro))
@@ -168,6 +105,17 @@
     (if (secondary-selection-exist-p)
         (multi-edit-guide-mode 1)
       (multi-edit-quit))))
+
+;; multi-edit-guide-mode
+
+(defun multi-edit-guide-mode-toggle (n)
+  (interactive "p")
+  (if multi-edit-guide-mode
+      (progn
+        (multi-edit-quit)
+        (multi-edit-guide-mode -1))
+    (multi-edit-guide-mode 1)
+    (multi-edit-grab n)))
 
 (defun multi-edit-grab (n)
   "Create secondary selection if no region available."
@@ -181,7 +129,6 @@
 (defun multi-edit--cancel-secondary-selection ()
   (delete-overlay mouse-secondary-overlay))
 
-(defvar multi-edit--grab-range-list (list 'defun 'paragraph 'buffer))
 (defun multi-edit--guess-secondary-selection (n)
   (cond ((region-active-p)
          (move-overlay mouse-secondary-overlay (region-beginning) (region-end)))
@@ -189,7 +136,7 @@
          (move-overlay mouse-secondary-overlay (line-beginning-position (- 2 n)) (line-end-position n)))
         (t
          (when-let (bounds
-                    (cl-case (car multi-edit--grab-range-list)
+                    (cl-case (car multi-edit-grab-range-list)
                       ((defun)
                        (bounds-of-thing-at-point 'defun))
                       ((paragraph)
@@ -200,9 +147,9 @@
 
 (defun multi-edit-try-grab ()
   (interactive)
-  (let* ((first (car multi-edit--grab-range-list)))
-    (setq multi-edit--grab-range-list (cl-remove first multi-edit--grab-range-list))
-    (add-to-list 'multi-edit--grab-range-list first t))
+  (let* ((first (car multi-edit-grab-range-list)))
+    (setq multi-edit-grab-range-list (cl-remove first multi-edit-grab-range-list))
+    (add-to-list 'multi-edit-grab-range-list first t))
   (multi-edit--guess-secondary-selection 1))
 
 (defun multi-edit-mark-word (n)
@@ -349,10 +296,8 @@ Use negative argument to create a backward selection."
         (if all
             (multi-edit--add-overlays-for-thing thing beg end)
           (multi-edit--add-overlays-for-match beg end))
-        (multi-edit-mode 1))
+        (multi-edit-action-mode 1))
     (push-mark beg t t)))
-
-(defvar-local multi-edit--overlays nil)
 
 (defun multi-edit--add-overlay-at-region (p1 p2)
   (let ((ol (make-overlay p1 p2)))
@@ -495,9 +440,65 @@ Use negative argument to create a backward selection."
     (let ((selected (completing-read prompt completions nil nil)))
       selected)))
 
-(defvar multi-edit--last-undo-length nil
-  "fast undo after multi edit.")
-(defvar multi-edit--last-modify-point nil)
+(defun multi-edit-quit ()
+  (multi-edit--remove-overlays)
+  (multi-edit--cancel-secondary-selection)
+  (deactivate-mark t))
+
+;; multi-edit-quick-select-mode
+
+(defun multi-edit-quick-select (n)
+  (interactive "p")
+  (multi-edit-quick-select-mode 1)
+  (when (not (multi-edit--overlays-exist))
+    (if (region-active-p)
+        (progn
+          (multi-edit--add-overlay-at-region (region-beginning) (region-end))
+          (setq multi-edit--select-column nil)
+          (deactivate-mark t))
+      (multi-edit--add-overlay-at-region (point) (point))
+      (setq multi-edit--select-column (current-column))))
+  (setq multi-edit--select-direction (>= n 0))
+  (when-let (ol (multi-edit--get-front-overlay multi-edit--select-direction))
+    (goto-char (if multi-edit--select-direction (overlay-end ol) (overlay-start ol)))
+    (let* ((case-fold-search nil)
+           (bounds (cons (overlay-start ol) (overlay-end ol)))
+           (match (multi-edit--region-to-regexp (car bounds) (cdr bounds)))
+           (times 0))
+      (while (and bounds (< times (abs n)))
+        (if (not multi-edit--select-column)
+            (setq bounds (if (< n 0) (multi-edit--re-search-backward match) (multi-edit--re-search-forward match)))
+          (if (< n 0) (multi-edit-beginning-of-line nil) (end-of-line))
+          (multi-edit--forward-line nil (if (< n 0) -1 1))
+          (move-to-column multi-edit--select-column)
+          (setq bounds (cons (point) (point))))
+        (cl-incf times)
+        (multi-edit--add-overlay-at-region (car bounds) (cdr bounds))))))
+
+(defun multi-edit-quick-cancel (n)
+  (interactive "p")
+  (if (or (not multi-edit-quick-select-mode) (not (multi-edit--overlays-exist)))
+      (error "quick select mode is not active!")
+    (when-let (ol (multi-edit--get-nearest-overlay (not multi-edit--select-direction)))
+      (goto-char (if multi-edit--select-direction (overlay-start ol) (overlay-end ol)))
+      (let* ((case-fold-search nil)
+             (bounds (cons (overlay-start ol) (overlay-end ol)))
+             (match (multi-edit--region-to-regexp (car bounds) (cdr bounds)))
+             (times 0))
+        (while (and bounds (< times (abs n)))
+          (multi-edit--remove-overlay (multi-edit--get-nearest-overlay (not multi-edit--select-direction)))
+          (setq bounds (if multi-edit--select-direction (multi-edit--re-search-backward match) (multi-edit--re-search-forward match)))
+          (cl-incf times))))))
+
+(defun multi-edit-quick-select-actions ()
+  (when (equal this-command 'multi-edit-quick-select-mode)
+    (multi-edit-quit))
+  (unless (memq this-command multi-edit-quick-select-commands)
+    (multi-edit-action-mode 1)
+    (setq this-command #'ignore)
+    (push last-input-event unread-command-events)))
+
+;; multi-edit-action-mode
 
 (defun multi-edit--is-last-modify-overlay (ol)
   (and (<= (overlay-start ol) multi-edit--last-modify-point)
@@ -533,9 +534,23 @@ Use negative argument to create a backward selection."
                      finally return (append new-list list)))))
   (multi-edit--remove-overlays))
 
-(defun multi-edit-quit ()
-  (multi-edit--remove-overlays)
-  (multi-edit--cancel-secondary-selection)
-  (deactivate-mark t))
+;; mode line
+
+(defun multi-edit--update-mode-line ()
+  (let* ((ol (multi-edit--get-nearest-overlay))
+         (before (multi-edit--overlays-in (point-min) (or (and (overlayp ol) (overlay-start ol)) (point))))
+         (after (multi-edit--overlays-in (or (and (overlayp ol) (1+ (overlay-end ol))) (point)) (point-max)))
+         (count (+ (length before) (if (overlayp ol) 1 0))))
+    (format " %d/%d " count (+ count (length after)))))
+
+(defun multi-edit-set-mode-line ()
+  (setq multi-edit-need-update-mode-line t)
+  (when (and multi-edit-set-mode-line-p (not (member multi-edit--mode-line-format mode-line-format)))
+    (setq mode-line-format (cons multi-edit--mode-line-format mode-line-format))))
+
+(defun multi-edit-remove-mode-line ()
+  (setq multi-edit-need-update-mode-line nil)
+  (when (and multi-edit-set-mode-line-p (member multi-edit--mode-line-format mode-line-format))
+    (setq mode-line-format (delete multi-edit--mode-line-format mode-line-format))))
 
 (provide 'init-multi-edit)
