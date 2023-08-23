@@ -25,12 +25,7 @@
               confirm-kill-processes nil
               enable-recursive-minibuffers t
               large-file-warning-threshold nil
-              warning-minimum-level :error
-              display-buffer-base-action '((display-buffer--maybe-same-window
-                                            display-buffer-reuse-window
-                                            display-buffer-in-previous-window
-                                            display-buffer-use-some-window
-                                            display-buffer-pop-up-window)))
+              warning-minimum-level :error)
 
 ;; recentf
 (use-package recentf
