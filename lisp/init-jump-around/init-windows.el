@@ -64,4 +64,19 @@
 (global-set-key "\C-x|" 'split-window-horizontally-instead)
 (global-set-key "\C-x_" 'split-window-vertically-instead)
 
+(defun display-buffer-2-windows (buffer alist)
+  "If only one window is available split it and display BUFFER there.
+ALIST is the option channel for display actions (see `display-buffer')."
+  (when (eq (length (window-list nil 'no-minibuf)) 1)
+    (display-buffer--maybe-pop-up-window buffer alist)))
+
+(setq display-buffer-base-action
+      '((display-buffer--maybe-same-window
+         display-buffer-reuse-window
+         display-buffer--maybe-pop-up-frame
+         display-buffer-2-windows
+         display-buffer-in-previous-window
+         display-buffer-use-some-window
+         display-buffer-pop-up-frame)))
+
 (provide 'init-windows)
