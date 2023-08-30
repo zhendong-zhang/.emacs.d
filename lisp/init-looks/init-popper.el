@@ -49,6 +49,7 @@
                               "\\*prolog\\*" inferior-python-mode inf-ruby-mode swift-repl-mode
                               "\\*rustfmt\\*$" rustic-compilation-mode rustic-cargo-clippy-mode
                               rustic-cargo-outdated-mode rustic-cargo-test-moed))
+  (popper-display-function #'my-popper-select-popup-at-bottom)
   :preface
   (defun my-popper-fit-window-height (win)
     "Determine the height of popup window WIN by fitting it to the buffer's content."
@@ -65,6 +66,18 @@
       (let ((window (caar popper-open-popup-alist)))
         (when (window-live-p window)
           (delete-window window)))))
+  (defun my-popper-select-popup-at-bottom (buffer &optional alist)
+    "Display and switch to popup-buffer BUFFER at the bottom of the screen."
+    (let ((window (my-popper-display-popup-at-bottom buffer alist)))
+      (select-window window)))
+  (defun my-popper-display-popup-at-bottom (buffer &optional alist)
+    "Display popup-buffer BUFFER at the bottom of the screen."
+    (display-buffer-at-bottom
+     buffer
+     (append alist
+             `((window-height . ,popper-window-height)
+               (side . bottom)
+               (slot . 1)))))
   :config
   (popper-mode 1)
   (require 'popper-echo)
