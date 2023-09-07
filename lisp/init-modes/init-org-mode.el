@@ -14,40 +14,6 @@
     (when (member org-state org-done-keywords)
       (my-org-reset-checkbox-state-maybe)))
 
-  (defun my-org-reset-subtask-state-subtree ()
-    "Reset all subtasks in an entry subtree."
-    (interactive "*")
-    (if (org-before-first-heading-p)
-        (error "Not inside a tree")
-      (save-excursion
-        (save-restriction
-          (org-narrow-to-subtree)
-          (org-fold-show-subtree)
-          (goto-char (point-min))
-          (beginning-of-line 2)
-          (narrow-to-region (point) (point-max))
-          (org-map-entries
-           '(when (member (org-get-todo-state) org-done-keywords)
-              (org-todo (car org-todo-keywords))))))))
-
-  (defun my-org-reset-subtask-state-maybe ()
-    "Reset all subtasks in an entry if the `RESET_SUBTASKS' property is set"
-    (interactive "*")
-    (if (org-entry-get (point) "RESET_SUBTASKS")
-        (my-org-reset-subtask-state-subtree)))
-
-  (defun my-org-reset-subtask-when-done ()
-    (when (member org-state org-done-keywords)
-      (my-org-reset-subtask-state-maybe)))
-
-  (defun my-org-summary-subtask (n-done n-not-done)
-    "Switch entry to DONE when the `SUMMARY_SUBTASKS' property is set
- and all subentries are done."
-    (when (and (org-entry-get (point) "SUMMARY_SUBTASKS")
-               (= n-not-done 0))
-      (let (org-log-done org-log-states)
-        (org-todo (car org-done-keywords)))))
-
   (defun my-org-auto-load-file ()
     "Auto load file."
     (when-let (file (org-entry-get (point) "AUTO_LOAD_FILE"))
@@ -68,9 +34,18 @@
         org-support-shift-select t
         org-directory my-org-directory
         org-default-notes-file (concat my-org-directory "/gtd.org")
+        ;; inbox/todo -> next -> done
+        ;;            -> waiting -> next -> done
+        ;;            -> someday -> next -> done
+        ;;            -> cancel
         org-todo-keywords
-        '((sequence "TODO(t)" "DOING(i!)" "HANGUP(h@/!)" "|" "DONE(d!)" "CANCEL(c@/@)"))
-        org-todo-keyword-faces '(("HANGUP" . warning))
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
+          (sequence "PROJECT(p)" "|" "DONE(d!/!)" "CANCELLED(c@/!)")
+          (sequence "WAITING(w@/!)" "SOMEDAY(s)" "|" "CANCELLED(c@/!)")
+          (sequence "RECORD(r)" "|" "CANCELLED(c)"))
+        org-todo-repeat-to-state "NEXT"
+        org-todo-keyword-faces '(("NEXT" . warning)
+                                 ("PROJECT" :inherit font-lock-string-face))
         org-priority-faces '((?A . error)
                              (?B . warning)
                              (?C . success))
@@ -79,23 +54,22 @@
         org-confirm-babel-evaluate nil
         org-adapt-indentation nil
         org-enforce-todo-dependencies t
-        org-enforce-todo-checkbox-dependencies t)
+        org-enforce-todo-checkbox-dependencies t
+        org-startup-with-inline-images t
+        org-image-actual-width '(600))
   :config
   ;; RESET_CHECK_BOXES
   (setq org-default-properties (cons "RESET_CHECK_BOXES" org-default-properties))
   (add-hook 'org-after-todo-state-change-hook 'my-org-reset-checkbox-when-done)
 
-  ;; RESET_SUBTASKS
-  (setq org-default-properties (cons "RESET_SUBTASKS" org-default-properties))
-  (add-hook 'org-after-todo-state-change-hook 'my-org-reset-subtask-when-done)
-
-  ;; SUMMARY_SUBTASKS
-  (setq org-default-properties (cons "SUMMARY_SUBTASKS" org-default-properties))
-  (add-hook 'org-after-todo-statistics-hook #'my-org-summary-subtask)
-
   ;; AUTO_LOAD_FILE
   (setq org-default-properties (cons "AUTO_LOAD_FILE" org-default-properties))
   (add-hook 'org-mode-hook #'my-org-auto-load-file))
+
+(use-package org-habit :ensure nil
+  :after org
+  :config
+  (add-to-list 'org-modules 'org-habit))
 
 ;; insert links form clipboard.
 (use-package org-cliplink
@@ -117,30 +91,66 @@
   ("C-c c" . org-capture)
   :config
   (setq org-capture-templates
-        `(("t" "todo" entry (file "")
-           "* TODO %?\n%U\n" :clock-resume t)
+        `(("i" "important" entry (file "")
+           "* TODO [#A] %?\n%U\n" :clock-resume t)
+          ("t" "todo" entry (file "")
+           "* TODO [#B] %?\n%U\n" :clock-resume t)
           ("n" "note" entry (file "")
            "* %? :NOTE:\n%U\n%a\n" :clock-resume t))))
 
 (use-package org-agenda :ensure nil
   :bind
   ("C-c a" . org-agenda)
-  :init
-  (setq org-agenda-files `(,my-org-directory)
-        org-agenda-compact-blocks t
-        org-agenda-sticky t
-        org-agenda-window-setup 'other-window
-        org-agenda-todo-ignore-with-date t
-        org-agenda-show-all-dates nil
-        org-agenda-show-future-repeats 'next))
+  :custom
+  (org-agenda-files `(,my-org-directory))
+  (org-agenda-compact-blocks t)
+  (org-agenda-sticky t)
+  (org-agenda-span 'day)
+  (org-agenda-include-diary t)
+  (org-agenda-window-setup 'current-window)
+  (org-agenda-show-all-dates nil)
+  (org-agenda-show-future-repeats 'next)
+  (org-agenda-start-with-log-mode t)
+  (org-agenda-include-deadlines t)
+  (org-agenda-block-separator nil)
+  (org-agenda-custom-commands `(("n" "Notes" tags "NOTE"
+                                 ((org-agenda-overriding-header "Notes")))))
+  (org-agenda-time-grid '((daily today require-timed) nil " ----- " ""))
+  (org-agenda-current-time-string "now ---")
+  (org-agenda-log-mode-items '(closed clock state))
+  :config
+  (require 'org-super-agenda))
 
-(use-package org-clock
+(use-package org-super-agenda
+  :custom
+  (org-super-agenda-groups '((:name "Today" :time-grid t :date today :scheduled today :deadline today)
+                             (:name "Next to do" :todo "NEXT")
+                             (:name "Stuck Projects" :and (:todo "PROJECT" :not (:children todo)))
+                             (:name "Projects" :and (:todo "PROJECT" :children todo))
+                             (:name "Important" :priority "A")
+                             (:name "Inbox" :and (:tag "INBOX" :todo t))
+                             (:name "Due Soon" :deadline future)
+                             (:name "Almost Done" :effort< "0:30")
+                             (:name "Unimportant" :todo ("WAITING" "RECORD") :priority<= "B" :scheduled future)
+                             (:name none :anything)))
+  :hook
+  (org-agenda-mode . org-super-agenda-mode)
+  :config
+  (push '("g" "GTD"
+          ((agenda "" ((org-super-agenda-groups nil)))
+           (alltodo "" ((org-agenda-overriding-header "")
+                        (org-agenda-todo-ignore-with-date t)
+                        (org-super-agenda-groups
+                         (cdr org-super-agenda-groups))))))
+        org-agenda-custom-commands))
+
+(use-package org-clock :ensure nil
   :defer t
-  :ensure nil
-  :init
-  (setq org-clock-persist t
-        org-clock-in-resume t
-        org-clock-out-remove-zero-time-clocks t)
+  :custom
+  (org-clock-persist t)
+  (org-clock-in-resume t)
+  (org-clock-out-remove-zero-time-clocks t)
+  (org-clock-mode-line-total 'today)
   :config
   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
   (org-clock-persistence-insinuate))
@@ -150,6 +160,12 @@
   :bind
   (:map org-agenda-mode-map
         ("P" . org-pomodoro)))
+
+(use-package org-appear
+  :after org
+  :custom
+  (org-appear-autolinks t)
+  :hook (org-mode . org-appear-mode))
 
 (use-package org-preview-html :after org :diminish)
 

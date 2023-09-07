@@ -79,6 +79,4 @@ ALIST is the option channel for display actions (see `display-buffer')."
          display-buffer-use-some-window
          display-buffer-pop-up-frame)))
 
-(setq-default split-height-threshold nil)
-
 (provide 'init-windows)

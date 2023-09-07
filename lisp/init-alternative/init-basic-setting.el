@@ -25,7 +25,8 @@
               confirm-kill-processes nil
               enable-recursive-minibuffers t
               large-file-warning-threshold nil
-              warning-minimum-level :error)
+              warning-minimum-level :error
+              buffer-file-coding-system 'utf-8-unix)
 
 ;; recentf
 (use-package recentf

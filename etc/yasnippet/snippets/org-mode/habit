@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: habit
+# key: habit
+# --
+** TODO ${1:thing}
+SCHEDULED: <${2:`(org-read-date)`} ${3:++1d}>
+:PROPERTIES:
+:STYLE: habit
+:END:
