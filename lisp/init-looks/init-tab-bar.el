@@ -6,6 +6,7 @@
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
+  (tab-bar-auto-width nil)
   :config
   (tab-bar-mode 1))
 
