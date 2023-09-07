@@ -41,7 +41,7 @@
                 isearch-yank-flag t))
       (ding)))
   (isearch-search-and-update))
-(define-key isearch-mode-map "\C-w" 'isearch-yank-symbol-at-point)
+(define-key isearch-mode-map (kbd "C-M-y") 'isearch-yank-symbol-at-point)
 
 (defun isearch-yank-word-at-point ()
   "*Put symbol at current point into search string."
@@ -54,7 +54,7 @@
                 isearch-yank-flag t))
       (ding)))
   (isearch-search-and-update))
-(define-key isearch-mode-map "\M-\C-w" 'isearch-yank-word-at-point)
+(define-key isearch-mode-map (kbd "C-M-Y") 'isearch-yank-word-at-point)
 
 ;; http://www.emacswiki.org/emacs/ZapToISearch
 (defun zap-to-isearch (rbeg rend)
