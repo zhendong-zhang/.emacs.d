@@ -152,6 +152,5 @@
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-h C-k") 'find-function-on-key)
 (global-set-key (kbd "M-g i") 'imenu)
-(global-set-key (kbd "C-<tab>") 'previous-buffer)
 
 (provide 'init-basic-setting)

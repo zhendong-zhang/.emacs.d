@@ -274,4 +274,21 @@ With arg N, insert N newlines."
 (global-set-key [remap elisp-eval-region-or-buffer] 'eval-and-replace)
 (global-set-key (kbd "C-c C-e") 'eval-and-replace)
 
+(defun alternate-buffer (&optional window)
+  "Switch back and forth between current and last buffer in the
+current window."
+  (interactive)
+  (cl-destructuring-bind (buf start pos)
+      (let ((buffer-list (when (fboundp 'persp-buffer-list) (persp-buffer-list)))
+            (my-buffer (window-buffer window)))
+        (seq-find (lambda (it)
+                    (and (not (eq (car it) my-buffer))
+                         (member (car it) buffer-list)))
+                  (window-prev-buffers)
+                  (list (other-buffer) nil nil)))
+    (if (not buf)
+        (message "Last buffer not found.")
+      (set-window-buffer-start-and-point window buf start pos))))
+(global-set-key (kbd "C-<tab>") 'alternate-buffer)
+
 (provide 'init-common-funcs)
