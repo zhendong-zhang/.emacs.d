@@ -22,6 +22,8 @@
 
 (use-package diff-hl
   :config
-  (global-diff-hl-mode))
+  (global-diff-hl-mode)
+  (require 'diff-hl-margin)
+  (diff-hl-margin-mode))
 
 (provide 'init-vc)
