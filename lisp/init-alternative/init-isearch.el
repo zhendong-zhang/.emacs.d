@@ -54,7 +54,7 @@
                 isearch-yank-flag t))
       (ding)))
   (isearch-search-and-update))
-(define-key isearch-mode-map (kbd "C-M-Y") 'isearch-yank-word-at-point)
+(define-key isearch-mode-map (kbd "C-M-S-y") 'isearch-yank-word-at-point)
 
 ;; http://www.emacswiki.org/emacs/ZapToISearch
 (defun zap-to-isearch (rbeg rend)
