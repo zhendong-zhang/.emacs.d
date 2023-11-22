@@ -26,7 +26,7 @@
             "Recover GC values after startup."
             (setq gc-cons-threshold 16000000)))
 
-(let ((minver "28.2"))
+(let ((minver "29.1"))
   (when (version< emacs-version minver)
     (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
 

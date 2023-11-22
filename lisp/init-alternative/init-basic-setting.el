@@ -142,6 +142,7 @@
   (repeat-mode))
 
 (use-package wgrep
+  :after grep
   :bind
   (:map grep-mode-map
         ("C-x C-q" . wgrep-change-to-wgrep-mode)))

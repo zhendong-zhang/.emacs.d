@@ -2,12 +2,12 @@
   :demand
   :bind
   (:map popper-mode-map
-        ("M-g h"   . popper-toggle-latest)
+        ("M-g h"   . popper-toggle)
         ("C-`"   . popper-cycle)
         ("M-`" . popper-toggle-type))
   :custom
   (popper-mode-line nil)
-  (popper-reference-buffers '("\\*Messages\\*" "\\*Warnings\\*" "\\*Backtrace\\*" "Output\\*$" "\\*Pp Eval Output\\*$"
+  (popper-reference-buffers '("\\*Warnings\\*" "\\*Backtrace\\*" "Output\\*$" "\\*Pp Eval Output\\*$"
                               help-mode helpful-mode
                               grep-mode occur-mode rg-mode deadgrep-mode ag-mode pt-mode ivy-occur-mode ivy-occur-grep-mode
                               "\\*Completions\\*"
@@ -34,7 +34,7 @@
                               "\\*eldoc\\*"
                               gnus-article-mode devdocs-mode
                               process-menu-mode list-environment-mode cargo-process-mode
-                              youdao-dictionary-mode osx-dictionary-mode fanyi-mode
+                              youdao-dictionary-mode osx-dictionary-mode fanyi-mode maple-translate-mode
                               "\\*ELP Profiling Restuls\\*" profiler-report-mode
                               "\\*Paradox Report\\*$" "\\*package update results\\*$" "\\*Package-Lint\\*$"
                               "\\*[Wo]*Man.*\\*$"
@@ -48,7 +48,7 @@
                               "\\*docker-containers\\*" "\\*docker-images\\*" "\\*docker-networks\\*" "\\*docker-volumes\\*"
                               "\\*prolog\\*" inferior-python-mode inf-ruby-mode swift-repl-mode
                               "\\*rustfmt\\*$" rustic-compilation-mode rustic-cargo-clippy-mode
-                              rustic-cargo-outdated-mode rustic-cargo-test-moed))
+                              rustic-cargo-outdated-mode rustic-cargo-test-mode))
   (popper-display-function #'my-popper-select-popup-at-bottom)
   :preface
   (defun my-popper-fit-window-height (win)
