@@ -1,6 +1,7 @@
-(use-package fanyi
+(use-package maple-translate
+  :github "honmaple/emacs-maple-translate"
   :bind
-  ("M-s d" . fanyi-dwim))
+  ("M-s d" . maple-translate+))
 
 (use-package acm
   :after (lsp-bridge)
