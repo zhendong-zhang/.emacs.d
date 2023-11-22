@@ -14,10 +14,19 @@
         ("C-<tab>" . nil)))
 
 (use-package git-auto-commit-mode
-  :defer t
   :commands (git-auto-commit-mode)
+  :preface
+  (defun gac-kill-emacs-hook ()
+    (when (and (bound-and-true-p gac-debounce-interval)
+               (bound-and-true-p gac--debounce-timers))
+      (maphash #'(lambda (key value)
+                   (message "saving %s." key)
+                   (gac--after-save key))
+               gac--debounce-timers)))
+  :hook
+  (kill-emacs . gac-kill-emacs-hook)
   :config
-  ;; (setq-default gac-debounce-interval 600)
+  (setq-default gac-debounce-interval (* 60 60 24))
   (setq-default gac-automatically-push-p t))
 
 (use-package diff-hl
