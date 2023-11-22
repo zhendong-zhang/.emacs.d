@@ -11,7 +11,7 @@
           (add-to-list 'global-mode-string '("" keycast-mode-line " ")))
       (remove-hook 'pre-command-hook 'keycast--update)
       (setq global-mode-string (remove '("" keycast-mode-line " ") global-mode-string))))
-  :demand
+  :defer-incrementally t
   :custom
   (keycast-mode-line-format "%k%c")
   :config

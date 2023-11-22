@@ -1,5 +1,6 @@
 (defun find-fastest-mirror-for-me ()
   (interactive)
+  (require 'benchmark)
   (declare-function benchmark-elapse "benchmark")
   (pp (seq-sort-by #'cdr #'<
                    (mapcar
@@ -24,13 +25,13 @@
     (require 'init-proxy)
     (declare-function with-proxy "init-proxy")
     (with-proxy
-     (package-vc-install (format "https://github.com/%s" repo)))))
+     (package-vc-install (format "https://github.com/%s" repo) nil nil package))))
 
 (require 'package)
 ;; 国内elpa源
-(setq package-archives '(("melpa" . "https://mirrors.163.com/elpa/melpa/")
+(setq package-archives '(("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
                          ;; ("melpa-stable" . "https://mirrors.163.com/elpa/melpa-stable/")
-                         ("gnu" . "https://mirrors.163.com/elpa/gnu/")))
+                         ("gnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
 (package-initialize 'noactivate)
 (unless (file-exists-p package-user-dir)
   (make-directory package-user-dir t))

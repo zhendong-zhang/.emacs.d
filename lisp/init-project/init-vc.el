@@ -30,6 +30,7 @@
   (setq-default gac-automatically-push-p t))
 
 (use-package diff-hl
+  :defer-incrementally t
   :config
   (global-diff-hl-mode)
   (require 'diff-hl-margin)

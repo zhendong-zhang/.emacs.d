@@ -13,6 +13,7 @@
   (use-package saveplace-pdf-view))
 
 (use-package org-pdftools
+  :defer-incrementally t
   :hook
   (org-mode . org-pdftools-setup-link))
 

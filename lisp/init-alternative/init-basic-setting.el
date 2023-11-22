@@ -25,6 +25,7 @@
               confirm-kill-processes nil
               enable-recursive-minibuffers t
               large-file-warning-threshold nil
+              bidi-display-reordering nil ;; 大文件提速
               warning-minimum-level :error
               buffer-file-coding-system 'utf-8-unix)
 
@@ -44,6 +45,7 @@
         recentf-keep '(file-remote-p file-readable-p))
   :config
   (use-package sync-recentf
+    :defer-incrementally t
     :init
     (setq recentf-auto-cleanup 60))
   (recentf-mode 1))
@@ -58,7 +60,7 @@
 (setq auto-save-file-name-transforms
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
-(use-package unfill)
+(use-package unfill :defer-incrementally t)
 ;; type text replaces the selection
 (delete-selection-mode t)
 ;; many commands will change their behavior, such as undo changes within current region.
@@ -93,6 +95,7 @@
   (browse-kill-ring-default-keybindings))
 
 (use-package whitespace-cleanup-mode
+  :defer-incrementally t
   :diminish
   :config
   (global-whitespace-cleanup-mode t))
@@ -128,7 +131,7 @@
 (use-package undohist
   :config
   (undohist-initialize))
-(use-package vundo)
+(use-package vundo :defer-incrementally t)
 
 (use-package repeat
   :defer-incrementally t
@@ -139,7 +142,6 @@
   (repeat-mode))
 
 (use-package wgrep
-  :demand
   :bind
   (:map grep-mode-map
         ("C-x C-q" . wgrep-change-to-wgrep-mode)))

@@ -11,8 +11,6 @@
   (dired-mode . my-dired-setup)
   :init
   ;; 多目录操作时，优先以另外的目录做为目标
-  (setq dired-dwim-target t)
-  :config
-  (use-package diff-hl))
+  (setq dired-dwim-target t))
 
 (provide 'init-dired)
