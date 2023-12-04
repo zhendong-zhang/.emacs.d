@@ -5,15 +5,16 @@
 ** 下载安装emacs及依赖软件
 - 下载[[https://corwin.bru.st/emacs-28/][emacs最新版]]
 - 绿色版软件
- - [[https://github.com/BurntSushi/ripgrep/releases][ripgrep]]
- - [[https://www.voidtools.com/zh-cn/downloads/][es]]
- - [[https://github.com/sharkdp/fd/releases][fd]]
- - [[https://udomain.dl.sourceforge.net/project/gnuwin32/coreutils/5.3.0/coreutils-5.3.0-bin.zip][coreutils]]
+  - [[https://github.com/BurntSushi/ripgrep/releases][ripgrep]]
+  - [[https://www.voidtools.com/zh-cn/downloads/][es]]
+  - [[https://github.com/sharkdp/fd/releases][fd]]
+  - [[https://udomain.dl.sourceforge.net/project/gnuwin32/coreutils/5.3.0/coreutils-5.3.0-bin.zip][coreutils]]
+  - [[https://sourceforge.net/projects/mplayerwin/][mplayer]]
 - 可安装软件
- - [[https://gitforwindows.org/][git]]
- - [[https://www.voidtools.com/zh-cn/downloads/][everything]]
- - [[https://github.com/llvm/llvm-project/releases][llvm]]（或直接在msys2里安装）
- - [[https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html][plink]]
+  - [[https://gitforwindows.org/][git]]
+  - [[https://www.voidtools.com/zh-cn/downloads/][everything]]
+  - [[https://github.com/llvm/llvm-project/releases][llvm]]（或直接在msys2里安装）
+  - [[https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html][plink]]
 - 通过pip安装
 #+begin_src shell
   # mind-wave
@@ -64,7 +65,14 @@
 #+begin_src shell
   pacman --needed --noconfirm -S mingw-w64-x86_64-gdb
 #+end_src
+- mid3v2/metaflac
+#+begin_src shell
+  pacman --needed --noconfirm -S mingw-w64-x86_64-python-mutagen
+  pacman --needed --noconfirm -S mingw-w64-x86_64-flac
+#+end_src
 ** checkout emacs配置
 #+begin_src shell
   git clone git@github.com:zhendong-zhang/.emacs.d.git ~/.emacs.d --recurse-submodules
 #+end_src
+** Tips
+- 固定到任务栏后Shift+鼠标右键更改属性将目标改成runemacs以去除弹终端窗口
