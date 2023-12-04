@@ -22,10 +22,7 @@
 
 (defun install-package-from-github (package repo)
   (unless (package-installed-p package)
-    (require 'init-proxy)
-    (declare-function with-proxy "init-proxy")
-    (with-proxy
-     (package-vc-install (format "https://github.com/%s" repo) nil nil package))))
+    (package-vc-install (format "https://github.com/%s" repo) nil nil package)))
 
 (require 'package)
 ;; 国内elpa源

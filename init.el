@@ -78,6 +78,7 @@
 
 ;; 公用接口或包
 (require-dir "init-common-utils")
+(require 'init-proxy)
 ;; 替换部分内置功能以提升体验
 (require-dir "init-alternative")
 ;; 跳转相关

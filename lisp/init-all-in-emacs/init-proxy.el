@@ -1,7 +1,6 @@
-(defvar my-proxy "127.0.0.1:1080")
-
-(defvar socks-noproxy)
-(defvar socks-server)
+(defvar my-proxy-ip "127.0.0.1")
+(defvar my-proxy-port "1080")
+(defvar my-proxy (format "%s:%s" my-proxy-ip my-proxy-port))
 
 ;; Network Proxy
 (defun proxy-http-show ()
@@ -47,10 +46,7 @@
   (require 'socks)
   (setq url-gateway-method 'socks
         socks-noproxy '("localhost"))
-  (let* ((proxy (split-string my-proxy ":"))
-         (host (car proxy))
-         (port (string-to-number (cadr proxy))))
-    (setq socks-server `("Default server" ,host ,port 5)))
+  (setq socks-server `("Default server" ,my-proxy-ip ,(string-to-number my-proxy-port) 5))
   (setenv "all_proxy" (concat "socks5://" my-proxy))
   (proxy-socks-show))
 
@@ -70,15 +66,19 @@
       (proxy-socks-disable)
     (proxy-socks-enable)))
 
-(defvar use-proxy-for-github t)
-(cl-defmacro with-proxy (&rest body)
-  `(progn
-    (when ,use-proxy-for-github
-      ;(proxy-http-enable)
-      (proxy-socks-enable))
-    ,@body
-    (when ,use-proxy-for-github
-      ;(proxy-http-disable)
-      (proxy-socks-disable))))
+(defvar proxy-found)
+
+(defun proxy-on-process-result (process status)
+  (delete-process process)
+  (setq proxy-found (string-match-p "open" status))
+  (if proxy-found
+      (proxy-socks-enable)
+    (proxy-socks-disable)))
+
+(defun proxy-try-enable-proxy ()
+  (interactive)
+  (make-network-process :name "proxy" :host my-proxy-ip :service my-proxy-port
+                        :nowait t :sentinel #'proxy-on-process-result))
+(proxy-try-enable-proxy)
 
 (provide 'init-proxy)
