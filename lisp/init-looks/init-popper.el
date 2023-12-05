@@ -29,7 +29,6 @@
                               "\\*Kill Ring\\*"
                               "\\*Edit Annotation.*\\*"
                               "\\*Flutter\\*"
-                              "\\*Embark Actions\\*" "\\*Embark Export:.*\\*"
                               bookmark-bmenu-mode tabulated-list-mode Buffer-menu-mode
                               "\\*eldoc\\*"
                               gnus-article-mode devdocs-mode

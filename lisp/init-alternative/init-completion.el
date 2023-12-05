@@ -4,21 +4,7 @@
         completion-category-defaults nil)
   :custom
   (orderless-component-separator "[ |]+")
-  (orderless-matching-styles '(orderless-initialism orderless-literal orderless-regexp))
-  :config
-  (defun my-orderless-dispatcher (pattern index _total)
-    (cond
-     ((string-suffix-p "~" pattern)
-      `(orderless-flex . ,(substring pattern 0 -1)))
-     ((and (= index 0) (string-suffix-p "^" pattern))
-      `(orderless-initialism . ,(substring pattern 0 -1)))
-     ((equal "!" pattern)
-      '(orderless-literal . ""))
-     ((string-prefix-p "!" pattern)
-      `(orderless-without-literal . ,(substring pattern 1)))
-     ((string-suffix-p "=" pattern)
-      `(orderless-literal . ,(substring pattern 0 -1)))))
-  (setq orderless-style-dispatchers '(my-orderless-dispatcher)))
+  (orderless-matching-styles '(orderless-initialism orderless-literal orderless-regexp)))
 
 (use-package vertico
   :custom
@@ -86,7 +72,12 @@
   :bind
   (("C-." . embark-act)
    ("M-." . embark-dwim)
-   ("C-h B" . embark-bindings))
+   ("C-h B" . embark-bindings)
+   :map embark-region-map
+   ("=" . quick-calc)
+   :map embark-general-map
+   ("S" . nil)
+   ("C" . embark-collect))
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
@@ -99,6 +90,9 @@
 (use-package embark-consult
   :after (embark consult)
   :demand t
+  :bind
+  (:map embark-general-map
+        ("S" . embark-consult-search-map))
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
