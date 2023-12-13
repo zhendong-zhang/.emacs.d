@@ -2,8 +2,7 @@
 (defcustom common-region-at-point-commands
   '(consult-line
     consult-ripgrep
-    consult-locate
-    quick-calc)
+    consult-locate)
   "which command should get region at point."
   :type 'list
   :group 'common-thing-at-point)

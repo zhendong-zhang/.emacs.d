@@ -1,4 +1,4 @@
-(defcustom multi-edit-mode-line-lighter " [ME]"
+(defcustom multi-edit-mode-line-lighter-format " [ME%s]"
   "Mode-line lighter for Multi edit."
   :type 'string
   :group 'multi-edit)
@@ -230,7 +230,7 @@
 
 (define-minor-mode multi-edit-guide-mode
   "Multi edit guide mode. "
-  :lighter multi-edit-mode-line-lighter
+  :lighter (:eval (format multi-edit-mode-line-lighter-format "G"))
   :keymap multi-edit-guide-mode-keymap)
 
 (defun multi-edit-guide-mode-toggle (n)
@@ -394,7 +394,7 @@ Use negative argument to create a backward selection."
 
 (define-minor-mode multi-edit-quick-select-mode
   "Multi edit quick select mode. "
-  :lighter multi-edit-mode-line-lighter
+  :lighter (:eval (format multi-edit-mode-line-lighter-format "Q"))
   :keymap multi-edit-quick-select-mode-keymap
   (if multi-edit-quick-select-mode
       (add-hook 'pre-command-hook 'multi-edit-quick-select-actions nil t)
@@ -471,7 +471,7 @@ Use negative argument to create a backward selection."
 
 (define-minor-mode multi-edit-action-mode
   "Multi edit action mode. "
-  :lighter multi-edit-mode-line-lighter
+  :lighter (:eval (format multi-edit-mode-line-lighter-format "A"))
   :keymap multi-edit-action-mode-keymap
   (if multi-edit-action-mode
       (cond (multi-edit-guide-mode

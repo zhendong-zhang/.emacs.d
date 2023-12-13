@@ -56,7 +56,7 @@
   ./batch.sh
   cp dist/* /e/local/emacs-deps/bin/
 #+end_src
-** 运行时依赖msys2软件
+** 运行时依赖msys2软件(可选)
 - llvm/clangd
 #+begin_src shell
   pacman --needed --noconfirm -S mingw-w64-x86_64-clang-tools-extra
