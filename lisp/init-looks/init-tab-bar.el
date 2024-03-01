@@ -10,8 +10,8 @@
   :config
   (tab-bar-mode 1)
   (custom-set-faces
-   '(tab-bar ((t (:inherit mode-line))))
-   '(tab-bar-tab ((t (:inherit mode-line :foreground "red4"))))
-   '(tab-bar-tab-inactive ((t (:inherit mode-line :foreground "black"))))))
+   '(tab-bar ((t (:inherit mode-line-inactive))))
+   '(tab-bar-tab ((t (:inherit mode-line-inactive :foreground "red4"))))
+   '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :foreground "black"))))))
 
 (provide 'init-tab-bar)
