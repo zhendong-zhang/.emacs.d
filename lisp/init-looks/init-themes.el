@@ -1,4 +1,5 @@
-(load-theme 'modus-operandi :no-confirm)
+(when (featurep 'modus-themes)
+  (load-theme 'modus-operandi :no-confirm))
 
 (use-package rainbow-mode
   :commands rainbow-mode)

@@ -22,18 +22,21 @@
 
 (defun install-package-from-github (package repo)
   (unless (package-installed-p package)
-    (package-vc-install (format "https://github.com/%s" repo) nil nil package)))
+    (if (package-installed-p 'package-vc)
+        (package-vc-install (format "http://github.com/%s" repo) nil nil package)
+      (quelpa `(,package :fetcher github :repo ,repo :files ("*"))))))
 
 (require 'package)
 ;; 国内elpa源
-(setq package-archives '(("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+(setq package-archives '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
                          ;; ("melpa-stable" . "https://mirrors.163.com/elpa/melpa-stable/")
-                         ("gnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
+                         ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
 (package-initialize 'noactivate)
 (unless (file-exists-p package-user-dir)
   (make-directory package-user-dir t))
 (let ((default-directory package-user-dir))
   (normal-top-level-add-subdirs-to-load-path))
+(setq package-install-upgrade-built-in t)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -46,6 +49,13 @@
 
 (use-package diminish)
 (use-package no-littering)
+
+(unless (package-installed-p 'package-vc)
+  (use-package quelpa
+    :commands (quelpa quelpa-upgrade)
+    :init
+    (setq quelpa-checkout-melpa-p nil)
+    (setq quelpa-dir (no-littering-expand-var-file-name "quelpa"))))
 
 ;; from doom-emacs
 (defvar incremental-packages-list '()

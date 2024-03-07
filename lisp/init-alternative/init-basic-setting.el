@@ -131,7 +131,8 @@
 (use-package undohist
   :config
   (undohist-initialize))
-(use-package vundo :defer-incrementally t)
+(when (version<= "28.1" emacs-version)
+  (use-package vundo :defer-incrementally t))
 
 (use-package repeat
   :defer-incrementally t
