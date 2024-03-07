@@ -4,12 +4,16 @@
   (declare-function projectile-project-root "projectile")
   (require 'projectile)
   (let ((project-root (projectile-project-root)))
-    (when (and (executable-find "cmake")
-               (file-exists-p (concat project-root "CMakeLists.txt")))
-      (shell-command (concat "cd " project-root "; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 &")))
-    (when (executable-find "make")
-      (shell-command (concat "cd " project-root "; bear --append -- make -j8 &")))
-    ))
+    (cond ((and (executable-find "cmake") (file-exists-p (concat project-root "CMakeLists.txt")))
+           (shell-command (concat "cd " project-root "; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 &")))
+          ((and (executable-find "make") (executable-find "bear"))
+           (shell-command (concat "cd " project-root "; bear --append -- make -j8 &")))
+          (t
+           (with-temp-buffer
+             (erase-buffer)
+             (insert "-xc++\n")
+             (insert "-I.")
+             (write-file (concat project-root "compile_flags.txt")))))))
 
 (defun create-dot-clang-format ()
   (interactive)

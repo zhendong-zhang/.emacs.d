@@ -123,7 +123,7 @@
 
 (use-package org-super-agenda
   :custom
-  (org-super-agenda-groups '((:name "Today" :time-grid t :date today :scheduled today :deadline today)
+  (org-super-agenda-groups '((:name "Today" :date today :scheduled past :scheduled today :deadline past :deadline today)
                              (:name "Next to do" :todo "NEXT")
                              (:name "Stuck Projects" :and (:todo "PROJECT" :not (:children todo)))
                              (:name "Projects" :and (:todo "PROJECT" :children todo))
@@ -132,7 +132,7 @@
                              (:name "Due Soon" :deadline future)
                              (:name "Almost Done" :effort< "0:30")
                              (:name "Unimportant" :todo ("WAITING" "RECORD") :priority<= "B" :scheduled future)
-                             (:name none :anything)))
+                             (:name "Unspecified" :anything)))
   :hook
   (org-agenda-mode . org-super-agenda-mode)
   :config
