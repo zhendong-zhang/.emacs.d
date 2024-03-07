@@ -16,6 +16,7 @@
 (when (featurep 'ns)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
 (push '(fullscreen . maximized) default-frame-alist)
-(push '(font . "LXGW WenKai Mono-14") default-frame-alist)
+(when (find-font (font-spec :name "LXGW WenKai Mono-14"))
+  (push '(font . "LXGW WenKai Mono-14") default-frame-alist))
 
 (provide 'early-init)
