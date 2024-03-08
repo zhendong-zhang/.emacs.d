@@ -7,7 +7,8 @@
     (cond ((and (executable-find "cmake") (file-exists-p (concat project-root "CMakeLists.txt")))
            (shell-command (concat "cd " project-root "; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 &")))
           ((and (executable-find "make") (executable-find "bear"))
-           (shell-command (concat "cd " project-root "; bear --append -- make -j8 &")))
+           (require 'compile)
+           (shell-command (concat "cd " project-root "; bear --append -- " (compilation-read-command "make") " -j8 &")))
           (t
            (with-temp-buffer
              (erase-buffer)
