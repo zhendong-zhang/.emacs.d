@@ -28,9 +28,9 @@
 
 (require 'package)
 ;; 国内elpa源
-(setq package-archives '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+(setq package-archives '(("melpa" . "http://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/")
                          ;; ("melpa-stable" . "https://mirrors.163.com/elpa/melpa-stable/")
-                         ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
+                         ("gnu" . "http://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/gnu/")))
 (package-initialize 'noactivate)
 (unless (file-exists-p package-user-dir)
   (make-directory package-user-dir t))
