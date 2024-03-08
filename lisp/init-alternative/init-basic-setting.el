@@ -140,7 +140,8 @@
   :custom
   (repeat-exit-key (kbd "RET"))
   :config
-  (repeat-mode))
+  (when (fboundp 'repeat-mode)
+    (repeat-mode)))
 
 (use-package wgrep
   :after grep

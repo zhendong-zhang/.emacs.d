@@ -32,11 +32,16 @@
   (declare-function doom-modeline-def-modeline "doom-modeline")
   (doom-modeline-def-modeline 'custom-modeline
     '(bar workspace-name window-number modals custom-matches follow buffer-info remote-host buffer-position word-count parrot selection-info)
-    '(compilation objed-state misc-info persp-name battery grip irc mu4e gnus github debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker time))
+    '(compilation objed-state misc-info persp-name battery grip irc mu4e gnus github debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs check))
 
   (declare-function doom-modeline-set-modeline "doom-modeline")
   (add-hook 'doom-modeline-mode-hook
             (lambda ()
-              (doom-modeline-set-modeline 'custom-modeline 'default))))
+              (if doom-modeline-mode
+                  (progn
+                    (doom-modeline-set-modeline 'custom-modeline 'default)
+                    (dolist (buf (buffer-list))
+                      (with-current-buffer buf
+                        (doom-modeline-set-modeline 'custom-modeline))))))))
 
 (provide 'init-modeline)
