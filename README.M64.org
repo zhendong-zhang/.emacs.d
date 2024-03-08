@@ -15,15 +15,8 @@
   - [[https://www.voidtools.com/zh-cn/downloads/][everything]]
   - [[https://github.com/llvm/llvm-project/releases][llvm]]（或直接在msys2里安装）
   - [[https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html][plink]]
-- 通过pip安装
-#+begin_src shell
-  # mind-wave
-  pip3 install openai epc sexpdata six
-#+end_src
 ** 编译emacs及依赖软件
 编译依赖[[https://github.com/msys2/msys2-installer/releases][msys2]]环境
-- [[https://github.com/vedang/pdf-tools#compiling-and-installing-the-epdfinfo-server-from-source-on-windows][epdfinfo]]
-  可直接在配置好编译环境后直接M-x pdf-tools-install进行编译安装.
 - 编译native-comp emacs
 #+begin_src shell
   pacman --noconfirm -Syuu
@@ -56,6 +49,8 @@
   ./batch.sh
   cp dist/* /e/local/emacs-deps/bin/
 #+end_src
+- [[https://github.com/vedang/pdf-tools#compiling-and-installing-the-epdfinfo-server-from-source-on-windows][epdfinfo]]
+  可直接在配置好编译环境后直接M-x pdf-tools-install进行编译安装.
 ** 运行时依赖msys2软件(可选)
 - llvm/clangd
 #+begin_src shell

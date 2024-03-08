@@ -20,7 +20,8 @@
 #+begin_src shell
   apt-get update
   apt-get install build-essential && apt-get install fonts-wqy-microhei
-  apt-get install librime-dev locate ripgrep git clangd universal-ctags silversearcher-ag
+  apt-get install librime-dev locate ripgrep git clangd universal-ctags silversearcher-ag gdb
+  apt-get install python3-mutagen flac
   apt-get install pip
   pip install epc
 #+end_src
@@ -39,6 +40,14 @@
 #+begin_src shell
   git clone git@github.com:zhendong-zhang/.emacs.d.git ~/.emacs.d --recurse-submodules
 #+end_src
+- 升级内置包（旧版本emacs需要）
+#+begin_src shell
+  rm -rf ~/.emacs.d/elpa
+  emacs -q -l ~/.emacs.d/init-test.el
+#+end_src
+之后先安装需要的内置包（seq，org），再正常启动emacs。
+- [[https://github.com/vedang/pdf-tools#compiling-and-installing-the-epdfinfo-server-from-source-on-windows][epdfinfo]]
+  可直接在配置好编译环境后直接M-x pdf-tools-install进行编译安装.
 - 创建快捷方式
 修改已有快捷方式属性，目标换成emacs：
 #+begin_src text

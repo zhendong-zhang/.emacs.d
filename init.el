@@ -39,7 +39,7 @@
 (defun add-directory-to-path (dir)
   "Add subdirectories in dir to load-path."
   (when (and dir (file-directory-p dir))
-    (add-to-list 'load-path dir t)
+    (add-to-list 'load-path dir)
     (let ((default-directory dir))
       (normal-top-level-add-subdirs-to-load-path))))
 (add-directory-to-path (expand-file-name "elpa" user-emacs-directory)) ;;; 使用elpa优先于build-in

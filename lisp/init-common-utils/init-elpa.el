@@ -34,9 +34,6 @@
 (package-initialize 'noactivate)
 (unless (file-exists-p package-user-dir)
   (make-directory package-user-dir t))
-(let ((default-directory package-user-dir))
-  (normal-top-level-add-subdirs-to-load-path))
-(setq package-install-upgrade-built-in t)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
