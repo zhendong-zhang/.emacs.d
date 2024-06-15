@@ -133,6 +133,7 @@
 (use-package undohist
   :defer-incrementally t
   :config
+  (add-to-list 'undohist-ignored-files "COMMIT_EDITMSG")
   (undohist-initialize))
 (when (version<= "28.1" emacs-version)
   (use-package vundo :defer-incrementally t))
