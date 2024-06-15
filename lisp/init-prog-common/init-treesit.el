@@ -1,5 +1,6 @@
 (when (version<= "28.1" emacs-version)
   (use-package treesit
+    :defer-incrementally t
     :ensure nil
     :init
     (setq treesit-font-lock-level 4)

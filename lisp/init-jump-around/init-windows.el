@@ -19,7 +19,7 @@
 ;; Navigate window layouts with "C-c <left>" and "C-c <right>"
 ;;----------------------------------------------------------------------------
 (use-package winner
-  :demand
+  :defer-incrementally t
   :bind
   (("M-g <left>" . winner-undo)
    ("M-g <right>" . winner-redo))

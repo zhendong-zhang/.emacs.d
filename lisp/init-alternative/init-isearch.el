@@ -9,7 +9,7 @@
 ;; Show number of matches while searching
 (use-package anzu
   :diminish
-  :demand
+  :defer-incrementally t
   :bind
   (([remap query-replace-regexp] . anzu-query-replace-regexp)
    ([remap query-replace] . anzu-query-replace))

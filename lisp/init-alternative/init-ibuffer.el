@@ -1,5 +1,5 @@
 (use-package ibuffer
-  :defer t
+  :defer-incrementally t
   :bind
   ([remap list-buffers] . ibuffer-list-buffers)
   :custom

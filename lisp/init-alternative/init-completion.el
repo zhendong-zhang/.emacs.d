@@ -68,7 +68,7 @@
   (require 'consult-imenu))
 
 (use-package embark
-  :demand t
+  :defer-incrementally t
   :bind
   (("C-." . embark-act)
    ("M-." . embark-dwim)

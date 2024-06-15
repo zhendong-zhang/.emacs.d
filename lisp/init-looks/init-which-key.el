@@ -1,5 +1,5 @@
 (use-package which-key
-  :demand
+  :defer-incrementally t
   :diminish
   :init
   (setq which-key-sort-order 'which-key-key-order-alpha)

@@ -46,6 +46,7 @@
     (and root (cons 'transient root))))
 
 (use-package project
+  :defer-incrementally t
   :config
   (add-to-list 'project-find-functions 'projectile-project-find-function))
 

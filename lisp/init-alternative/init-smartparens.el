@@ -1,5 +1,5 @@
 (use-package smartparens
-  :demand
+  :defer-incrementally t
   :diminish (smartparens-strict-mode smartparens-mode)
   :bind
   (:map smartparens-strict-mode-map

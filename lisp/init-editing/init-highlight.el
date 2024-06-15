@@ -13,6 +13,6 @@
   :config
   (global-hl-todo-mode t))
 
-(use-package highlight-indentation)
+(use-package highlight-indentation :defer-incrementally t)
 
 (provide 'init-highlight)

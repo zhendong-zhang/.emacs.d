@@ -31,7 +31,7 @@
 
 ;; recentf
 (use-package recentf
-  :demand
+  :defer-incrementally t
   :bind
   ("M-g r" . recentf-open-files)
   :init
@@ -67,6 +67,7 @@
 (transient-mark-mode t)
 ;; auto revert when disk files changed.
 (use-package autorevert
+  :defer-incrementally t
   :init
   (setq global-auto-revert-non-file-buffers t
         auto-revert-verbose nil)
@@ -88,6 +89,7 @@
 (put 'upcase-region 'disabled nil)
 
 (use-package browse-kill-ring
+  :defer-incrementally t
   :init
   (setq browse-kill-ring-display-duplicates nil)
   (setq browse-kill-ring-show-preview nil)
@@ -129,6 +131,7 @@
   (global-hungry-delete-mode t))
 
 (use-package undohist
+  :defer-incrementally t
   :config
   (undohist-initialize))
 (when (version<= "28.1" emacs-version)

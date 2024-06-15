@@ -67,6 +67,7 @@
   (add-hook 'org-mode-hook #'my-org-auto-load-file))
 
 (use-package org-habit :ensure nil
+  :defer-incrementally t
   :after org
   :config
   (add-to-list 'org-modules 'org-habit))
@@ -99,6 +100,7 @@
            "* %? :NOTE:\n%U\n%a\n" :clock-resume t))))
 
 (use-package org-agenda :ensure nil
+  :defer-incrementally t
   :bind
   ("C-c a" . org-agenda)
   :custom
@@ -167,10 +169,11 @@
   (org-appear-autolinks t)
   :hook (org-mode . org-appear-mode))
 
-(use-package org-preview-html :after org :diminish)
+(use-package org-preview-html :after org :diminish :defer-incrementally t)
 
 (use-package org-download
   :after org
+  :defer-incrementally t
   :config
   (when (equal system-type 'windows-nt)
     (defun yank-image-from-win-clipboard(&optional basename)
@@ -251,11 +254,12 @@
 (use-package org-roam-ui :after org-roam)
 
 (use-package oc
-  :defer t
+  :defer-incrementally t
   :ensure nil
   :custom
   (org-cite-global-bibliography `(,(concat my-org-directory "/references.bib"))))
 (use-package citar
+  :defer-incrementally t
   :after oc
   :custom
   (org-cite-insert-processor 'citar)

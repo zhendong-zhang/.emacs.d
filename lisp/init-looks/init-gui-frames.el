@@ -19,6 +19,7 @@
                            (dired-directory dired-directory "%b")))
   (global-hl-line-mode 1)
   (global-display-line-numbers-mode 1)
+  (setq-default display-line-numbers-width 3)
   (with-suppressed-warnings
     (use-package linum-relative
       :diminish linum-relative-mode
@@ -33,6 +34,7 @@
 (size-indication-mode 1)
 
 (use-package time
+  :defer-incrementally t
   :ensure nil
   :init
   (setq display-time-24hr-format t

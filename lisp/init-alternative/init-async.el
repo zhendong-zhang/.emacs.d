@@ -1,9 +1,8 @@
-(use-package async)
-
 (defvar async-current-window nil)
 
 (defun package-list-packages-async()
   (interactive)
+  (use-package async)
   (setq async-current-window (selected-window))
   (async-start
    (lambda ()
