@@ -57,7 +57,11 @@
           python-mode
           web-mode) . eglot-ensure)
         :init
-        (setq eglot-events-buffer-size 0)))
+        (setq eglot-events-buffer-size 0))
+      (use-package eglot-booster
+        :github "jdtsmith/eglot-booster"
+        :after eglot
+        :config	(eglot-booster-mode)))
   ;; else
   (use-package posframe)
   (use-package lsp-bridge
