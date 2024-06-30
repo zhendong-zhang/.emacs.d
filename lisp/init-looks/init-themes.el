@@ -1,4 +1,4 @@
-(when (featurep 'modus-themes)
+(when (version<= "27.1" emacs-version)
   (load-theme 'modus-operandi :no-confirm))
 
 (use-package rainbow-mode
