@@ -3,7 +3,8 @@
 (setq package-enable-at-startup nil)
 (setq frame-resize-pixelwise t)
 (setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.5)
+      gc-cons-percentage 0.5
+      read-process-output-max (* 1024 1024)) ;; 1mb
 
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache

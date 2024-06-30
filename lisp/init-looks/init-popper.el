@@ -18,8 +18,8 @@
                               "\\*gud-debug\\*$" "\\*DAP Templates\\*$" dap-server-log-mode
                               "\\*quickrun\\*$"
                               "\\*Async Shell Command\\*"
-                              "^\\*eshell.*\\*.*$" eshell-mode
-                              "^\\*shell.*\\*.*$"  shell-mode
+                              "^\\*eshell.*\\*.*$" ;; eshell-mode
+                              "^\\*shell.*\\*.*$"  ;; shell-mode
                               "^\\*terminal.*\\*.*$" term-mode
                               "^\\*vterm.*\\*.*$"  vterm-mode
                               "\\*vc-.*\\*$" comint-mode

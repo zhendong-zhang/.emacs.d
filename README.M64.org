@@ -1,7 +1,8 @@
 * 安装过程
 以下记录windows下不依赖wsl的安装过程
 ** python环境
-安装[[https://www.python.org/ftp/python/][python最新版]],绿色化则直接将安装目录复制，通过python [[https://bootstrap.pypa.io/get-pip.py][get-pip.py]]安装pip
+安装[[https://www.python.org/ftp/python/][python最新版]]
+或绿色版则需要通过python [[https://bootstrap.pypa.io/get-pip.py][get-pip.py]]安装pip，之后把python310._pth文件中的#import site反注释。
 ** 下载安装emacs及依赖软件
 - 下载[[https://corwin.bru.st/emacs-28/][emacs最新版]]
 - 绿色版软件
@@ -14,6 +15,10 @@
   - [[https://gitforwindows.org/][git]]
   - [[https://www.voidtools.com/zh-cn/downloads/][everything]]
   - [[https://github.com/llvm/llvm-project/releases][llvm]]（或直接在msys2里安装）
+    #+begin_src bat
+      regsvr32 "C:\Program Files\Microsoft Visual Studio\2022\Community\DIA SDK\bin\msdia140.dll"
+      regsvr32 "C:\Program Files\Microsoft Visual Studio\2022\Community\DIA SDK\bin\amd64\msdia140.dll
+    #+end_src
   - [[https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html][plink]]
 ** 编译emacs及依赖软件
 编译依赖[[https://github.com/msys2/msys2-installer/releases][msys2]]环境
