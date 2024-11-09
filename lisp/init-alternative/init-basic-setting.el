@@ -25,7 +25,12 @@
               confirm-kill-processes nil
               enable-recursive-minibuffers t
               large-file-warning-threshold nil
-              bidi-display-reordering nil ;; 大文件提速
+              ;; 大文件提速
+              bidi-display-reordering nil
+              bidi-inhibit-bpa t
+              long-line-threshold 1000
+              large-hscroll-threshold 1000
+              syntax-wholeline-max 1000
               warning-minimum-level :error
               buffer-file-coding-system 'utf-8-unix)
 
