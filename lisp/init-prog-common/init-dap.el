@@ -1,4 +1,5 @@
 (use-package dape
+  :commands dape
   :github "zhendong-zhang/dape"
   :preface
   ;; By default dape shares the same keybinding prefix as `gud'

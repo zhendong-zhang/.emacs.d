@@ -2,7 +2,7 @@
 
 (use-package emms
   :hook ((emms-player-started . emms-show)
-         (kill-emacs . emms-history-save))
+         (kill-emacs . my-emms-history-save))
   :commands emms emms-history-load
   :defines emms-tag-editor-rename-format emms-playlist-mode-map
   :custom
@@ -12,6 +12,9 @@
   (emms-playlist-buffer-name "*Music*")
   (emms-repeat-playlist t)
   :preface
+  (defun my-emms-history-save ()
+    (when (featurep 'emms)
+      (emms-history-save)))
   (defun emms-delete-file-from-disk ()
     "Delete this file from disk."
     (interactive)
