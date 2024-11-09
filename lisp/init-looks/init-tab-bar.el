@@ -11,8 +11,21 @@
   :config
   (tab-bar-mode 1)
   (custom-set-faces
-   '(tab-bar ((t (:inherit mode-line-inactive))))
-   '(tab-bar-tab ((t (:inherit mode-line-inactive :foreground "red4"))))
-   '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :foreground "black"))))))
+   '(tab-bar
+     ((t (:inherit mode-line-inactive :foreground nil :box nil))))
+   '(tab-bar-tab
+     ((default
+       :inherit mode-line-inactive :box nil :background nil)
+      (((background dark))
+       :foreground "cyan4")
+      (t
+       :foreground "red4")))
+   '(tab-bar-tab-inactive
+     ((default
+       :inherit mode-line-inactive :box nil :background nil)
+      (((background dark))
+       :foreground "white")
+      (t
+       :foreground "black")))))
 
 (provide 'init-tab-bar)
