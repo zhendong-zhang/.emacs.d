@@ -21,7 +21,11 @@
   (declare-function projectile-project-root "projectile")
   (with-temp-buffer
     (erase-buffer)
-    (insert "BasedOnStyle: llvm\nIndentWidth: 4")
+    (insert "# google 编程风格
+BasedOnStyle: Google
+IndentWidth: 4
+# 访问说明符(public、private等)的偏移(缩进或者对齐)
+AccessModifierOffset: -4")
     (write-file (concat (projectile-project-root) ".clang-format"))
     ))
 
