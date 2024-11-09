@@ -52,9 +52,6 @@ trim_trailing_whitespace = false")
 
 (use-package editorconfig
   :diminish
-  :hook (first-file . editorconfig-mode)
-  :config
-  (add-to-list 'editorconfig-exclude-regexps
-               "\\.\\(zip\\|\\(doc\\|xls\\|ppt\\)x\\)\\'"))
+  :hook (first-file . editorconfig-mode))
 
 (provide 'init-prog-mode)
