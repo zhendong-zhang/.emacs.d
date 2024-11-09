@@ -16,7 +16,7 @@
 
   (defun my-org-auto-load-file ()
     "Auto load file."
-    (when-let (file (org-entry-get (point) "AUTO_LOAD_FILE"))
+    (when-let* ((file (org-entry-get (point) "AUTO_LOAD_FILE")))
       (load-file file)))
   :bind
   (:map org-mode-map

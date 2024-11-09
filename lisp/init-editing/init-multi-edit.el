@@ -71,9 +71,9 @@
 
 (defun multi-edit--re-search (regexp)
   (let ((case-fold-search nil))
-    (when-let (match-data (if (multi-edit-current-prefix-is-negative)
-                              (re-search-backward regexp nil t)
-                            (re-search-forward regexp nil t)))
+    (when-let* ((match-data (if (multi-edit-current-prefix-is-negative)
+                                (re-search-backward regexp nil t)
+                              (re-search-forward regexp nil t))))
       (setq match-data (match-data))
       (multi-edit-bounds (cons (car match-data) (cadr match-data))))))
 
@@ -257,14 +257,14 @@
         ((> n 1)
          (move-overlay mouse-secondary-overlay (line-beginning-position (- 2 n)) (line-end-position n)))
         (t
-         (when-let (bounds
-                    (cl-case (car multi-edit-grab-range-list)
-                      ((defun)
-                       (bounds-of-thing-at-point 'defun))
-                      ((paragraph)
-                       (bounds-of-thing-at-point 'paragraph))
-                      (t
-                       (cons (point-min) (point-max)))))
+         (when-let* ((bounds
+                      (cl-case (car multi-edit-grab-range-list)
+                        ((defun)
+                         (bounds-of-thing-at-point 'defun))
+                        ((paragraph)
+                         (bounds-of-thing-at-point 'paragraph))
+                        (t
+                         (cons (point-min) (point-max))))))
            (move-overlay mouse-secondary-overlay (car bounds) (cdr bounds))))))
 
 (defun multi-edit-try-grab ()

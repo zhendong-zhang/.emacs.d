@@ -46,10 +46,10 @@
 
 (defun common-thing-at-point-minibuffer-setup ()
   (when (equal current-prefix-arg nil) ;; without C-u
-    (when-let (initial-input (with-minibuffer-selected-window
+    (when-let* ((initial-input (with-minibuffer-selected-window
                                (seq-some (lambda (thing)
                                            (thing-at-point thing t))
-                                         (common-thing-at-point-get-things this-command))))
+                                         (common-thing-at-point-get-things this-command)))))
       (save-excursion
         (insert (propertize initial-input 'face 'shadow)))
       (add-hook 'pre-command-hook 'common-thing-at-point-minibuffer-actions nil t))))

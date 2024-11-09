@@ -17,18 +17,18 @@ backwards ARG times if negative."
   (defun yank-symbol-at-point ()
     "Put symbol at current point into minibuffer."
     (interactive)
-    (when-let ((str (with-minibuffer-selected-window
-                      (if (use-region-p)
-                          (thing-at-point 'region)
-                        (symbol-name (symbol-at-point))))))
+    (when-let* ((str (with-minibuffer-selected-window
+                       (if (use-region-p)
+                           (thing-at-point 'region)
+                         (symbol-name (symbol-at-point))))))
       (insert str)))
   (defun yank-word-at-point ()
     "Put word at current point into buffer."
     (interactive)
-    (when-let (str (with-minibuffer-selected-window
-                     (if (use-region-p)
-                         (thing-at-point 'region)
-                       (word-at-point))))
+    (when-let* ((str (with-minibuffer-selected-window
+                       (if (use-region-p)
+                           (thing-at-point 'region)
+                         (word-at-point)))))
       (insert str)))
   :config
   (put 'number 'forward-op 'forward-number)
