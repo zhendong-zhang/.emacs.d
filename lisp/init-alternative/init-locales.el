@@ -12,11 +12,14 @@
 
 (when (equal system-type 'windows-nt)
   ;; 解决windows emacs调用外部进程的中文乱码问题
-  (defadvice projectile-files-via-ext-command (around my-projectile-files-via-ext-command activate)
-    (let ((cmdproxy-old-encoding (cdr (assoc "[cC][mM][dD][pP][rR][oO][xX][yY]" process-coding-system-alist))))
+  (defun my-projectile-files-via-ext-command (orig-fun &rest args)
+    (let ((cmdproxy-old-encoding (cdr (assoc "[cC][mM][dD][pP][rR][oO][xX][yY]" process-coding-system-alist)))
+          result)
       (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" '(utf-8 . utf-8))
-      ad-do-it
-      (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" cmdproxy-old-encoding)))
+      (setq result (apply orig-fun args))
+      (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" cmdproxy-old-encoding)
+      result))
+  (advice-add 'projectile-files-via-ext-command :around #'my-projectile-files-via-ext-command)
   ;; 系统环境为中文时以下命令可能存在问题
   (when (equal current-language-environment "Chinese-GBK")
     ;; consult-locate
