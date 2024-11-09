@@ -31,7 +31,11 @@
 (setq package-archives '(("melpa" . "http://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/")
                          ;; ("melpa-stable" . "https://mirrors.163.com/elpa/melpa-stable/")
                          ("gnu" . "http://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/gnu/")))
-(package-initialize 'noactivate)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (unless (file-exists-p package-quickstart-file)
+              (package-quickstart-refresh))))
+
 (unless (file-exists-p package-user-dir)
   (make-directory package-user-dir t))
 

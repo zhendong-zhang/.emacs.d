@@ -1,6 +1,10 @@
 ;; speed up
 (setq load-prefer-newer noninteractive)
 (setq package-enable-at-startup nil)
+;; you need run `M-x package-quickstart-refresh' at least once
+;; to generate file "package-quickstart.el'.
+;; It contains the `autoload' statements for all packages.
+(setq package-quickstart t)
 (setq frame-resize-pixelwise t)
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.5
