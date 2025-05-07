@@ -151,14 +151,14 @@
 (defun multi-edit--overlays-exist ()
   (and multi-edit--overlays (> (length multi-edit--overlays) 0)))
 
-(defun mult-edit--overlay< (a b)
-  (< (overlay-start a) (overlay-start b)))
+(defun mult-edit--overlay> (a b)
+  (> (overlay-start a) (overlay-start b)))
 
 (defun multi-edit--get-last-overlay (&optional first)
-  (setq multi-edit--overlays (sort multi-edit--overlays 'mult-edit--overlay<))
+  (setq multi-edit--overlays (sort multi-edit--overlays 'mult-edit--overlay>))
   (if first
-      (car multi-edit--overlays)
-    (car (last multi-edit--overlays))))
+      (car (last multi-edit--overlays))
+    (car multi-edit--overlays)))
 
 (defun multi-edit--overlay-distance< (a b)
   (cond ((not (overlayp a)) nil)
@@ -181,7 +181,7 @@
 (defun multi-edit--overlays-in (beg end)
   (seq-filter (lambda (ol)
                 (overlay-get ol 'multi-edit))
-              (overlays-in beg end)))
+              (overlays-in beg (1- end))))
 
 ;; multi-edit-mode
 
@@ -507,11 +507,19 @@ Use negative argument to create a backward selection."
     (end-kbd-macro))
   (atomic-change-group
     (save-mark-and-excursion
-      (cl-loop for ol in multi-edit--overlays
-               when (and (overlayp ol) (not (multi-edit--is-last-modify-overlay ol)))
-               do (let* ((order (overlay-get ol 'multi-edit-order)))
-                    (goto-char (if order (overlay-end ol) (overlay-start ol)))
-                    (funcall 'kmacro-call-macro nil)))
+      (let* ((overlays (reverse multi-edit--overlays))
+             skip-overlays
+             ol
+             found)
+        (while (and (not found) (setq ol (car overlays)))
+          (setq found (multi-edit--is-last-modify-overlay ol)
+                overlays (cdr overlays))
+          (push ol skip-overlays))
+        (cl-loop for ol in (append overlays (reverse (cdr skip-overlays)))
+                 when (overlayp ol)
+                 do (let* ((order (overlay-get ol 'multi-edit-order)))
+                      (goto-char (if order (overlay-end ol) (overlay-start ol)))
+                      (funcall 'kmacro-call-macro nil))))
       (setq multi-edit--last-undo-length (- (length buffer-undo-list)
                                             multi-edit--last-undo-length))
       (setq buffer-undo-list
