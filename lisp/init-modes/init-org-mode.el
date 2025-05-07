@@ -130,16 +130,16 @@
                              (:name "Stuck Projects" :and (:todo "PROJECT" :not (:children todo)))
                              (:name "Projects" :and (:todo "PROJECT" :children todo))
                              (:name "Important" :priority "A")
-                             (:name "Inbox" :and (:tag "INBOX" :todo t))
                              (:name "Due Soon" :deadline future)
                              (:name "Almost Done" :effort< "0:30")
+                             (:name "Inbox" :and (:tag "INBOX" :todo t))
                              (:name "Unimportant" :todo ("WAITING" "RECORD") :priority<= "B" :scheduled future)
                              (:name "Unspecified" :anything)))
   :hook
   (org-agenda-mode . org-super-agenda-mode)
   :config
   (push '("g" "GTD"
-          ((agenda "" ((org-super-agenda-groups nil)))
+          ((agenda "" ((org-agenda-span 'day)))
            (alltodo "" ((org-agenda-overriding-header "")
                         (org-agenda-todo-ignore-with-date t)
                         (org-super-agenda-groups
