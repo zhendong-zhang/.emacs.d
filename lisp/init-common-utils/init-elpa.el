@@ -49,14 +49,12 @@
 (require 'use-package-ensure)
 
 (use-package diminish)
-(use-package no-littering)
 
 (unless (package-installed-p 'package-vc)
   (use-package quelpa
     :commands (quelpa quelpa-upgrade)
     :init
-    (setq quelpa-checkout-melpa-p nil)
-    (setq quelpa-dir (no-littering-expand-var-file-name "quelpa"))))
+    (setq quelpa-checkout-melpa-p nil)))
 
 ;; from doom-emacs
 (defvar incremental-packages-list '()

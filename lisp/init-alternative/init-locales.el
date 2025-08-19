@@ -20,6 +20,9 @@
       (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" cmdproxy-old-encoding)
       result))
   (advice-add 'projectile-files-via-ext-command :around #'my-projectile-files-via-ext-command)
+
+  (setq system-time-locale "C")
+
   ;; 系统环境为中文时以下命令可能存在问题
   (when (equal current-language-environment "Chinese-GBK")
     ;; consult-locate

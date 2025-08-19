@@ -9,8 +9,11 @@
 (use-package vertico
   :custom
   (vertico-cycle t)
+  (vertico-sort-function 'vertico-sort-history-length-alpha)
   :config
   (vertico-mode t)
+
+  (use-package vertico-sort :ensure nil)
 
   (use-package vertico-directory
     :ensure nil

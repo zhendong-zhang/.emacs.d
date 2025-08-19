@@ -80,6 +80,7 @@
   :config
   (popper-mode 1)
   (require 'popper-echo)
+  (popper-tab-line-mode -1)
   (popper-echo-mode 1)
   (setq popper-window-height #'my-popper-fit-window-height)
   (advice-add #'keyboard-quit :before #'popper-close-window-hack))

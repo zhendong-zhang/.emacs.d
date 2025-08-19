@@ -16,17 +16,17 @@
   (tab-bar-mode 1)
   (custom-set-faces
    '(tab-bar
-     ((t (:inherit mode-line-inactive :foreground unspecified :box nil))))
+     ((t (:inherit mode-line-inactive :foreground unspecified :box unspecified))))
    '(tab-bar-tab
      ((default
-       :inherit mode-line-inactive :box nil :background unspecified)
+       :inherit mode-line-inactive :box unspecified :background unspecified)
       (((background dark))
        :foreground "cyan4")
       (t
        :foreground "red4")))
    '(tab-bar-tab-inactive
      ((default
-       :inherit mode-line-inactive :box nil :background unspecified)
+       :inherit mode-line-inactive :box unspecified :background unspecified)
       (((background dark))
        :foreground "white")
       (t

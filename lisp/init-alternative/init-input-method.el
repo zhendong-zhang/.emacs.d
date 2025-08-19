@@ -11,12 +11,13 @@
         pyim-page-tooltip 'posframe
         pyim-page-style 'vertical
         pyim-dcache-backend 'pyim-dhashcache)
-  (pyim-default-scheme 'quanpin)
+  (pyim-default-scheme 'quanpin))
 
-  (use-package pyim-tsinghua-dict
-    :github "redguardtoo/pyim-tsinghua-dict"
-    :config
-    (pyim-tsinghua-dict-enable)))
+(use-package pyim-tsinghua-dict
+  :github "redguardtoo/pyim-tsinghua-dict"
+  :after pyim
+  :config
+  (pyim-tsinghua-dict-enable))
 
 (use-package rime
   :unless (equal system-type 'windows-nt)

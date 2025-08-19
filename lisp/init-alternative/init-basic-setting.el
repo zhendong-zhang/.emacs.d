@@ -40,30 +40,22 @@
   :bind
   ("M-g r" . recentf-open-files)
   :init
-  (setq recentf-exclude '("/tmp/"
-                          "/ssh:"
-                          "/sudo:"
-                          "autoloads.el$"
-                          no-littering-etc-directory
-                          no-littering-var-directory)
-        recentf-max-saved-items 1000
+  (setq recentf-max-saved-items 1000
         recentf-keep '(file-remote-p file-readable-p))
   :config
+  (setq recentf-exclude (append recentf-exclude
+                                '("/tmp/"
+                                  "/ssh:"
+                                  "/sudo:"
+                                  "autoloads.el$")))
   (use-package sync-recentf
     :defer-incrementally t
     :init
     (setq recentf-auto-cleanup 60))
   (recentf-mode 1))
 
-(setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-(when (file-exists-p custom-file)
+(when (and custom-file (file-exists-p custom-file))
   (load custom-file))
-
-;; store all backup and autosave files in the var dir
-(setq backup-directory-alist
-      `((".*" . ,(no-littering-expand-var-file-name "backup/"))))
-(setq auto-save-file-name-transforms
-      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 (use-package unfill :defer-incrementally t)
 ;; type text replaces the selection
