@@ -29,30 +29,6 @@
          (dired-delete-file file)
          (message (format "Have delete \' %s \' from disk." file))))))
 
-  (defun my-emms-tag-editor-rename-track (track &optional dont-apply)
-    (if (emms-track-file-p track)
-        (let* ((old-file (emms-track-name track))
-               (path     (file-name-directory old-file))
-               (suffix   (file-name-extension old-file))
-               (new-file (concat
-                          path
-                          (format-spec
-                           emms-tag-editor-rename-format
-                           (apply #'format-spec-make
-                                  (apply #'append
-                                         (mapcar
-                                          (lambda (tag)
-                                            (list (string-to-char (cdr tag))
-                                                  (string-replace "/" ","
-                                                                  (or (emms-track-get track (car tag))
-                                                                      ""))))
-                                          emms-tag-editor-tags))))
-                          "." suffix)))
-          (emms-track-set track 'newname new-file)
-          (emms-track-set track 'tag-modified t)
-          (unless dont-apply
-            (emms-tag-editor-apply (list track))))
-      (message "Only files can be renamed.")))
   :bind (:map emms-playlist-mode-map
          ("D" . emms-delete-file-from-disk))
   :config
@@ -60,6 +36,6 @@
   (push "aac" emms-player-base-format-list)
   (put 'emms-browser-delete-files 'disabled nil)
   (setq-default emms-tag-editor-rename-format "%t - %a")
-  (advice-add 'emms-tag-editor-rename-track :override #'my-emms-tag-editor-rename-track)
   (emms-all)
   (emms-history-load))
+
