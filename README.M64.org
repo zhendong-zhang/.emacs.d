@@ -50,9 +50,8 @@
 #+begin_src shell
   git clone https://github.com/casouri/tree-sitter-module
   cd tree-sitter-module
-  export all_proxy=socks5://127.0.0.1:1080
   ./batch.sh
-  cp dist/* /e/local/emacs-deps/bin/
+  cp dist/* /e/local/emacs-install/bin/
 #+end_src
 - [[https://github.com/vedang/pdf-tools#compiling-and-installing-the-epdfinfo-server-from-source-on-windows][epdfinfo]]
   可直接在配置好编译环境后直接M-x pdf-tools-install进行编译安装.
