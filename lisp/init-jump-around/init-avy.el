@@ -92,7 +92,31 @@
 
   (use-package ace-pinyin
     :diminish ace-pinyin-mode
+    :functions ace-pinyin--build-string-regexp
     :config
+    (eval-when-compile
+      (declare-function pinyinlib-build-regexp-string "pinyinlib")
+      (declare-function avy--read-candidates "avy"))
+
+    (defun ace-pinyin--build-string-regexp (string)
+      (pinyinlib-build-regexp-string string
+                                     (not ace-pinyin-enable-punctuation-translation)
+                                     (not ace-pinyin-simplified-chinese-only-p)))
+
+    (defun ace-pinyin-goto-char-timer (&optional arg)
+      "Read one or many consecutive chars and jump to the first one.
+The window scope is determined by `avy-all-windows' (ARG negates it)."
+      (interactive "P")
+      (let ((avy-all-windows (if arg
+                                 (not avy-all-windows)
+                               avy-all-windows)))
+        (avy-with avy-goto-char-timer
+          (setq avy--old-cands
+                (avy--read-candidates #'ace-pinyin--build-string-regexp))
+          (avy-process avy--old-cands))))
+
+    (fset 'avy-goto-char-timer 'ace-pinyin-goto-char-timer)
+
     (ace-pinyin-global-mode 1)))
 
 (provide 'init-avy)

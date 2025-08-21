@@ -43,7 +43,7 @@
   (use-package vertico-quick
     :ensure nil
     :bind (:map vertico-map
-                ([remap avy-goto-word-1] . vertico-quick-insert)))
+                ([remap avy-goto-char-timer] . vertico-quick-insert)))
 
   (defun basic-remote-try-completion (string table pred point)
     (and (vertico--remote-p string)
