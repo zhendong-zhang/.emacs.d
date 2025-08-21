@@ -4,6 +4,14 @@
 
 ;;; Code:
 
+(use-package text-mode :ensure nil
+  :defer t
+  :config
+  (require 'ispell)
+  (defvar ispell-program-name)
+  (unless (executable-find ispell-program-name)
+    (setq text-mode-ispell-word-completion nil)))
+
 (use-package flyspell
   :commands (flyspell-mode)
   :bind

@@ -70,6 +70,10 @@
   pacman --needed --noconfirm -S mingw-w64-x86_64-python-mutagen
   pacman --needed --noconfirm -S mingw-w64-x86_64-flac
 #+end_src
+- aspell
+#+begin_src shell
+  pacman --needed --noconfirm -S mingw-w64-x86_64-aspell mingw-w64-x86_64-aspell-en
+#+end_src
 ** checkout emacs配置
 #+begin_src shell
   git clone git@github.com:zhendong-zhang/.emacs.d.git ~/.emacs.d --recurse-submodules
