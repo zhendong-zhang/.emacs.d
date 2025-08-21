@@ -1,3 +1,9 @@
+;;; init-tab-bar.el --- 标签设置 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package tab-bar
   :ensure nil
   :preface
@@ -34,3 +40,5 @@
   (advice-add 'clean-buffer-list-delay :around 'my-clean-buffer-list-delay))
 
 (provide 'init-tab-bar)
+
+;;; init-tab-bar.el ends here

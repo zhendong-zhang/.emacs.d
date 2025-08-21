@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: config header
+# key: header
+# --
+;;; ${1:`(file-name-base (buffer-file-name))`}.el --- ${2:summary} -*- lexical-binding: t -*-
+
+;; Author: ${3:`(format "%s <%s>" (magit-get "user.name") (magit-get "user.email"))`}
+
+;;; Code:
+
+${4}
+
+(provide '$1)
+
+;;; $1.el ends here

@@ -1,5 +1,10 @@
+;;; init-flyspell.el --- 拼写检查 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package flyspell
-  :defer t
   :commands (flyspell-mode)
   :bind
   (:map flyspell-mode-map
@@ -8,3 +13,5 @@
   (require 'ispell))
 
 (provide 'init-flyspell)
+
+;;; init-flyspell.el ends here

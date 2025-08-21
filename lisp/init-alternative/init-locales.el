@@ -1,3 +1,9 @@
+;;; init-locales.el --- 本地化 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 ;; (when (fboundp 'set-charset-priority)
 ;;   (set-charset-priority 'unicode))
 
@@ -19,6 +25,8 @@
       (setq result (apply orig-fun args))
       (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" cmdproxy-old-encoding)
       result))
+  (eval-when-compile
+    (declare-function my-projectile-files-via-ext-command "init-locales"))
   (advice-add 'projectile-files-via-ext-command :around #'my-projectile-files-via-ext-command)
 
   (setq system-time-locale "C")
@@ -36,3 +44,5 @@
     (setq file-name-coding-system 'gb18030)))
 
 (provide 'init-locales)
+
+;;; init-locales.el ends here

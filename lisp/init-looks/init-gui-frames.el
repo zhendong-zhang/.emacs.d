@@ -1,3 +1,9 @@
+;;; init-gui-frames.el --- 外观设置 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 ;;----------------------------------------------------------------------------
 ;; Suppress GUI features
 ;;----------------------------------------------------------------------------
@@ -20,14 +26,15 @@
   (global-hl-line-mode 1)
   (global-display-line-numbers-mode 1)
   (setq-default display-line-numbers-width 3)
-  (with-suppressed-warnings
-    (use-package linum-relative
-      :diminish linum-relative-mode
-      :init
-      (setq linum-relative-current-symbol "")
-      (setq linum-relative-backend 'display-line-numbers-mode)
-      :config
-      (linum-relative-global-mode))))
+  (use-package linum-relative
+    :diminish linum-relative-mode
+    :commands linum-relative-global-mode
+    :demand
+    :custom
+    (linum-relative-current-symbol "")
+    (linum-relative-backend 'display-line-numbers-mode)
+    :config
+    (linum-relative-global-mode)))
 
 (which-function-mode t)
 (column-number-mode t)
@@ -46,3 +53,5 @@
     (display-time-mode t)))
 
 (provide 'init-gui-frames)
+
+;;; init-gui-frames.el ends here

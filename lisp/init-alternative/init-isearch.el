@@ -1,3 +1,9 @@
+;;; init-isearch.el --- 查找 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 ;; Use regex to search by default
 (global-set-key (kbd "M-%") 'query-replace-regexp)
 (global-set-key (kbd "C-M-%") 'query-replace)
@@ -57,7 +63,7 @@
 (define-key isearch-mode-map (kbd "C-M-S-y") 'isearch-yank-word-at-point)
 
 ;; http://www.emacswiki.org/emacs/ZapToISearch
-(defun zap-to-isearch (rbeg rend)
+(defun zap-to-isearch (_ _)
   "Kill the region between the mark and the closest portion of
 the isearch match string. The behaviour is meant to be analogous
 to zap-to-char; let's call it zap-to-isearch. The deleted region
@@ -86,7 +92,7 @@ and the point, not include the isearch word."
 (define-key isearch-mode-map [(meta z)] 'zap-to-isearch)
 
 ;; http://www.emacswiki.org/emacs/ZapToISearch
-(defun isearch-exit-other-end (rbeg rend)
+(defun isearch-exit-other-end (_ _)
   "Exit isearch, but at the other end of the search string.
 This is useful when followed by an immediate kill."
   (interactive "r")
@@ -96,3 +102,5 @@ This is useful when followed by an immediate kill."
 (define-key isearch-mode-map [(control return)] 'isearch-exit-other-end)
 
 (provide 'init-isearch)
+
+;;; init-isearch.el ends here

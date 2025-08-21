@@ -1,3 +1,9 @@
+;;; init-web-mode.el --- xml/html支持 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package web-mode
   :mode
   ("\\.xml?\\'" . web-mode)
@@ -8,3 +14,5 @@
         web-mode-enable-css-colorization t))
 
 (provide 'init-web-mode)
+
+;;; init-web-mode.el ends here

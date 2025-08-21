@@ -1,3 +1,9 @@
+;;; init-avy.el --- 快速移动光标 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (require 'ring)
 
 (defun get-available-avy-keys (dispatch-alist)
@@ -90,3 +96,5 @@
     (ace-pinyin-global-mode 1)))
 
 (provide 'init-avy)
+
+;;; init-avy.el ends here

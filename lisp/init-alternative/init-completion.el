@@ -1,3 +1,9 @@
+;;; init-completion.el --- 补全相关配置 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package orderless
   :init
   (setq completion-styles '(orderless basic)
@@ -6,13 +12,23 @@
   (orderless-component-separator "[ |]+")
   (orderless-matching-styles '(orderless-initialism orderless-literal orderless-regexp)))
 
+(use-package pinyinlib
+  :after orderless
+  :functions orderless-regexp pinyinlib-build-regexp-string
+  :preface
+  (defun orderless-regexp-pinyin (str)
+    "Match COMPONENT as a pinyin regex."
+    (orderless-regexp (pinyinlib-build-regexp-string str)))
+  :config
+  (add-to-list 'orderless-matching-styles 'orderless-regexp-pinyin))
+
 (use-package vertico
+  :functions vertico--remote-p
   :custom
   (vertico-cycle t)
   (vertico-sort-function 'vertico-sort-history-length-alpha)
+  :hook (after-init . vertico-mode)
   :config
-  (vertico-mode t)
-
   (use-package vertico-sort :ensure nil)
 
   (use-package vertico-directory
@@ -29,7 +45,6 @@
     :bind (:map vertico-map
                 ([remap avy-goto-word-1] . vertico-quick-insert)))
 
-  (declare-function vertico--remote-p "vertico")
   (defun basic-remote-try-completion (string table pred point)
     (and (vertico--remote-p string)
          (completion-basic-try-completion string table pred point)))
@@ -42,8 +57,7 @@
   (setq completion-category-overrides '((file (styles basic-remote partial-completion)))))
 
 (use-package marginalia
-  :config
-  (marginalia-mode t))
+  :hook (after-init . marginalia-mode))
 
 (use-package consult
   :custom
@@ -63,9 +77,8 @@
    ("M-s k" . consult-keep-lines))
   :config
   (consult-customize
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file
-   :preview-key "C-<return>")
+   consult-ripgrep consult-git-grep consult-grep :preview-key "C-<return>"
+   consult-bookmark consult-recent-file :preview-key "C-<return>")
   (when (and (equal system-type 'windows-nt) (executable-find "es"))
     (setq consult-locate-args "es -sort date-modified-descending"))
   (require 'consult-imenu))
@@ -100,3 +113,5 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (provide 'init-completion)
+
+;;; init-completion.el ends here

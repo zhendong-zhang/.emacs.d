@@ -1,3 +1,9 @@
+;;; init-input-method.el --- 拼音输入法 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package pyim
   :when (equal system-type 'windows-nt)
   :defer-incrementally pyim-autoselector pyim-common pyim-cstring pyim-dhashcache pyim-indicator pyim-page pyim-preview pyim-process pyim-scheme
@@ -32,3 +38,5 @@
   (rime-title "CH "))
 
 (provide 'init-input-method)
+
+;;; init-input-method.el ends here

@@ -1,3 +1,9 @@
+;;; init-smartparens.el --- 括号 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package smartparens
   :defer-incrementally t
   :diminish (smartparens-strict-mode smartparens-mode)
@@ -21,3 +27,5 @@
   (smartparens-global-mode 1))
 
 (provide 'init-smartparens)
+
+;;; init-smartparens.el ends here

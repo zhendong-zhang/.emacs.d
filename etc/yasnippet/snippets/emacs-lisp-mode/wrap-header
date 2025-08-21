@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: wrap with file header
+# key: wrap-header
+# --
+;;; ${1:`(file-name-base (buffer-file-name))`}.el --- ${2:summary} -*- lexical-binding: t -*-
+
+;; Author: ${3:`(format "%s <%s>" (magit-get "user.name") (magit-get "user.email"))`}
+
+;;; Code:
+
+${4:`(let* ((file-name (buffer-file-name)))
+  (with-temp-buffer
+    (insert file-name)
+    (buffer-string)))`}
+;;; $1.el ends here
+`(delete-region (point) (point-max))`

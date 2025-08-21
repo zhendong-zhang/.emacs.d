@@ -1,3 +1,9 @@
+;;; early-init.el --- 预初始化配置 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 ;; speed up
 (setq load-prefer-newer noninteractive)
 (setq package-enable-at-startup nil)
@@ -24,3 +30,5 @@
 (push '(font . "LXGW WenKai Mono-14") default-frame-alist)
 
 (provide 'early-init)
+
+;;; early-init.el ends here

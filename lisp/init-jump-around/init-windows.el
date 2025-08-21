@@ -1,3 +1,9 @@
+;;; init-windows.el --- window相关 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package window-numbering
   :config
   (window-numbering-mode 1))
@@ -80,3 +86,5 @@ ALIST is the option channel for display actions (see `display-buffer')."
          display-buffer-pop-up-frame)))
 
 (provide 'init-windows)
+
+;;; init-windows.el ends here

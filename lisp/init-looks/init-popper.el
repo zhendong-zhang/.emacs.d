@@ -1,3 +1,9 @@
+;;; init-popper.el --- 弹窗管理 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package popper
   :demand
   :bind
@@ -86,3 +92,5 @@
   (advice-add #'keyboard-quit :before #'popper-close-window-hack))
 
 (provide 'init-popper)
+
+;;; init-popper.el ends here

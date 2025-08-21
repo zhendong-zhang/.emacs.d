@@ -1,3 +1,9 @@
+;;; init-highlight.el --- 高亮 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package symbol-overlay
   :diminish
   :bind
@@ -16,3 +22,5 @@
 (use-package highlight-indentation :defer-incrementally t)
 
 (provide 'init-highlight)
+
+;;; init-highlight.el ends here

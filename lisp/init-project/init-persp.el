@@ -1,7 +1,14 @@
+;;; init-persp.el --- 重启后恢复 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package persp-mode
   :after tab-bar
-  :demand
   :diminish
+  :hook ((after-init . persp-mode))
+  :functions set-persp-parameter persp-parameter
   :preface
   (defun my-save-tabs (&rest _)
     (set-persp-parameter 'tab-bar-tabs (frameset-filter-tabs (tab-bar-tabs) nil nil t)))
@@ -9,9 +16,6 @@
     (set-frame-parameter nil 'tabs (persp-parameter 'tab-bar-tabs))
     (when (fboundp 'tab-bar--update-tab-bar-lines)
       (tab-bar--update-tab-bar-lines t)))
-  :defines (recentf-exclude)
-  :functions (recentf-include-p)
-  :hook ((after-init . persp-mode))
   :init (setq persp-keymap-prefix (kbd "C-x p")
               persp-nil-name "default"
               persp-kill-foreign-buffer-behaviour 'kill
@@ -38,14 +42,17 @@
                     (string-match-p "\\.bin\\|\\.so\\|\\.dll\\|\\.exe\\'" bname)))))
 
   ;; Don't save persp configs in `recentf'
+  (eval-when-compile
+    (defvar recentf-exclude)
+    (declare-function recentf-include-p "recentf"))
   (with-eval-after-load 'recentf
     (push persp-save-dir recentf-exclude)
     (add-hook 'persp-filter-save-buffers-functions
-            (lambda (b)
-              "Ignore buffers exclude by recentf."
-              (let ((fname (buffer-file-name b)))
-                (or (not fname)
-                    (not (recentf-include-p fname)))))))
+              (lambda (b)
+                "Ignore buffers exclude by recentf."
+                (let ((fname (buffer-file-name b)))
+                  (or (not fname)
+                      (not (recentf-include-p fname)))))))
 
   ;; Eshell integration
   (persp-def-buffer-save/load
@@ -65,3 +72,5 @@
   (add-hook 'persp-after-load-state-functions 'my-load-tabs))
 
 (provide 'init-persp)
+
+;;; init-persp.el ends here

@@ -1,3 +1,9 @@
+;;; init-file-explorer.el --- 调用外部文件浏览器 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (defun show-this-file-external ()
   "Show current file in OS explorer."
   (interactive)
@@ -16,3 +22,5 @@
 (global-set-key (kbd "M-g e") 'show-this-file-external)
 
 (provide 'init-file-explorer)
+
+;;; init-file-explorer.el ends here

@@ -1,3 +1,9 @@
+;;; init-fonts.el --- 字体设置 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (defun font-installed-p (font-name)
   "Check if font with FONT-NAME is available."
   (find-font (font-spec :name font-name)))
@@ -8,7 +14,9 @@
     (shell-command (concat "ln -sf " user-emacs-directory "etc/fonts/ ~/.local/share/fonts"))))
 
 (cl-loop for font in '("LXGW WenKai Mono")
-           when (font-installed-p font)
-           return (set-frame-font (format "%s-%s" font 14)))
+         when (font-installed-p font)
+         return (set-frame-font (format "%s-%s" font 14)))
 
 (provide 'init-fonts)
+
+;;; init-fonts.el ends here

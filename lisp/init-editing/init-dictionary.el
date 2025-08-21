@@ -1,3 +1,9 @@
+;;; init-dictionary.el --- 翻译 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package maple-translate
   :github "honmaple/emacs-maple-translate"
   :bind
@@ -16,3 +22,5 @@
   ("M-s t" . toggle-corfu-english-helper))
 
 (provide 'init-dictionary)
+
+;;; init-dictionary.el ends here

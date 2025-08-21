@@ -1,3 +1,9 @@
+;;; init-benchmarking.el --- 配置调优工具 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (defun my-time-subtract-millis (b a)
   (* 1000.0 (float-time (time-subtract b a))))
 
@@ -65,3 +71,5 @@ LOAD-DURATION is the time taken in milliseconds to load FEATURE.")
 (add-hook 'emacs-startup-hook 'my-show-init-time)
 
 (provide 'init-benchmarking)
+
+;;; init-benchmarking.el ends here

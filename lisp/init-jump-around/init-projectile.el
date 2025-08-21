@@ -1,3 +1,9 @@
+;;; init-projectile.el --- 项目管理 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package projectile
   :commands (projectile-project-root)
   :custom
@@ -51,3 +57,5 @@
   (add-to-list 'project-find-functions 'projectile-project-find-function))
 
 (provide 'init-projectile)
+
+;;; init-projectile.el ends here

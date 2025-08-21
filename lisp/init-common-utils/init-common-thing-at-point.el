@@ -1,10 +1,16 @@
+;;; init-common-thing-at-point.el --- 给一些功能提供初始值 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 ;; from https://emacs-china.org/t/xxx-thing-at-point/18047/10
 (defcustom common-region-at-point-commands
   '(consult-line
     consult-ripgrep
     consult-locate)
   "which command should get region at point."
-  :type 'list
+  :type '(repeat function)
   :group 'common-thing-at-point)
 
 (defcustom common-symbol-at-point-commands
@@ -15,7 +21,7 @@
     anzu-query-replace-regexp
     replace-string)
   "which command should get symbol at point."
-  :type 'list
+  :type '(repeat function)
   :group 'common-thing-at-point)
 
 (defvar common-thing-at-point-overwrite-commands
@@ -56,3 +62,5 @@
 (add-hook 'minibuffer-setup-hook #'common-thing-at-point-minibuffer-setup)
 
 (provide 'init-common-thing-at-point)
+
+;;; init-common-thing-at-point.el ends here

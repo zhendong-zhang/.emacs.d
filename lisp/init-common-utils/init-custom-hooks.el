@@ -1,3 +1,9 @@
+;;; init-custom-hooks.el --- hooks -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (defvar after-make-console-frame-hooks '()
   "Hooks to run after creating a new TTY frame")
 (defvar after-make-window-system-frame-hooks '()
@@ -28,3 +34,5 @@
 (add-hook-run-once 'find-file-hook 'first-file-hook)
 
 (provide 'init-custom-hooks)
+
+;;; init-custom-hooks.el ends here

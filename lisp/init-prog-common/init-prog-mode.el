@@ -1,3 +1,9 @@
+;;; init-prog-mode.el --- 编程相关通用配置 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package eldoc :diminish)
 
 (use-package rainbow-delimiters
@@ -34,7 +40,8 @@
 
 (defun create-dot-editorconfig ()
   (interactive)
-  (declare-function projectile-project-root "projectile")
+  (eval-when-compile
+    (declare-function projectile-project-root "projectile"))
   (with-temp-buffer
     (erase-buffer)
     (insert "root = true
@@ -55,3 +62,5 @@ trim_trailing_whitespace = false")
   :hook (first-file . editorconfig-mode))
 
 (provide 'init-prog-mode)
+
+;;; init-prog-mode.el ends here

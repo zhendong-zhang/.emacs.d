@@ -1,3 +1,9 @@
+;;; init-dap.el --- 调试相关 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package dape
   :commands dape
   :github "zhendong-zhang/dape"
@@ -23,3 +29,5 @@
   (setq dape-cwd-fn 'projectile-project-root))
 
 (provide 'init-dap)
+
+;;; init-dap.el ends here

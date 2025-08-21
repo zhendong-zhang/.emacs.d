@@ -1,3 +1,9 @@
+;;; init-keycast.el --- 记录按键 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package keycast
   :after doom-modeline
   :preface
@@ -13,8 +19,10 @@
       (setq global-mode-string (remove '("" keycast-mode-line " ") global-mode-string))))
   :defer-incrementally t
   :custom
-  (keycast-mode-line-format "%k%c")
+  (keycast-mode-line-format "%c")
   :config
   (keycast-global-mode))
 
 (provide 'init-keycast)
+
+;;; init-keycast.el ends here

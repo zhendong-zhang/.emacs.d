@@ -1,3 +1,9 @@
+;;; init-basic-setting.el --- 基础配置 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (setq-default use-short-answers t
               buffers-menu-max-size 30
               make-backup-files nil
@@ -102,6 +108,8 @@
 ;; Cut/copy the current line if no region is active
 (use-package whole-line-or-region
   :diminish whole-line-or-region-local-mode
+  :demand
+  :commands whole-line-or-region-global-mode
   :bind
   (:map whole-line-or-region-local-mode-map
         ([remap comment-dwim] . nil))
@@ -118,11 +126,15 @@
   ("C-=" . er/expand-region))
 
 (use-package move-text
+  :demand
+  :commands move-text-default-bindings
   :config
   (move-text-default-bindings))
 
 (use-package hungry-delete
   :diminish hungry-delete-mode
+  :demand
+  :commands global-hungry-delete-mode
   :config
   (add-to-list 'hungry-delete-except-modes 'minibuffer-mode)
   (global-hungry-delete-mode t))
@@ -132,8 +144,10 @@
   :config
   (add-to-list 'undohist-ignored-files "COMMIT_EDITMSG")
   (undohist-initialize))
-(when (version<= "28.1" emacs-version)
-  (use-package vundo :defer-incrementally t))
+
+(use-package vundo
+  :defer-incrementally t
+  :when (version<= "28.1" emacs-version))
 
 (use-package repeat
   :defer-incrementally t
@@ -165,3 +179,5 @@
 (global-set-key (kbd "M-g i") 'imenu)
 
 (provide 'init-basic-setting)
+
+;;; init-basic-setting.el ends here

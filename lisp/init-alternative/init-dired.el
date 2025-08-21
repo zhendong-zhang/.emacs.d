@@ -1,3 +1,9 @@
+;;; init-dired.el --- dired -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (defun my-dired-setup()
   (require 'diff-hl-dired)
   (diff-hl-dired-mode)
@@ -14,3 +20,5 @@
   (setq dired-dwim-target t))
 
 (provide 'init-dired)
+
+;;; init-dired.el ends here

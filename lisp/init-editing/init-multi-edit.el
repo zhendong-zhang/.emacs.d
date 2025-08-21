@@ -1,3 +1,9 @@
+;;; init-multi-edit.el --- 多点编辑 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (defcustom multi-edit-mode-line-lighter-format " [ME%s]"
   "Mode-line lighter for Multi edit."
   :type 'string
@@ -10,7 +16,7 @@
 
 (defcustom multi-edit-grab-range-list (list 'defun 'paragraph 'buffer)
   "Selection range for `multi-edit-guide-mode-toggle' and `multi-edit-try-grab'."
-  :type 'list
+  :type '(list symbol)
   :group 'multi-edit)
 
 ;; common funcs
@@ -274,33 +280,33 @@
     (add-to-list 'multi-edit-grab-range-list first t))
   (multi-edit--guess-secondary-selection 1))
 
-(defun multi-edit-mark-word (arg)
+(defun multi-edit-mark-word (_)
   "Mark current word under cursor.
 Use negative argument to create a backward selection."
   (interactive "p")
   (multi-edit--mark-thing 'word "\\<%s\\>"))
 
-(defun multi-edit-mark-symbol (arg)
+(defun multi-edit-mark-symbol (_)
   (interactive "p")
   (multi-edit--mark-thing 'symbol "\\_<%s\\_>"))
 
-(defun multi-edit-mark-sexp (arg)
+(defun multi-edit-mark-sexp (_)
   (interactive "p")
   (multi-edit--mark-thing 'sexp))
 
-(defun multi-edit-mark-number (arg)
+(defun multi-edit-mark-number (_)
   (interactive "p")
   (multi-edit--mark-thing 'number))
 
-(defun multi-edit-mark-defun (arg)
+(defun multi-edit-mark-defun (_)
   (interactive "p")
   (multi-edit--mark-thing 'defun))
 
-(defun multi-edit-mark-line (arg)
+(defun multi-edit-mark-line (_)
   (interactive "p")
   (multi-edit--mark-thing 'line))
 
-(defun multi-edit-mark-line-content (arg)
+(defun multi-edit-mark-line-content (_)
   (interactive "p")
   (multi-edit--mark-thing 'line-content))
 
@@ -315,40 +321,40 @@ Use negative argument to create a backward selection."
           (add-to-history 'regexp-search-ring search regexp-search-ring-max))
         (multi-edit--reset-overlays thing search)))))
 
-(defun multi-edit-mark-all-word (arg)
+(defun multi-edit-mark-all-word (_)
   "Mark all word under cursor.
 Use negative argument to create a backward selection."
   (interactive "p")
   (multi-edit--mark-all-thing 'word))
 
-(defun multi-edit-mark-all-symbol (arg)
+(defun multi-edit-mark-all-symbol (_)
   (interactive "p")
   (multi-edit--mark-all-thing 'symbol))
 
-(defun multi-edit-mark-all-sexp (arg)
+(defun multi-edit-mark-all-sexp (_)
   (interactive "p")
   (multi-edit--mark-all-thing 'sexp))
 
-(defun multi-edit-mark-all-number (arg)
+(defun multi-edit-mark-all-number (_)
   (interactive "p")
   (multi-edit--mark-all-thing 'number))
 
-(defun multi-edit-mark-all-defun (arg)
+(defun multi-edit-mark-all-defun (_)
   (interactive "p")
   (multi-edit--mark-all-thing 'defun))
 
-(defun multi-edit-mark-all-line (arg)
+(defun multi-edit-mark-all-line (_)
   (interactive "p")
   (multi-edit--mark-all-thing 'line))
 
-(defun multi-edit-mark-all-line-content (arg)
+(defun multi-edit-mark-all-line-content (_)
   (interactive "p")
   (multi-edit--mark-all-thing 'line-content))
 
 (defun multi-edit--mark-all-thing (thing)
   (multi-edit--reset-overlays thing))
 
-(defun multi-edit-search (arg)
+(defun multi-edit-search (_)
   "Read a regexp from minibuffer, then search and select it."
   (interactive "p")
   (let* ((beg (if (secondary-selection-exist-p)
@@ -397,8 +403,11 @@ Use negative argument to create a backward selection."
   :lighter (:eval (format multi-edit-mode-line-lighter-format "Q"))
   :keymap multi-edit-quick-select-mode-keymap
   (if multi-edit-quick-select-mode
-      (add-hook 'pre-command-hook 'multi-edit-quick-select-actions nil t)
-    (remove-hook 'pre-command-hook 'multi-edit-quick-select-actions t)))
+      (progn
+        (add-hook 'pre-command-hook 'multi-edit-quick-select-actions nil t)
+        (multi-edit-set-mode-line))
+    (remove-hook 'pre-command-hook 'multi-edit-quick-select-actions t)
+    (multi-edit-remove-mode-line)))
 
 (defvar multi-edit--quick-select-column nil)
 (defvar multi-edit-quick-select-commands '(multi-edit-quick-select multi-edit-quick-cancel multi-edit-quick-select-mode
@@ -452,12 +461,13 @@ Use negative argument to create a backward selection."
              (times 0)
              (current-prefix-arg (- n)))
         (while (and bounds (< times (abs n)))
-          (multi-edit--remove-overlay (multi-edit--get-nearest-overlay))
+          (multi-edit--remove-overlay ol)
           (if (not multi-edit--quick-select-column)
               (setq bounds (multi-edit--re-search match))
             (forward-line (if (< n 0) 1 -1))
             (move-to-column multi-edit--quick-select-column)
             (setq bounds (cons (point) (point))))
+          (setq ol (multi-edit--get-nearest-overlay))
           (cl-incf times))))))
 
 ;; multi-edit-action-mode
@@ -474,12 +484,15 @@ Use negative argument to create a backward selection."
   :lighter (:eval (format multi-edit-mode-line-lighter-format "A"))
   :keymap multi-edit-action-mode-keymap
   (if multi-edit-action-mode
-      (cond (multi-edit-guide-mode
-             (multi-edit-guide-mode -1)
-             (multi-edit--maybe-start-macro))
-            (multi-edit-quick-select-mode
-             (multi-edit-quick-select-mode -1)
-             (multi-edit--maybe-start-macro)))
+      (progn
+        (multi-edit-set-mode-line)
+        (cond (multi-edit-guide-mode
+               (multi-edit-guide-mode -1)
+               (multi-edit--maybe-start-macro))
+              (multi-edit-quick-select-mode
+               (multi-edit-quick-select-mode -1)
+               (multi-edit--maybe-start-macro))))
+    (multi-edit-remove-mode-line)
     (multi-edit-apply-modification)
     (if (secondary-selection-exist-p)
         (multi-edit-guide-mode 1)
@@ -525,7 +538,6 @@ Use negative argument to create a backward selection."
       (setq buffer-undo-list
             (cl-loop for v from 1 to multi-edit--last-undo-length
                      with list = buffer-undo-list
-                     with new-list = '(nil)
                      unless (eq (car list) nil)
                      collect (car list) into new-list
                      do (setq list (cdr list))
@@ -534,32 +546,26 @@ Use negative argument to create a backward selection."
 
 ;; mode line
 
-(defvar multi-edit-need-update-mode-line nil)
-(defconst multi-edit--mode-line-format '(:eval (multi-edit--update-mode-line)))
+(defconst multi-edit--mode-line-format '(:eval (multi-edit-mode-line-str)))
 
-(defun multi-edit--update-mode-line ()
-  (let* ((ol (multi-edit--get-nearest-overlay))
-         (before (multi-edit--overlays-in (point-min) (or (and (overlayp ol) (overlay-start ol)) (point))))
-         (after (multi-edit--overlays-in (or (and (overlayp ol) (1+ (overlay-end ol))) (point)) (point-max)))
-         (count (+ (length before) (if (overlayp ol) 1 0))))
-    (format " %d/%d " count (+ count (length after)))))
-
-(defun multi-edit-update-mode-line ()
-  (if (multi-edit--overlays-exist)
-      (multi-edit-set-mode-line)
-    (multi-edit-remove-mode-line)))
+(defun multi-edit-mode-line-str ()
+  (or
+   (when (multi-edit--overlays-exist)
+     (let* ((ol (multi-edit--get-nearest-overlay))
+            (before (multi-edit--overlays-in (point-min) (or (and (overlayp ol) (overlay-start ol)) (point))))
+            (after (multi-edit--overlays-in (or (and (overlayp ol) (1+ (overlay-end ol))) (point)) (point-max)))
+            (count (+ (length before) (if (overlayp ol) 1 0))))
+       (format " %d/%d " count (+ count (length after)))))
+   ""))
 
 (defun multi-edit-set-mode-line ()
-  (setq multi-edit-need-update-mode-line t)
   (when (and multi-edit-set-mode-line-p (not (member multi-edit--mode-line-format mode-line-format)))
     (setq mode-line-format (cons multi-edit--mode-line-format mode-line-format))))
 
 (defun multi-edit-remove-mode-line ()
-  (setq multi-edit-need-update-mode-line nil)
   (when (and multi-edit-set-mode-line-p (member multi-edit--mode-line-format mode-line-format))
     (setq mode-line-format (delete multi-edit--mode-line-format mode-line-format))))
 
-(add-hook 'multi-edit-overlay-change-hook 'multi-edit-update-mode-line)
-(add-hook 'multi-edit-overlay-change-finished-hook 'force-mode-line-update)
-
 (provide 'init-multi-edit)
+
+;;; init-multi-edit.el ends here

@@ -1,3 +1,9 @@
+;;; init.el --- 配置入口 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 ;; 调试用
 (setq debug-on-quit nil)
 (setq debug-on-error nil)
@@ -75,6 +81,7 @@
 ;; 分析耗时
 (when my-debug-switch
   (require 'init-benchmarking)
+  (defvar use-package-verbose)
   (setq use-package-verbose t))
 
 ;; 公用接口或包
@@ -100,3 +107,5 @@
 (require-dir "init-all-in-emacs")
 
 (provide 'init)
+
+;;; init.el ends here

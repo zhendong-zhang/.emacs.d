@@ -1,3 +1,9 @@
+;;; init-daemon.el --- emacsclient支持 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package server
   :commands server-running-p
   :config
@@ -5,3 +11,5 @@
     (server-start)))
 
 (provide 'init-daemon)
+
+;;; init-daemon.el ends here

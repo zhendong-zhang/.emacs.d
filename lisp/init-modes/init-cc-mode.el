@@ -1,3 +1,9 @@
+;;; init-cc-mode.el --- c/c++支持 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package cc-mode
   :mode
   ("\\.h\\'" . c++-mode)
@@ -10,3 +16,5 @@
     (add-to-list 'cc-search-directories "/usr/include/c++/*")))
 
 (provide 'init-cc-mode)
+
+;;; init-cc-mode.el ends here

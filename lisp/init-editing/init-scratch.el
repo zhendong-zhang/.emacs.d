@@ -1,5 +1,10 @@
+;;; init-scratch.el --- scratch -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package scratch
-  :defer t
   :commands (scratch))
 
 (use-package persistent-scratch
@@ -8,3 +13,5 @@
   (persistent-scratch-setup-default))
 
 (provide 'init-scratch)
+
+;;; init-scratch.el ends here

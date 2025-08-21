@@ -1,3 +1,9 @@
+;;; init-which-key.el --- 快捷键提示 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package which-key
   :defer-incrementally t
   :diminish
@@ -8,3 +14,5 @@
   (which-key-mode 1))
 
 (provide 'init-which-key)
+
+;;; init-which-key.el ends here

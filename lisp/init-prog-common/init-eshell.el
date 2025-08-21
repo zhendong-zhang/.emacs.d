@@ -1,3 +1,9 @@
+;;; init-eshell.el --- 终端模拟器 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package eshell
   :defer-incrementally esh-util esh-module esh-proc esh-io esh-cmd
   :hook (eshell-mode . eshell-smart-initialize)
@@ -11,3 +17,5 @@
           eshell-prompt-function 'epe-theme-dakrone)))
 
 (provide 'init-eshell)
+
+;;; init-eshell.el ends here

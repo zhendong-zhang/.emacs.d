@@ -1,8 +1,15 @@
+;;; init-common-funcs.el --- 一些便利函数 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (defun narrow-or-widen-dwim ()
   "If the buffer is narrowed, it widens. Otherwise, it narrows to region
 , or Org subtree."
   (interactive)
-  (declare-function org-narrow-to-subtree "org")
+  (eval-when-compile
+    (declare-function org-narrow-to-subtree "org"))
   (cond ((buffer-narrowed-p) (widen))
         ((region-active-p) (narrow-to-region (region-beginning) (region-end)))
         ((equal major-mode 'org-mode) (org-narrow-to-subtree))
@@ -124,7 +131,7 @@
   (when (not arg)
     (setq arg 1))
   (let* ((s (read-from-minibuffer "insert string : ")))
-    (dotimes (v arg)
+    (dotimes (_ arg)
       (insert s)
       (newline-and-indent))))
 
@@ -139,7 +146,7 @@
       (let ;; To make `end-of-line' and etc. to ignore fields.
           ((inhibit-field-text-motion t))
         (sort-subr nil 'forward-line 'end-of-line nil nil
-                   (lambda (s1 s2) (eq (random 2) 0)))))))
+                   (lambda (&rest _) (eq (random 2) 0)))))))
 
 (defun shuffle-buffer ()
   "Shuffle lines in current buffer"
@@ -265,3 +272,5 @@ current window."
 (global-set-key (kbd "C-<tab>") 'alternate-buffer)
 
 (provide 'init-common-funcs)
+
+;;; init-common-funcs.el ends here

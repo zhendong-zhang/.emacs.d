@@ -1,3 +1,9 @@
+;;; init-elpa.el --- package源 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (defun find-fastest-mirror-for-me ()
   (interactive)
   (require 'benchmark)
@@ -53,10 +59,16 @@
 (unless (package-installed-p 'package-vc)
   (use-package quelpa
     :commands (quelpa quelpa-upgrade)
-    :init
-    (setq quelpa-checkout-melpa-p nil)))
+    :custom
+    (quelpa-checkout-melpa-p nil)))
 
 ;; from doom-emacs
+(eval-when-compile
+  (declare-function use-package-list-insert "use-package")
+  (declare-function use-package-only-one "use-package")
+  (declare-function use-package-process-keywords "use-package")
+  (declare-function use-package-normalize-symlist "use-package"))
+
 (defvar incremental-packages-list '()
   "A list of packages to load incrementally after startup. Any large packages
   here may cause noticeable pauses, so it's recommended you break them up into
@@ -130,12 +142,12 @@ If this is a daemon session, load them all immediately instead."
       (use-package-list-insert :defer-incrementally use-package-keywords :after))
 
 (defalias 'use-package-normalize/:defer-incrementally #'use-package-normalize-symlist)
-(defun use-package-handler/:defer-incrementally (name _keyword _arg rest state)
+(defun use-package-handler/:defer-incrementally (name _keyword arg rest state)
   (use-package-concat
    `((load-packages-incrementally
-      ',(if (equal _arg '(t))
+      ',(if (equal arg '(t))
             (list name)
-          (append _arg (list name)))))
+          (append arg (list name)))))
    (use-package-process-keywords name rest state)))
 
 (defun require-package (package &optional min-version no-refresh)
@@ -177,9 +189,9 @@ re-downloaded in order to locate PACKAGE."
          (t
           (use-package-error
            ":min-version wants a version number"))))))
-(defun use-package-handler/:min-version (name _keyword _arg rest state)
+(defun use-package-handler/:min-version (name _keyword arg rest state)
   (let ((body (use-package-process-keywords name rest state))
-        (min-versin-form `(require-package ',name ',_arg)))
+        (min-versin-form `(require-package ',name ',arg)))
     (if (bound-and-true-p byte-compile-current-file)
         (eval min-versin-form)              ; Eval when byte-compiling,
       (push min-versin-form body))          ; or else wait until runtime.
@@ -198,12 +210,14 @@ re-downloaded in order to locate PACKAGE."
          (t
           (use-package-error
            ":github wants a short url(string)"))))))
-(defun use-package-handler/:github (name _keyword _arg rest state)
+(defun use-package-handler/:github (name _keyword arg rest state)
   (let ((body (use-package-process-keywords name rest state))
-        (github-form `(install-package-from-github ',name ',_arg)))
+        (github-form `(install-package-from-github ',name ',arg)))
     (if (bound-and-true-p byte-compile-current-file)
         (eval github-form)              ; Eval when byte-compiling,
       (push github-form body))          ; or else wait until runtime.
     body))
 
 (provide 'init-elpa)
+
+;;; init-elpa.el ends here

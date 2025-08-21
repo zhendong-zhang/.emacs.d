@@ -1,3 +1,9 @@
+;;; init-ibuffer.el --- ibuffer -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package ibuffer
   :defer-incrementally t
   :bind
@@ -17,3 +23,5 @@
      (t (format "%8d" (buffer-size))))))
 
 (provide 'init-ibuffer)
+
+;;; init-ibuffer.el ends here

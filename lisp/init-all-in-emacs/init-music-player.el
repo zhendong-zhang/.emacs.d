@@ -1,6 +1,6 @@
 ;;; init-music-player.el --- 音乐播放器 -*- lexical-binding: t -*-
 
-;; Author: (zhendong zhendong.zhang.zh@gmail.com)
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
 
 ;;; Code:
 

@@ -1,3 +1,9 @@
+;;; init-easy-nav.el --- 浏览模式 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (defvar easy-nav-mode-keymap-for-prev
   (let ((keymap (make-sparse-keymap)))
     (define-key keymap (kbd "w") #'backward-word)
@@ -78,3 +84,5 @@
 (define-key global-map (kbd "C-z") 'easy-nav-global-mode)
 
 (provide 'init-easy-nav)
+
+;;; init-easy-nav.el ends here

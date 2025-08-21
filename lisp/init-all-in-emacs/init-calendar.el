@@ -1,3 +1,9 @@
+;;; init-calendar.el --- 日历 -*- lexical-binding: t -*-
+
+;; Author: zhendong <zhendong.zhang.zh@gmail.com>
+
+;;; Code:
+
 (use-package cal-china-x
   :after (calendar)
   :defer-incrementally t
@@ -9,3 +15,5 @@
               cal-china-x-general-holidays)))
 
 (provide 'init-calendar)
+
+;;; init-calendar.el ends here
