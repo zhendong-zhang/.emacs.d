@@ -24,17 +24,12 @@
         '(buffer-file-name (:eval (abbreviate-file-name buffer-file-name))
                            (dired-directory dired-directory "%b")))
   (global-hl-line-mode 1)
-  (global-display-line-numbers-mode 1)
-  (setq-default display-line-numbers-width 3)
-  (use-package linum-relative
-    :diminish linum-relative-mode
-    :commands linum-relative-global-mode
-    :demand
+  (use-package display-line-numbers
     :custom
-    (linum-relative-current-symbol "")
-    (linum-relative-backend 'display-line-numbers-mode)
+    (display-line-numbers-type 'relative)
+    (display-line-numbers-width 3)
     :config
-    (linum-relative-global-mode)))
+    (global-display-line-numbers-mode 1)))
 
 (which-function-mode t)
 (column-number-mode t)
