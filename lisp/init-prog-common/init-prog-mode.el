@@ -44,6 +44,7 @@
     (declare-function projectile-project-root "projectile"))
   (with-temp-buffer
     (erase-buffer)
+    (setq buffer-file-coding-system 'utf-8-unix)
     (insert "root = true
 [*]
 indent_style = space
