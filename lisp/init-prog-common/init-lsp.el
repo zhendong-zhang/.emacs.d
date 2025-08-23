@@ -61,15 +61,13 @@ AccessModifierOffset: -4")
   (corfu-history-mode t))
 
 (use-package eglot
-  :after corfu
   :hook
-  ((c-mode-common
-    bash-mode
-    python-mode
-    cmake-mode
-    lua-mode
-    python-mode
-    web-mode) . eglot-ensure))
+  ((prog-mode . (lambda ()
+                  (unless (derived-mode-p
+                           'emacs-lisp-mode 'lisp-mode
+                           'makefile-mode 'snippet-mode
+                           'ron-mode)
+                    (eglot-ensure))))))
 
 (use-package eglot-booster
   :github "jdtsmith/eglot-booster"
