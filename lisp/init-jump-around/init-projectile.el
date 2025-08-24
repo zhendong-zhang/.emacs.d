@@ -86,15 +86,6 @@
                (unless (eq ibuffer-sorting-mode 'filename/process)
                  (ibuffer-do-sort-by-filename/process)))))
 
-(defun projectile-project-find-function (dir)
-  (let* ((root (projectile-project-root dir)))
-    (and root (cons 'transient root))))
-
-(use-package project
-  :defer-incrementally t
-  :config
-  (add-to-list 'project-find-functions 'projectile-project-find-function))
-
 (provide 'init-projectile)
 
 ;;; init-projectile.el ends here
