@@ -6,10 +6,11 @@
 
 (use-package popper
   :demand
+  :commands popper-mode popper-tab-line-mode popper-echo-mode
   :bind
   (:map popper-mode-map
-        ("M-g h"   . popper-toggle)
-        ("C-`"   . popper-cycle)
+        ("M-g h" . popper-toggle)
+        ("C-`" . popper-cycle)
         ("M-`" . popper-toggle-type))
   :custom
   (popper-mode-line nil)
@@ -20,7 +21,7 @@
                               "\\*lsp-help\\*$" "\\*lsp session\\*$"
                               lsp-bridge-ref-mode xref--xref-buffer-mode
                               "\\*Compile-Log\\*" compilation-mode
-                              "\\*Flycheck errors\\*$" " \\*Flycheck checker\\*$" "\\*Flymake diagnostics.*\\*"
+                              "\\*Flycheck errors\\*$" " \\*Flycheck checker\\*$" "\\*Flymake diagnostics.*\\*" "\\*Project errors\\*$"
                               "\\*gud-debug\\*$" "\\*DAP Templates\\*$" dap-server-log-mode
                               "\\*quickrun\\*$"
                               "\\*Async Shell Command\\*"

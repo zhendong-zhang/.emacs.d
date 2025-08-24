@@ -9,3 +9,5 @@ var/
 /server/
 /lisp/init-private-config/
 /tree-sitter/
+/package-quickstart.el
+/package-quickstart.elc

@@ -38,6 +38,9 @@
   :hook
   (after-init . global-flycheck-mode))
 
+(use-package flycheck-projectile
+  :commands flycheck-projectile-list-errors)
+
 (defun create-dot-editorconfig ()
   (interactive)
   (eval-when-compile

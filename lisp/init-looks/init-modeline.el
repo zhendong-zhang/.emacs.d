@@ -4,8 +4,7 @@
 
 ;;; Code:
 
-(use-package init-multi-edit
-  :ensure nil
+(use-package init-multi-edit :ensure nil
   :functions multi-edit-mode-line-str
   :custom (multi-edit-set-mode-line-p nil)
   :config
@@ -38,7 +37,7 @@
             (doom-modeline--buffer-size))))
 
     (doom-modeline-def-modeline 'custom-modeline
-      '(bar workspace-name window-number modals custom-matches follow buffer-info remote-host buffer-position word-count parrot selection-info)
+      '(bar modals custom-matches follow buffer-info remote-host buffer-position word-count parrot selection-info)
       '(compilation objed-state misc-info persp-name battery grip irc mu4e gnus github debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs check))
 
     (add-hook 'doom-modeline-mode-hook

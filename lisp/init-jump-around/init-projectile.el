@@ -5,8 +5,8 @@
 ;;; Code:
 
 (use-package projectile
-  :commands (projectile-project-root)
-  :functions projectile-current-project-files
+  :commands projectile-mode
+  :functions projectile-project-root projectile-current-project-files
   :custom
   (projectile-mode-line-prefix " P")
   (projectile-require-project-root nil)
@@ -42,11 +42,7 @@
   (defun correct-project-encoding (to-coding)
     "将当前project下所有文件的编码设置为`to-coding'"
     (interactive (list (read-buffer-file-coding-system)))
-    (let ((inhibit-message t)               ; 禁止消息
-          (enable-local-variables nil)      ; 禁止本地变量
-          (find-file-hook nil)              ; 禁止find-file-hook
-          (after-insert-file-functions nil) ; 禁止after-insert-file-functions
-          (project-dir (projectile-project-root))
+    (let ((project-dir (projectile-project-root))
           (files (projectile-current-project-files)))
       (dolist (file files)
         (setq file (concat project-dir file))
